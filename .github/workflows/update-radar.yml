@@ -43,7 +43,8 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@v10
+        # astral-sh publishes full version tags only; a bare `v10` does not resolve.
+        uses: astral-sh/setup-uv@v10.1.0
         with:
           enable-cache: true
 
