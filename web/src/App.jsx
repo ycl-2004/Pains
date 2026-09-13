@@ -8,14 +8,17 @@ import { ClusterPage, Demoted, Signals, Validation } from './pages/Other'
 const PAGES = { latest: Latest, ledger: Ledger, signals: Signals, validation: Validation, demoted: Demoted }
 
 export default function App() {
-  const { data, error } = useRadarData()
+  const { data, error, retry } = useRadarData()
   const [section, param] = useHashRoute()
 
   if (error || !data) {
     return (
-      <p className="mx-auto max-w-5xl px-4 py-16 text-sm text-muted sm:px-6">
-        {error ? `数据加载失败（${error.message}）。本地请先运行 uv run python -m radar export。` : '正在加载…'}
-      </p>
+      <main className="load-state" aria-busy={!error}>
+        <p className="eyebrow">痛点雷达</p>
+        <h1>{error ? '暂时无法加载研究数据' : '正在加载研究数据…'}</h1>
+        <p className="text-sm text-muted" role={error ? 'alert' : 'status'}>{error ? '请检查网络连接后重试。' : '正在读取机会、证据与研究记录。'}</p>
+        {error && <button className="action" onClick={retry}>重新加载</button>}
+      </main>
     )
   }
 

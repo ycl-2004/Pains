@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   ['validation', '验证清单', CheckSquare],
   ['demoted', '已归档', Archive],
 ]
-const PAGE_TITLES = { latest: '今天的研究', ledger: '机会库', signals: '新兴信号', validation: '验证清单', demoted: '已归档' }
+const PAGE_TITLES = { latest: '今天的研究', ledger: '机会库', signals: '新兴信号', validation: '验证清单', demoted: '已归档', cluster: '机会详情' }
 
 function readTheme() {
   try {
@@ -61,7 +61,7 @@ export function Sidebar({ current, counts }) {
 export function Header({ data, section = 'latest' }) {
   const updated = data.runs.find((run) => !run.status || run.status === 'success')?.finished_at
   return <header className="workspace-header">
-    <div><p className="header-context">痛点雷达</p><h1>{PAGE_TITLES[section] ?? PAGE_TITLES.latest}</h1></div>
+    <div><p className="header-context">痛点雷达</p><p className="workspace-title">{PAGE_TITLES[section] ?? PAGE_TITLES.latest}</p></div>
     <div className="header-actions"><span className="last-updated">{updated ? <>最后更新 · <time className="num">{formatDateTime(updated)}</time></> : '暂无更新记录'}</span><ThemeToggle /></div>
   </header>
 }
@@ -77,7 +77,7 @@ export function Footer() {
 }
 
 export function SectionTitle({ children, note }) {
-  return <div className="section-heading"><h2>{children}</h2>{note && <p>{note}</p>}</div>
+  return <div className="section-heading"><h1>{children}</h1>{note && <p>{note}</p>}</div>
 }
 
 export function Tag({ children, tone = 'plain', title }) {

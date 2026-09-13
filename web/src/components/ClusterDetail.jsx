@@ -9,9 +9,9 @@ function Field({ label, children }) {
   if (children == null || children === '' || (Array.isArray(children) && children.length === 0)) return null
   return (
     <div>
-      <h4 className="text-xs font-medium text-muted">
+      <p className="text-xs font-medium text-muted">
         {label}
-      </h4>
+      </p>
       <div className="mt-1 text-sm leading-relaxed">{children}</div>
     </div>
   )
@@ -79,7 +79,8 @@ export function OpportunitySummary({ cluster }) {
   </div>
 }
 
-export function ClusterDetail({ cluster, rubric }) {
+export function ClusterDetail({ cluster, rubric, headingLevel = 2 }) {
+  const Heading = `h${headingLevel}`
   const summary = evidenceSummary(cluster)
   const demand = (cluster.evidence || []).filter(e => e.counts_as_demand)
   const strongest = [...demand].sort((a, b) => Number(cluster.buying_evidence_urls?.includes(b.url)) - Number(cluster.buying_evidence_urls?.includes(a.url))).slice(0, 3)
@@ -87,16 +88,14 @@ export function ClusterDetail({ cluster, rubric }) {
   return <div className="space-y-6">
     <div>
       <p className="text-base leading-relaxed">{cluster.problem}</p>
-      <p className="mt-3 text-sm text-muted">目标客户 · {cluster.who}</p>
       {cluster.status_reason && <p className="mt-3 text-xs text-muted">{STATUS[cluster.status]} · {cluster.status_reason}</p>}
     </div>
     <div className="evidence-strip">
-      <p>{summary.threads} 条需求讨论 · {summary.communities} 个来源社区</p>
-      <p className="mt-1">{summary.span}</p>
+      <p>证据时间：{summary.span}</p>
       <p className="mt-1">现有方案更新：{cluster.solution_checked_at || '暂无记录'}</p>
     </div>
     <section className="dossier-section">
-      <h3>买方证据</h3>
+      <Heading>买方证据</Heading>
       {unknown.length > 0 && <p className="mb-4 rounded-lg bg-surface p-3 text-sm text-muted">待确认：{unknown.join('、')}</p>}
       <div className="mb-4 space-y-3">
         <Field label="付款方">{cluster.buyer}</Field>
@@ -107,7 +106,7 @@ export function ClusterDetail({ cluster, rubric }) {
       <EvidenceList evidence={strongest} />
     </section>
     <section className="dossier-section">
-      <h3>方案缺口</h3>
+      <Heading>方案缺口</Heading>
       <div className="space-y-4">
         <Field label="现有做法">{cluster.workaround}</Field>
         <Field label="已有替代方案"><BulletList items={cluster.existing_solutions} /></Field>
@@ -116,15 +115,15 @@ export function ClusterDetail({ cluster, rubric }) {
       </div>
     </section>
     <section className="dossier-section">
-      <h3>主要风险</h3>
+      <Heading>主要风险</Heading>
       <div className="text-sm leading-relaxed"><BulletList items={cluster.contrarian} /></div>
       {!(cluster.contrarian?.length) && <p className="text-sm text-muted">暂无反方观点</p>}
     </section>
     <section className="dossier-section">
-      <h3>下一步验证</h3>
-      <div className="text-sm leading-relaxed"><BulletList items={cluster.next_validation} ordered /></div>
+      <Heading>下一步验证</Heading>
+      <div className="text-sm leading-relaxed">{cluster.next_validation?.length ? <BulletList items={cluster.next_validation} ordered /> : '暂无验证步骤'}</div>
     </section>
-    <ValidationNotebook key={cluster.id} id={cluster.id} />
+    <ValidationNotebook key={cluster.id} id={cluster.id} headingLevel={headingLevel} />
     <details className="dossier-section"><summary>全部来源 · {cluster.evidence?.length || 0} 条</summary><EvidenceList evidence={cluster.evidence} /></details>
     <details className="dossier-section"><summary>评分与历史</summary>
       <div className="space-y-5 py-3">

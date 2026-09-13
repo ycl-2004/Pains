@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { topOpportunities, byOpportunity } from '../src/lib/data.js'
+import { topOpportunities, byOpportunity, validateRadarData } from '../src/lib/data.js'
 
 const cluster = (overrides = {}) => ({
   id: 'OP-001', status: 'active', solution_class: 'B', scores: { overall: 7 },
@@ -25,4 +25,16 @@ test('cited buying evidence outranks a higher speculative score', () => {
   const paid = cluster({ id: 'paid', scores: { overall: 6 }, payment_evidence: 'explicit budget', buying_evidence_urls: ['https://example.com/buyer'] })
   const speculative = cluster({ id: 'speculative', scores: { overall: 9 } })
   assert.equal([speculative, paid].sort(byOpportunity)[0].id, 'paid')
+})
+
+// Loading bad exports must reach the retry screen, not crash after fetch succeeds.
+test('public data validation accepts the current export and rejects broken collections', async () => {
+  const { readFile } = await import('node:fs/promises')
+  const data = JSON.parse(await readFile(new URL('../public/data/radar.json', import.meta.url)))
+  assert.equal(validateRadarData(data), data)
+  assert.doesNotThrow(() => validateRadarData({ ...data, clusters: [], signals: [], runs: [] }))
+  for (const invalid of [null, {}, { ...data, clusters: null }, { ...data, rubric: {} },
+    { ...data, clusters: [null] }, { ...data, signals: [{}] }, { ...data, runs: [null] }]) {
+    assert.throws(() => validateRadarData(invalid), /数据文件格式/)
+  }
 })

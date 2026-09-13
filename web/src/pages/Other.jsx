@@ -1,10 +1,11 @@
 import { ArrowLeft, CheckSquare } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useResearch } from '../lib/useResearch'
+import { ResearchBackup } from '../components/ValidationNotebook'
 import { ClusterDetail, EvidenceList, OpportunitySummary } from '../components/ClusterDetail'
 import { SectionTitle, Tag } from '../components/Chrome'
 import { shortLabel } from '../lib/data'
 import { STATUS } from '../lib/labels'
-import { displayTitle, readResearch, STAGES } from '../lib/research'
+import { displayTitle, STAGES } from '../lib/research'
 
 export function ClusterPage({ data, id }) {
   const cluster = data.clusters.find((item) => item.id === id)
@@ -22,12 +23,12 @@ export function ClusterPage({ data, id }) {
             <Tag tone={cluster.status === 'active' ? 'plain' : 'accent'}>{STATUS[cluster.status]}</Tag>
             {cluster.industry && <Tag>{cluster.industry}</Tag>}
           </div>
-          <h2 className="editorial-title mt-2 mb-8 max-w-3xl text-3xl leading-snug">{displayTitle(cluster)}</h2>
+          <h1 className="editorial-title mt-2 mb-8 max-w-3xl text-3xl leading-snug">{displayTitle(cluster)}</h1>
           <OpportunitySummary cluster={cluster} />
           <ClusterDetail cluster={cluster} rubric={data.rubric} />
         </article>
       ) : (
-        <p className="py-10 text-sm text-muted">找不到 {id}，它可能已被合并。</p>
+        <div className="py-10"><h1 className="text-xl font-semibold">未找到这个机会</h1><p className="mt-3 text-sm text-muted">找不到 {id}，它可能已被合并或移出公共台账。</p></div>
       )}
     </div>
   )
@@ -43,7 +44,7 @@ export function Signals({ data }) {
           <li key={signal.id} className="grid gap-x-6 gap-y-3 py-6 md:grid-cols-[4.5rem_1fr]">
             <span className="font-mono text-xs leading-6 text-muted">{signal.id}</span>
             <div className="min-w-0 space-y-3">
-              <h3 className="text-base leading-snug font-semibold">{signal.title}</h3>
+              <h2 className="text-base leading-snug font-semibold">{signal.title}</h2>
               <p className="text-sm leading-relaxed">{signal.why_watch}</p>
               {signal.watch_next && (
                 <p className="text-sm">
@@ -73,7 +74,7 @@ export function Demoted({ data }) {
           <li key={cluster.id} className="grid gap-x-6 gap-y-2 py-5 md:grid-cols-[4.5rem_1fr_3.5rem]">
             <span className="font-mono text-xs leading-6 text-muted">{cluster.id}</span>
             <div className="min-w-0 space-y-2">
-              <h3 className="text-sm leading-6 font-medium">{cluster.name}</h3>
+              <h2 className="text-sm leading-6 font-medium">{cluster.name}</h2>
               <p className="text-sm leading-relaxed text-muted">{cluster.status_reason}</p>
               <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted">
                 {cluster.industry && <Tag>{cluster.industry}</Tag>}
@@ -91,13 +92,13 @@ export function Demoted({ data }) {
 }
 
 export function Validation({ data }) {
-  const [records, setRecords] = useState({})
-  useEffect(() => {
-    try { setRecords(readResearch()) } catch { setRecords({}) }
-  }, [])
-  const rows = Object.entries(records).map(([id, record]) => ({ cluster: data.clusters.find(cluster => cluster.id === id), id, record })).filter(row => row.cluster)
+  const research = useResearch()
+  const { records, error } = research
+  const rows = Object.entries(records).map(([id, record]) => ({ cluster: data.clusters.find(cluster => cluster.id === id), id, record }))
   return <div className="page-stack">
-    <div className="page-intro"><div><p className="header-context">验证</p><h2>验证清单</h2><p className="mt-1">记录访谈、预算与试点进展。</p></div></div>
-    <section className="panel"><div className="panel-header"><h3>我的验证记录</h3><a className="header-link" href="#/ledger">添加机会 <span aria-hidden="true">↗</span></a></div>{rows.length ? <ul className="side-list">{rows.map(({ cluster, id, record }) => <li key={id}><div className="flex flex-wrap items-center justify-between gap-3"><a href={`#/cluster/${id}`} className="text-sm hover:text-accent">{displayTitle(cluster)}</a><Tag tone={record.stage === 'pilot' ? 'success' : record.stage === 'rejected' ? 'plain' : 'accent'}>{STAGES[record.stage]}</Tag></div><p>{record.note || '还没有文字记录。'}</p><p className="mt-2 num text-[10px]">{record.updated ? `更新于 ${record.updated.slice(0, 10)}` : '尚未更新'}</p></li>)}</ul> : <div className="p-8 text-center"><CheckSquare className="mx-auto size-7 text-muted" aria-hidden="true" /><h3 className="mt-3 text-sm font-semibold">还没有验证记录</h3><p className="mt-1 text-xs text-muted">打开一个机会开始记录。</p><a href="#/ledger" className="action mt-4">浏览机会库</a></div>}</section>
+    <div className="page-intro"><div><p className="header-context">验证</p><h1>验证清单</h1><p className="mt-1">记录访谈、预算与试点进展。仅保存在当前浏览器，可导出备份。</p></div></div>
+    <ResearchBackup research={research} />
+    {error && <p role="alert" className="text-sm text-accent">{error}</p>}
+    <section className="panel"><div className="panel-header"><h2>我的验证记录</h2><a className="header-link" href="#/ledger">添加机会 <span aria-hidden="true">↗</span></a></div>{rows.length ? <ul className="side-list">{rows.map(({ cluster, id, record }) => <li key={id}><div className="flex flex-wrap items-center justify-between gap-3">{cluster ? <a href={`#/cluster/${id}`} className="text-sm hover:text-accent">{displayTitle(cluster)}</a> : <span className="text-sm">{id} · 机会已不在公共台账，记录仍保留</span>}<Tag tone={record.stage === 'pilot' ? 'success' : record.stage === 'rejected' ? 'plain' : 'accent'}>{STAGES[record.stage]}</Tag></div><p>{record.note || '还没有文字记录。'}</p><p className="mt-2 num text-[10px]">{record.updated ? `更新于 ${record.updated.slice(0, 10)}` : '尚未更新'}</p></li>)}</ul> : error ? <p className="p-6 text-sm text-muted">记录暂时无法显示，请恢复浏览器存储访问后重试。</p> : <div className="p-8 text-center"><CheckSquare className="mx-auto size-7 text-muted" aria-hidden="true" /><h2 className="mt-3 text-sm font-semibold">还没有验证记录</h2><p className="mt-1 text-xs text-muted">打开一个机会开始记录。</p><a href="#/ledger" className="action mt-4">浏览机会库</a></div>}</section>
   </div>
 }

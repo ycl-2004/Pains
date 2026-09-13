@@ -1,21 +1,33 @@
 import { useEffect, useState } from 'react'
 
 export function useRadarData() {
+  const [attempt, setAttempt] = useState(0)
   const [state, setState] = useState({ data: null, error: null })
   useEffect(() => {
     let cancelled = false
+    setState({ data: null, error: null })
     fetch('./data/radar.json', { cache: 'no-cache' })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`)
-        return response.json()
+        return response.json().then(validateRadarData)
       })
       .then((data) => !cancelled && setState({ data, error: null }))
       .catch((error) => !cancelled && setState({ data: null, error }))
     return () => {
       cancelled = true
     }
-  }, [])
-  return state
+  }, [attempt])
+  return { ...state, retry: () => setAttempt(value => value + 1) }
+}
+
+export function validateRadarData(data) {
+  if (!data || !['clusters', 'signals', 'runs'].every(key => Array.isArray(data[key]))
+    || !data.rubric?.classes || !data.rubric?.dimensions
+    || data.clusters.some(cluster => !cluster || typeof cluster.id !== 'string' || typeof cluster.name !== 'string'
+      || typeof cluster.last_detected !== 'string' || !Array.isArray(cluster.evidence))
+    || data.signals.some(signal => !signal || typeof signal.id !== 'string' || typeof signal.last_detected !== 'string' || !Array.isArray(signal.evidence))
+    || data.runs.some(run => !run || typeof run !== 'object')) throw new Error('数据文件格式不正确')
+  return data
 }
 
 const LEVEL_RANK = { high: 3, medium: 2, low: 1 }
