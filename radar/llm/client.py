@@ -201,7 +201,7 @@ class LLM:
             try:
                 response = client.chat.completions.create(**self._request(group, system, user, schema, max_tokens, web_search))
             except openai.APIError as error:
-                failures.append(f"{group.label} 调用失败（{type(error).__name__}）")
+                failures.append(f"{group.label} 调用失败（{describe_error(error)}）")
                 continue
 
             served = response.model or group.models[0]
@@ -247,7 +247,7 @@ class LLM:
                     catalog = {item.id: frozenset(getattr(item, "supported_parameters", None) or ())
                                for item in client.models.list()}
                 except openai.APIError as error:
-                    self.notes.append(f"读取 {provider.name} 模型目录失败（{type(error).__name__}），全部按严格结构化输出请求")
+                    self.notes.append(f"读取 {provider.name} 模型目录失败（{describe_error(error)}），全部按严格结构化输出请求")
             self._catalogs[provider.name] = catalog
         return self._catalogs[provider.name]
 
@@ -283,6 +283,13 @@ class LLM:
                 extra["models"] = list(group.models)
             request["extra_body"] = extra
         return request
+
+
+def describe_error(error: openai.APIError) -> str:
+    """Class, HTTP status and the provider's message: the class name alone cannot explain a 400."""
+    status = getattr(error, "status_code", None)
+    message = " ".join(str(getattr(error, "message", None) or error).split())[:240]
+    return f"{type(error).__name__}{f' {status}' if status else ''}: {message}"
 
 
 def _extract_json(content: str | None) -> str:

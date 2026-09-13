@@ -90,15 +90,19 @@ uv run python -m radar run --limit 30 --max-cost 1
 
 **当前配置**（仓库 Variables，按价格优先排列；随时可以在 Settings 里改，不用改代码）：
 
-| 位置 | 模型 | 输出方式 |
-|---|---|---|
-| 1 | `qwen/qwen3.7-flash` | JSON 模式（只有阿里云一家服务商，不支持严格 schema） |
-| 2 | `openai/gpt-5.6-luna` | 严格 JSON Schema |
-| 3 | `z-ai/glm-5.3-flash` | 严格 JSON Schema |
-| 兜底 1 | `deepseek/deepseek-v4.1-flash`（经 OpenRouter） | 严格 JSON Schema |
-| 兜底 2 | `deepseek:deepseek-flash`（DeepSeek 官方 API） | JSON 模式 |
+| 位置 | 初筛 `RADAR_TRIAGE_MODELS` | 分析 `RADAR_ANALYZE_MODELS` | 输出方式 |
+|---|---|---|---|
+| 1 | `nvidia/nemotron-3-super-120b-a12b:free` | — | 严格 JSON Schema（免费） |
+| 2 | `nex-agi/nex-n2.5-mini:free` | — | 严格 JSON Schema（免费） |
+| 3 | `qwen/qwen3.7-flash` | `qwen/qwen3.7-flash` | JSON 模式（只有阿里云一家服务商，不支持严格 schema） |
+| 4 | `openai/gpt-5.6-luna` | `openai/gpt-5.6-luna` | 严格 JSON Schema |
+| 5 | `z-ai/glm-5.3-flash` | `z-ai/glm-5.3-flash` | 严格 JSON Schema |
+| 兜底 1 | `deepseek/deepseek-v4.1-flash`（经 OpenRouter） | 同左 | 严格 JSON Schema |
+| 兜底 2 | `deepseek:deepseek-flash`（DeepSeek 官方 API） | 同左 | JSON 模式 |
 
-初筛和分析用同一条链。MiniMax M3 目前没有免费版（2026-09-13 核对 OpenRouter 模型目录），收费版比上面几个都贵，所以没有放进链里。
+**免费模型只放在初筛。** 初筛只判断“是不是痛点”，调用次数最多，用免费模型最省钱。分析决定台账质量：降级只在出错或格式不对时触发，免费模型输出格式合法但判断质量差时，结果会直接写进台账，所以分析仍用付费链。
+
+**免费模型的限制：** 每分钟最多 20 次。每天的上限取决于 OpenRouter 账户累计充值：不到 10 美元是 50 次，满 10 美元是 1000 次。一期大约调用 17 次。免费模型随时可能下架或限流，出问题时会自动降级到后面的付费模型。MiniMax M3 目前就没有免费版了（2026-09-13 核对 OpenRouter 模型目录），它的收费版比上面几个模型都贵，所以没有放进链里。
 
 **请求怎么发。** 每期第一次调用前，会读一次 OpenRouter 的公开模型目录，按每个模型的 `supported_parameters` 选择输出方式；目录读不到时，全部按严格结构化输出请求。发给 OpenRouter 的请求会带上：
 
