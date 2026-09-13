@@ -5,8 +5,13 @@ from radar.sources.github import GitHubIssues
 from radar.sources.hackernews import HackerNews
 from radar.sources.stackexchange import StackExchange
 from radar.sources.v2ex import V2EX
+from radar.sources.business import BusinessFeed
 
 SOURCES: tuple[SourceAdapter, ...] = (
+    BusinessFeed("make", "Make Community", "https://community.make.com", ("/latest.rss?order=created",), discourse=True),
+    BusinessFeed("n8n", "n8n Community", "https://community.n8n.io", ("/latest.rss?order=created",), discourse=True),
+    BusinessFeed("wordpress", "WooCommerce 商家支持", "https://wordpress.org",
+                 ("/support/plugin/woocommerce/feed/", "/support/plugin/woocommerce-pdf-invoices-packing-slips/feed/")),
     HackerNews(),
     GitHubIssues(),
     V2EX(),

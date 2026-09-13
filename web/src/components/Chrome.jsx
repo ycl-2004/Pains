@@ -41,7 +41,7 @@ function ThemeToggle() {
 }
 
 export function Header({ data }) {
-  const updated = data.runs[0]?.finished_at ?? data.generated_at
+  const updated = data.runs.find((run) => !run.status || run.status === 'success')?.finished_at
   return (
     <header>
       <div className="mx-auto flex max-w-5xl flex-wrap items-end justify-between gap-x-6 gap-y-3 px-4 pt-8 pb-5 sm:px-6">
@@ -50,11 +50,11 @@ export function Header({ data }) {
             <h1 className="text-2xl font-semibold tracking-tight">痛点雷达</h1>
             <span className="font-mono text-xs text-muted">pain-radar</span>
           </div>
-          <p className="mt-1 max-w-xl text-sm text-muted">从公开讨论里找反复出现、现有方案没解决好、能用代码解决的问题。</p>
+          <p className="mt-1 max-w-xl text-sm text-muted">从业务用户的手工成本、损失和购买信号里，找值得验证的产品机会。</p>
         </div>
         <div className="flex items-center gap-3 text-xs text-muted">
           <span>
-            数据更新于 <time className="num">{formatDateTime(updated)}</time>
+            {updated ? <>最近完成于 <time className="num">{formatDateTime(updated)}</time></> : '尚无成功运行记录'}
           </span>
           <ThemeToggle />
         </div>

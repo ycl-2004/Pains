@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/deploy-GitHub%20Actions%20+%20Pages-111111?style=flat-square" alt="Deploy: GitHub Actions + Pages">
   <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/models-OpenRouter%20+%20DeepSeek%20fallback-111111?style=flat-square" alt="Models: OpenRouter with DeepSeek fallback">
-  <img src="https://img.shields.io/badge/tests-33%20passing-111111?style=flat-square" alt="33 unit tests passing">
+  <img src="https://img.shields.io/badge/tests-unittest-111111?style=flat-square" alt="unittest regression suite">
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@
 
 项目分两部分：一条 Python 管线负责抓取、初筛、聚类、打分和更新台账；一个 React 静态网站负责展示台账。和 [ai-news-radar](https://github.com/ycl-2004/ai-news-radar) 的做法一样：GitHub Actions 定时运行管线，把数据提交回仓库，再把网站发布到 GitHub Pages。整个项目不需要服务器。
 
-> **状态：** 网站由 GitHub Actions 构建并发布。模型调用层已经通过桩客户端单测，**但还没有用真实 OpenRouter key 跑过一期**；在仓库配好 key 和模型之前，网站展示的是第 0 期基线。
+> **状态：** 已有两次真实模型试跑（2026-09-13），每次初筛 30 条；这两次没有触发竞品联网核查。当前实现已补证据与状态校验，并加入业务社区来源。新逻辑经过离线回归测试，尚未重新跑付费模型链路。具体规则见 [商业证据与可靠性决策](docs/decisions/001-buyer-evidence-and-reliability.md)。
 
 ## Quick start
 
@@ -41,7 +41,7 @@
    | `RADAR_ANALYZE_MODELS` | `vendor/strong-a,vendor/strong-b` | 聚类和打分用，放推理能力强的模型 |
    | `RADAR_FALLBACK_MODELS` | `deepseek:deepseek-flash` | 追加在每个阶段的模型链末尾 |
    | `RADAR_SOLUTION_MODELS` | 不填 | 现有方案联网核查用，不填时沿用分析模型 |
-   | `RADAR_MAX_COST_USD` | `3` | 每期花费上限，不填默认 3 |
+   | `RADAR_MAX_COST_USD` | `3` | 每期软预算，不填默认 3；硬额度在服务商设置 |
 
 3. **跑一次**：Actions → `Update pain radar` → Run workflow。勾上 `force`，并把 `limit` 填成 `30` 先小规模试跑。之后每天 UTC 14:17 自动运行。
 
@@ -62,7 +62,7 @@ export RADAR_FALLBACK_MODELS=deepseek:deepseek-flash DEEPSEEK_API_KEY=sk-...
 uv run python -m radar run --limit 30 --max-cost 1
 ```
 
-`npm run dev` 会先执行 `radar refresh`：上一期超过 20 小时、并且模型和 key 都配好时，先跑一期再启动网站；否则只导出现有数据。
+`npm run dev` 只导出现有数据后启动网站，不调用付费模型。需要研究更新时明确运行 `npm run refresh` 或 `uv run python -m radar run`。
 
 ### Commands
 
@@ -86,7 +86,7 @@ uv run python -m radar run --limit 30 --max-cost 1
 1. **OpenRouter 负责服务端故障。** 连续的 OpenRouter 模型合成一次请求（`models: ["a/x", "b/y"]`）。报错、限流、宕机、上下文超长、内容审核拦截时，OpenRouter 自动换下一个模型，只按最终实际使用的模型计费。
 2. **我们负责输出质量。** OpenRouter 不会因为输出格式不对而降级。所以输出被截断、不是 JSON、或者不符合结构时，代码会换到下一组模型，也就是 DeepSeek。
 3. **DeepSeek 官方 API 只支持 JSON 模式，不校验结构。** 所以 schema 会写进提示词，返回后再用 pydantic 校验。
-4. **花费超过上限就停。** 不再往下降级，已完成的部分照常保存。
+4. **软预算控制。** 调用前按目录价格与输入大小保守估计，限制输出 token；余额不足跳过该路由。实际费用达到预算后不再调用，已完成部分保存。服务商搜索费、定价变化和请求异常仍可能使实际扣费超过估计；硬额度需在服务商设置。
 
 **当前配置**（仓库 Variables，按价格优先排列；随时可以在 Settings 里改，不用改代码）：
 
@@ -120,18 +120,18 @@ uv run python -m radar run --limit 30 --max-cost 1
 ## How it works
 
 ```
-fetch        HN / GitHub / V2EX / Stack Exchange，最近 72 小时，原始数据落到 data/raw/<日期>/（不入库）
-  ↓          跳过 data/seen.json 里已经判断过的条目（这个文件入库，CI 每次都能读到）
+fetch        Make / n8n / WooCommerce + HN / GitHub / V2EX / Stack Exchange，有限条数采样
+  ↓          跳过已判断版本；每周最多复查 5 条旧证据，GitHub 按更新时间发现旧 issue
 prefilter    中英文痛点关键词 + 高互动无条件保留（目的是不漏，不负责判断）
   ↓
-triage       RADAR_TRIAGE_MODELS，每批 20 条：具体的人 × 具体的动作 × 具体的损失 × 能否用代码解决
+triage       每批 20 条；业务来源双份轮询名额；保留反证，区分付款方、预算与损失
   ↓
 deepen       给互动最高的 40 条拉高赞回复（变通做法和付费信号大多在回复里）
   ↓
 analyze      RADAR_ANALYZE_MODELS：并入已有簇或新建簇、写反方论证、打分、写分数变化理由、挑出 Top 3
   ↓
 solution     RADAR_SOLUTION_MODELS + OpenRouter web 插件，对新簇和分数变化 ≥ 1 的簇查竞品，每期最多 3 个
-check
+check        每周到期也触发；搜索引用必须可对应；已解决则降级，新簇先观察
   ↓
 ledger       data/ledger.json、data/runs/<run_id>.json、data/ledger-history/<run_id>.json
   ↓
@@ -142,12 +142,17 @@ export       web/public/data/radar.json → 静态网站
 
 | 来源 | 抓什么 | 实测（2026-09-13，72 小时窗口） |
 |---|---|---|
+| Make Community | 公开 RSS 最新主题；补正文、回复和可用的解决状态 | RSS 200，返回 30 条（订阅条数，不等于 72 小时总量） |
+| n8n Community | 公开 RSS 业务自动化求助；卖服务广告在初筛排除 | RSS 200，返回 30 条 |
+| WooCommerce 商家支持 | WooCommerce 与 PDF 发票／装箱单插件的公开支持订阅 | 两个 feed 均 200，各返回 30 条 |
 | Hacker News | Algolia 官方 API：Ask HN、分数 >150 的故事、9 个痛点短语的评论（`typoTolerance=false`） | 抓到 163 条，预筛后 129 条 |
-| GitHub Issues | 限定 8 个仓库：n8n、Claude Code、Codex、LiteLLM、MCP servers、certbot、win-acme、Langfuse | 抓到 126 条，预筛后 94 条；在 Actions 里用自带的 `GITHUB_TOKEN`，限流更宽松 |
+| GitHub Issues | 限定 8 个仓库，按近期更新时间采样（含旧 issue），保留关闭状态；每仓库最多 30 条 | 原创建时间查询曾抓到 126 条；新查询覆盖范围不同，不直接比较 |
 | V2EX | 公开 v1 接口：最新、最热，以及 qna / create / ideas / programmer 节点 | 抓到 58 条，预筛后 34 条 |
 | Stack Exchange | Software Recommendations、Web Applications 的新问题；Super User 里含 workaround / manually 的问题 | 抓到 4 条，预筛后 3 条 |
 
-**没有 Reddit。** 从 2025-11 起，Reddit 新的 API 访问要人工审批；据报道，免登录的 `.json` 接口也在 2026-05 关闭了。定时任务抓不到。新增数据源只需要在 `radar/sources/` 写一个继承 `SourceAdapter` 的适配器，再在 `radar/registry.py` 加一行。
+**没有 Reddit。** [官方政策](https://support.reddithelp.com/hc/en-us/articles/42728983564564-Responsible-Builder-Policy)要求 API 访问获批，商业使用需明确书面批准；当前不把它作为自动采集依赖。历史基线里的 Reddit 证据不代表现在能自动复查。
+
+**业务优先不等于保证赚钱。** 每轮 Make、n8n、WooCommerce 各取两条，其他来源各取一条；来源内部先看成本/行为语言，再看互动。付款方、原文预算或购买证据、当前成本分开记录，缺失项显示待验证。至少两条需求 URL 与行为证据、近期方案核查达标，才进入“优先验证候选”；不同 URL 仍不等于不同买家。
 
 ## Deployment
 
@@ -164,7 +169,7 @@ export       web/public/data/radar.json → 静态网站
 - **推送代码只重建网站。** 改了 `web/`、`data/` 或 `radar/` 并推送到 `main` 时，跳过 `update`，只重新构建和发布。
 - **排队，不取消。** `concurrency` 设成排队：跑到一半取消会白花已经调用的模型费用。
 - **按整个目录提交。** 同时检查有没有漏暂存的文件。ai-news-radar 出过事故：按文件名白名单提交，漏掉了新生成的文件，网站数据一直停在旧版本。
-- **没配模型时不报错。** 只导出基线，网站照常发布；配好后运行失败，workflow 会标红。
+- **没配模型时不报错。** 只导出现有数据；配好后失败或部分完成会返回非零，CI 先保存已完成数据和报告，再标红，不部署这一期。
 - **网站没有公开的刷新按钮。** 公开的刷新入口会让任何人都能触发模型花费；需要立即跑一期时，在 Actions 页手动触发。
 
 ## 第 0 期基线：三份研究怎么合并的
@@ -223,7 +228,7 @@ Pains/
 ## Build and test
 
 ```bash
-uv run python -m unittest discover -s tests   # 33 个测试
+uv run python -m unittest discover -s tests   # 含证据、失败状态、预算和业务采样回归测试
 cd web && npm run build                        # 输出到 web/dist/
 ```
 
@@ -236,11 +241,12 @@ cd web && npm run build                        # 输出到 web/dist/
 
 ## Known limitations
 
-- **还没有用真实模型跑过。** 第一次建议手动触发，并设 `limit=30`，跑完看 `data/runs/` 里的报告和费用。
+- **新规则尚未重新进行付费模型试跑。** 旧两次试跑记录仍保留；建议下一次设 `limit=30`，检查各来源入选数、转述和买方证据。
 - **OpenRouter 的 `web` 插件能不能和 `json_schema` 结构化输出一起用，官方文档没说明，还没实测。** 如果不兼容，现有方案核查会失败并写进报告，不影响其他阶段。
 - **JSON 模式的模型更容易输出不合格。** Qwen3.7 Flash 这类不支持严格 schema 的模型，只能靠提示词约束结构；尤其是分析阶段的结构比较复杂，输出不合格时会降级到 GPT-5.6 Luna，这种情况会写进报告的 `notes`。
 - **GitHub 的定时任务不保证准点。** ai-news-radar 写的是每 30 分钟，实际间隔 2–4 小时。
-- **来源偏开发者、偏英语。** 中文只有 V2EX，另外没有 Reddit、X、Discord 和应用商店评论。
+- **来源仍偏软件用户、偏英语。** 已补业务社区，中文只有 V2EX；没有自动覆盖 Reddit、X、Discord 和应用商店评论。
+- **断点恢复有边界。** `data/audit/calls/` 保存已完成调用的脱敏输入、输出和费用，本地同输入重试可复用；它不入 Git，新的 CI runner 不会自动恢复。请求中途终止且未拿到响应的费用不能靠缓存追回。
 - **分数是判断，不是市场测算。** 没有用户访谈、成交或市场规模数据；LLM 的聚类和转述可能出错，重要结论请点开原文核对。
 - **`data/ledger-history/` 会慢慢变大。** 每期大约 110 KB 快照，需要定期清理旧快照。
 

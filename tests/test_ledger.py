@@ -63,17 +63,18 @@ class ApplyAnalysisTest(unittest.TestCase):
 
     def test_new_cluster_gets_next_id_and_top_reference_resolves(self):
         state = ledger()
-        changes, _, top = apply_analysis(state, analysis(update("NEW", name="fresh pain", overall=7),
+        changes, _, top = apply_analysis(state, analysis(update("NEW", name="fresh pain", overall=7, new_evidence=[evidence("https://fresh")]),
                                                          top=["NEW:fresh pain", "OP-001", "OP-404"]), "run-1", TODAY)
         self.assertEqual(changes[0].cluster_id, "OP-003")
         self.assertEqual(state.clusters[-1].origin, ["pipeline"])
-        self.assertEqual(top, ["OP-003", "OP-001"])
+        self.assertEqual(top, [])  # A single thread and an unchecked new cluster are not recommendations.
+        self.assertEqual(state.clusters[-1].status, "watch")
 
     def test_demoted_cluster_revives_to_watch_only_with_enough_score(self):
         state = ledger()
         apply_analysis(state, analysis(update("OP-002", overall=4)), "run-1", TODAY)
         self.assertEqual(state.clusters[1].status, "demoted")
-        apply_analysis(state, analysis(update("OP-002", overall=5.5)), "run-2", TODAY)
+        apply_analysis(state, analysis(update("OP-002", overall=5.5, new_evidence=[evidence("https://new")])), "run-2", TODAY)
         self.assertEqual(state.clusters[1].status, "watch")
 
     def test_signals_get_ids(self):

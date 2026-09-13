@@ -21,6 +21,9 @@ export function useRadarData() {
 const LEVEL_RANK = { high: 3, medium: 2, low: 1 }
 
 export const overallOf = (cluster) => cluster.scores?.overall ?? -1
+export const hasBuyingEvidence = (cluster) => Boolean(cluster.payment_evidence && cluster.buying_evidence_urls?.length)
+
+export const byOpportunity = (a, b) => Number(hasBuyingEvidence(b)) - Number(hasBuyingEvidence(a)) || byOverall(a, b)
 
 export function byOverall(a, b) {
   return (
@@ -32,9 +35,18 @@ export function byOverall(a, b) {
 
 export function topOpportunities(data) {
   const byId = new Map(data.clusters.map((cluster) => [cluster.id, cluster]))
-  const picked = (data.runs[0]?.top_opportunities ?? []).map((id) => byId.get(id)).filter(Boolean)
-  if (picked.length) return picked
-  return data.clusters.filter((cluster) => cluster.status === 'active').sort(byOverall).slice(0, 3)
+  const eligible = (cluster) => {
+    if (!cluster || cluster.status !== 'active' || !['B', 'C'].includes(cluster.solution_class)) return false
+    const demand = cluster.evidence.filter((e) => e.counts_as_demand)
+    const checked = Date.parse(cluster.solution_checked_at)
+    const daysSinceCheck = Math.floor(Date.now() / 86400000) - Math.floor(checked / 86400000)
+    return demand.length >= 2 && (cluster.scores?.overall ?? 0) >= 5
+      && demand.some((e) => ['workaround', 'buyer_request', 'budget_or_payment'].includes(e.kind))
+      && Number.isFinite(checked) && daysSinceCheck >= 0 && daysSinceCheck <= 7
+  }
+  const picked = (data.runs[0]?.top_opportunities ?? []).map((id) => byId.get(id)).filter(eligible)
+  if (picked.length) return picked.sort(byOpportunity)
+  return data.clusters.filter(eligible).sort(byOpportunity).slice(0, 3)
 }
 
 // Rubric texts look like "频率：多少独立的人…"; the part before the colon is the short label.

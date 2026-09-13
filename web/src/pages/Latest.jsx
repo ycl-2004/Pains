@@ -22,6 +22,7 @@ function RunStatus({ run, data }) {
     <div className="space-y-3">
       <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
         <span className="font-mono">{run.run_id}</span>
+        <span>{({ success: '运行完成', partial: '部分完成，存在未验证环节', failed: '运行失败' })[run.status ?? 'success']}</span>
         <span className="num">{formatDateTime(run.finished_at)}</span>
         <span className="num">初筛 {run.triaged} · 保留 {run.kept} · 更新 {run.changes.length} 个簇 · 新信号 {run.new_signals.length}</span>
         {cost && <span className="num">LLM 花费约 ${cost}</span>}
@@ -30,6 +31,11 @@ function RunStatus({ run, data }) {
       <p className="text-xs text-muted">
         {run.sources.map((source) => `${source.source} ${source.error ? '失败' : `${source.prefiltered}/${source.fetched}`}`).join(' · ')}
       </p>
+      <p className="text-xs text-muted">
+        {run.sources.map((source) => `${source.source}：初筛选入 ${source.selected ?? '—'} / 分析 ${source.analyzed ?? '—'}`).join(' · ')}
+      </p>
+      {run.sources.some((source) => source.warnings?.length) && <p className="text-xs text-muted">采样说明：{run.sources.flatMap((source) => (source.warnings ?? []).map((warning) => `${source.source} ${warning}`)).join('；')}</p>}
+      {run.changes.length === 0 && <p className="text-sm text-muted">本期没有新增或更新的痛点簇，以下为历史候选；不代表本期重新证实了需求。</p>}
       {run.notes.length > 0 && (
         <ul className="list-disc space-y-0.5 pl-5 text-xs text-muted">
           {run.notes.map((note) => (
@@ -106,12 +112,13 @@ export function Latest({ data }) {
       </section>
 
       <section>
-        <SectionTitle note="按综合分、痛点置信度、检出次数排序">{run?.top_opportunities?.length ? '本期最值得行动' : '当前最值得行动'}</SectionTitle>
+          <SectionTitle note="有引用的购买证据优先；仍需验证预算">优先验证候选</SectionTitle>
         <ol className="mt-3 divide-y divide-line border-y border-line">
           {top.map((cluster, index) => (
             <TopItem key={cluster.id} rank={index + 1} cluster={cluster} rubric={data.rubric} />
           ))}
         </ol>
+        {top.length === 0 && <p className="py-6 text-sm text-muted">暂无证据和核查状态达标的候选。可到痛点台账查看观察项。</p>}
       </section>
 
       {run?.changes.length > 0 && (

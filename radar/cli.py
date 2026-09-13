@@ -16,6 +16,10 @@ from radar.models import Ledger, RawItem, RunReport, SourceStat, TriageVerdict
 from radar.registry import SOURCES, get_source
 from radar.scoring import is_significant_change
 from radar.sources.base import SourceAdapter
+from radar.sampling import select_items
+from radar.evidence import eligible, opportunity_rank
+from radar.privacy import redact
+from radar.revisit import revisit
 
 SEEN_LIMIT = 50_000
 
@@ -33,8 +37,8 @@ def main(argv: list[str] | None = None) -> int:
     for name, help_text in (("run", "完整跑一期（需要模型配置和凭据）"),
                             ("refresh", "数据过期且模型可用时跑一期，否则只导出")):
         command = commands.add_parser(name, help=help_text)
-        command.add_argument("--limit", type=int, help="最多送多少条去初筛（按互动量排序）")
-        command.add_argument("--max-cost", type=float, default=config.DEFAULT_MAX_COST_USD, help="本期 LLM 花费上限（美元）")
+        command.add_argument("--limit", type=int, help="最多送多少条去初筛（业务来源加权轮询）")
+        command.add_argument("--max-cost", type=float, default=config.DEFAULT_MAX_COST_USD, help="本期 LLM 软预算（美元，硬额度请在服务商设置）")
         command.add_argument("--skip-solution-check", action="store_true", help="不做联网的现有方案检查")
     refresh = commands.choices["refresh"]
     refresh.add_argument("--stale-after", default="20h", help="距上一期多久算过期，如 20h、90m、2d；0m 表示立即跑")
@@ -67,55 +71,110 @@ def cmd_fetch(args) -> int:
 
 
 def cmd_run(args) -> int:
+    if args.limit is not None and args.limit <= 0:
+        print("--limit 必须为正整数", file=sys.stderr)
+        return 2
     if problem := llm_problem():
         print(problem, file=sys.stderr)
         return 2
     ledger = ensure_ledger()
     now = datetime.now(timezone.utc)
     today = now.date().isoformat()
-    report = RunReport(run_id=now.strftime("%Y-%m-%d-%H%M"), started_at=now, window_hours=config.WINDOW_HOURS)
+    report = RunReport(run_id=now.strftime("%Y-%m-%d-%H%M%S-%f"), started_at=now, window_hours=config.WINDOW_HOURS)
     budget = Budget(args.max_cost)
-    llm = LLM(budget)
+    llm = LLM(budget, cache_dir=config.AUDIT_DIR / "calls")
     seen_now: list[str] = []
 
     report.sources, candidates = collect(SOURCES, now, now.strftime("%H%M"))
-    candidates = sorted(candidates, key=engagement, reverse=True)[: args.limit]
+    candidates = select_items(candidates, args.limit)
+    revisited, revisit_notes, reviewed = revisit(ledger, now, limit=min(5, args.limit or 5))
+    report.notes += revisit_notes
+    if revisited:
+        report.notes.append(f"本期含 {len(revisited)} 条既有证据复查，不作为新的独立需求计数")
+    selected_keys = {i.key for i in revisited}
+    candidates = (revisited + [i for i in candidates if i.key not in selected_keys])[:args.limit]
+    for stat in report.sources:
+        stat.selected = sum(item.source == stat.source for item in candidates)
+    if any(stat.error or stat.degraded for stat in report.sources) or revisit_notes:
+        report.status = "partial"
     try:
+        if report.sources and all(stat.error for stat in report.sources):
+            raise StageFailed("所有来源抓取失败")
         kept, judged, notes = run_triage(llm, candidates)
         report.notes += notes
         report.triaged, report.kept = len(judged), len(kept)
         kept_keys = {item.key for item, _ in kept}
-        seen_now += [item.key for item in judged if item.key not in kept_keys]
+        seen_now += [item.revision_key for item in judged if item.key not in kept_keys]
+        if notes or len(judged) < len(candidates):
+            report.status = "partial" if judged else "failed"
 
-        signals = deepen(sorted(kept, key=lambda pair: engagement(pair[0]), reverse=True)[: config.MAX_ANALYZE_SIGNALS], report)
+        by_key = {item.key: (item, verdict) for item, verdict in kept}
+        signals = deepen([by_key[item.key] for item in select_items([i for i, _ in kept], config.MAX_ANALYZE_SIGNALS)], report)
+        context = [(i, v) for i, v in signals if v.needs_context and i.thread][:config.MAX_CONTEXT_THREADS]
+        if context:
+            accepted, rejudged, context_notes = run_triage(llm, [i for i, _ in context])
+            report.notes += context_notes
+            if context_notes:
+                report.status = "partial"
+            checked = {i.key for i in rejudged}
+            replacements = {i.key: (i, v) for i, v in accepted}
+            signals = [replacements.get(i.key, (i, v)) for i, v in signals if i.key not in checked or i.key in replacements]
+            seen_now += [i.revision_key for i in rejudged if i.key not in replacements]
+        for stat in report.sources:
+            stat.analyzed = sum(i.source == stat.source for i, _ in signals)
         if signals:
             result = run_analysis(llm, ledger, signals)
             report.changes, report.new_signals, report.top_opportunities = ledger_store.apply_analysis(
                 ledger, result, report.run_id, today)
             report.summary = result.summary
-            seen_now += [item.key for item, _ in signals]
-            if not args.skip_solution_check:
-                run_solution_checks(llm, ledger, report, today)
+            seen_now += [item.revision_key for item, _ in signals]
+            processed_keys = {item.key for item, _ in signals}
+            seen_now += [item.revision_key for item in candidates if item.key in processed_keys]
         else:
             report.notes.append("本期没有条目通过初筛")
-    except (BudgetExceeded, StageFailed) as error:
+        if not args.skip_solution_check:
+            run_solution_checks(llm, ledger, report, today)
+        else:
+            report.notes.append("本期主动跳过现有方案核查；候选不视为重新验证")
+        report.top_opportunities = [c.id for c in sorted(ledger.clusters, key=opportunity_rank)
+                                    if c.status == "active" and eligible(c) and c.solution_checked_at
+                                    and 0 <= (now.date() - datetime.fromisoformat(c.solution_checked_at).date()).days <= config.SOLUTION_RECHECK_DAYS][:3]
+    except (BudgetExceeded, StageFailed, ValueError) as error:
+        if isinstance(error, ValueError):
+            llm.discard_last_cache()
+        report.status = "partial" if report.changes or seen_now else "failed"
         report.notes.append(f"提前停止：{error}")
 
     report.notes += llm.notes
     report.usage = budget.records
     report.finished_at = datetime.now(timezone.utc)
+    if budget.spent > budget.max_cost_usd:
+        report.status = "partial"
+    ledger.last_run_id = report.run_id
     save_run(report, ledger, seen_now)
+    # Only advance review timestamps after the discussion reached a completed analysis.
+    consumed = set(seen_now)
+    path = config.DATA_DIR / "reviewed.json"
+    previous = json.loads(path.read_text()) if path.exists() else {}
+    previous.update({i.key: reviewed[i.key] for i in revisited if i.revision_key in consumed})
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(previous, ensure_ascii=False))
+    temporary.replace(path)
     print(f"{report.run_id}: 初筛 {report.triaged} 条，保留 {report.kept} 条，更新 {len(report.changes)} 个簇，"
           f"新信号 {len(report.new_signals)} 个，花费约 ${budget.spent:.2f}")
     for note in report.notes:
         print(f"  注意：{note}")
-    return 0
+    return 0 if report.status == "success" else 1
 
 
 def cmd_refresh(args) -> int:
     ensure_ledger()
     runs = load_runs(config.RUNS_DIR)
-    age = datetime.now(timezone.utc) - runs[-1].started_at if runs else None
+    successful = [run for run in runs if run.status == "success"]
+    latest_ok = successful[-1] if successful else None
+    # A failed attempt after a success remains retryable immediately.
+    age = (datetime.now(timezone.utc) - latest_ok.started_at
+           if latest_ok and runs[-1].run_id == latest_ok.run_id else None)
     status = 0
     if age is not None and age < parse_duration(args.stale_after):
         print(f"最近一期是 {int(age.total_seconds() // 3600)} 小时前跑的，未过期，直接导出")
@@ -163,12 +222,16 @@ def collect(sources: list[SourceAdapter], now: datetime, stamp: str) -> tuple[li
             stat.error = f"{type(error).__name__}: {error}"
             stats.append(stat)
             continue
+        for item in items:
+            item.title, item.body = redact(item.title), redact(item.body)
         raw_path = day_dir / f"{stamp}-{source.name}.json"
         raw_path.write_text(json.dumps([item.model_dump(mode="json") for item in items], ensure_ascii=False, indent=1),
                             encoding="utf-8")
-        fresh = [item for item in items if item.key not in seen]
+        fresh = [item for item in items if item.revision_key not in seen]
         passed = source.prefilter(fresh)
         stat.fetched, stat.new, stat.prefiltered = len(items), len(fresh), len(passed)
+        stat.warnings = list(source.warnings)
+        stat.degraded = source.degraded
         stats.append(stat)
         candidates += passed
     return stats, candidates
@@ -178,7 +241,7 @@ def deepen(signals: list[tuple[RawItem, TriageVerdict]], report: RunReport) -> l
     """Attach top replies to the most engaged survivors; behavior evidence usually lives in the replies."""
     deepened, failures = [], 0
     for index, (item, verdict) in enumerate(signals):
-        if index < config.MAX_THREADS:
+        if index < config.MAX_THREADS and not item.thread:
             try:
                 item = get_source(item.source).attach_thread(item)
             except Exception:  # a missing thread only costs context, not the signal
@@ -186,21 +249,40 @@ def deepen(signals: list[tuple[RawItem, TriageVerdict]], report: RunReport) -> l
         deepened.append((item, verdict))
     if failures:
         report.notes.append(f"{failures} 条讨论串拉取失败，按无回复处理")
+        report.status = "partial"
     return deepened
 
 
 def run_solution_checks(llm: LLM, ledger: Ledger, report: RunReport, today: str) -> None:
     by_id = {cluster.id: cluster for cluster in ledger.clusters}
-    targets = [change for change in report.changes
+    changed = [change.cluster_id for change in report.changes
                if change.action == "created" or is_significant_change(change.overall_before, change.overall_after)]
-    for change in targets[: config.MAX_SOLUTION_CHECKS]:
-        cluster = by_id[change.cluster_id]
+    due = sorted((c for c in ledger.clusters if c.status != "demoted" and
+                  (not c.solution_checked_at or (datetime.fromisoformat(today).date() -
+                   datetime.fromisoformat(c.solution_checked_at).date()).days >= config.SOLUTION_RECHECK_DAYS)),
+                 key=lambda c: (c.solution_checked_at or "", -(c.scores.overall if c.scores else 0)))
+    # Reserve the first slot for overdue work so a steady stream of new clusters cannot starve it.
+    targets = list(dict.fromkeys(([due[0].id] if due else []) + changed + [c.id for c in due]))
+    for cluster_id in targets[: config.MAX_SOLUTION_CHECKS]:
+        cluster = by_id[cluster_id]
+        before = cluster.scores.overall if cluster.scores else None
+        before_status = (cluster.status, cluster.solution_class)
         try:
             check = check_solutions(llm, cluster, today=today)
-        except StageFailed as error:
+            ledger_store.apply_solution_check(cluster, check, today, report.run_id)
+        except (StageFailed, ValueError) as error:
             report.notes.append(f"{cluster.id} 现有方案检查失败：{error}")
+            report.status = "partial"
             continue
-        ledger_store.apply_solution_check(cluster, check, today)
+        if cluster.scores and (before != cluster.scores.overall or before_status != (cluster.status, cluster.solution_class)):
+            change = next((c for c in report.changes if c.cluster_id == cluster.id), None)
+            if change:
+                change.overall_after = cluster.scores.overall
+                change.reason += f"；方案核查：{cluster.status_reason}"
+            else:
+                from radar.models import ClusterChange
+                report.changes.append(ClusterChange(cluster_id=cluster.id, action="updated", overall_before=before,
+                                                    overall_after=cluster.scores.overall, reason=cluster.status_reason))
 
 
 def save_run(report: RunReport, ledger: Ledger, seen_now: list[str]) -> None:

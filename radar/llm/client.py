@@ -1,4 +1,4 @@
-"""Model access through OpenAI-compatible APIs, with an ordered fallback chain, spend accounting and a hard cap.
+"""Model access with ordered fallback, spend accounting and conservative soft-budget admission.
 
 Fallback strategy for every stage:
 1. Consecutive OpenRouter models that share an output mode go out as ONE request with `models=[...]`.
@@ -16,6 +16,8 @@ import itertools
 import json
 import os
 import re
+import hashlib
+import math
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
@@ -141,6 +143,8 @@ def load_prompt(name: str, **values: str) -> str:
 
 class Budget:
     def __init__(self, max_cost_usd: float) -> None:
+        if not math.isfinite(max_cost_usd) or max_cost_usd < 0:
+            raise ValueError("Budget must be finite and nonnegative")
         self.max_cost_usd = max_cost_usd
         self.records: list[UsageRecord] = []
 
@@ -179,15 +183,33 @@ class LLM:
     """The only way stages reach a model, so fallback and accounting behave the same everywhere."""
 
     def __init__(self, budget: Budget, *, clients: Mapping[str, object] | None = None,
-                 env: Mapping[str, str] = os.environ) -> None:
+                 env: Mapping[str, str] = os.environ, cache_dir: Path | None = None) -> None:
         self.budget = budget
         self.notes: list[str] = []
         self._clients: dict[str, object | None] = dict(clients or {})
         self._catalogs: dict[str, dict[str, frozenset[str]]] = {}
         self._env = env
+        self.cache_dir = cache_dir
+        self._prices: dict[str, tuple[float, float]] = {}
+        self._last_cache: Path | None = None
+
+    def discard_last_cache(self):
+        if self._last_cache and self._last_cache.exists():
+            self._last_cache.replace(self._last_cache.with_suffix(".invalid.json"))
 
     def complete(self, stage: str, *, system: str, user: str, schema: type[T], routes: Iterable[str],
                  max_tokens: int, web_search: bool = False) -> T:
+        from radar.privacy import redact
+        system, user = redact(system), redact(user)
+        routes = tuple(routes)
+        digest = hashlib.sha256(json.dumps([stage, system, user, strict_schema(schema), routes, max_tokens,
+                                            web_search], ensure_ascii=False).encode()).hexdigest()
+        cache = self.cache_dir / f"{digest}.json" if self.cache_dir else None
+        self._last_cache = cache
+        if cache and cache.exists():
+            saved = json.loads(cache.read_text())
+            self.notes.append(f"{stage} 复用已完成调用（本次无新增费用）")
+            return schema.model_validate(saved["output"])
         failures: list[str] = []
         for group in self._resolve_output_modes(parse_routes(routes)):
             if web_search and not group.provider.openrouter_api:
@@ -198,14 +220,28 @@ class LLM:
                 failures.append(f"{group.label} 缺少 {group.provider.key_env}")
                 continue
             self.budget.ensure_room(stage)
+            request = self._request(group, system, user, schema, max_tokens, web_search)
+            # Conservative admission estimate; provider-side caps are still required for a hard billing limit.
+            prices = [self._prices.get(model, LIST_PRICES.get(model, UNKNOWN_PRICE)) for model in group.models]
+            input_price = max(p[0] for p in prices)
+            output_price = max(p[1] for p in prices)
+            input_estimate = len(json.dumps(request, ensure_ascii=False).encode()) * input_price / 1_000_000
+            room = self.budget.max_cost_usd - self.budget.spent - input_estimate - (0.10 if web_search else 0)
+            allowed = min(max_tokens, int(room * 1_000_000 / output_price)) if output_price else max_tokens
+            if room < 0 or allowed < min(256, max_tokens):
+                failures.append(f"{group.label} 预计费用超过剩余预算")
+                continue
+            request["max_tokens"] = allowed
             try:
-                response = client.chat.completions.create(**self._request(group, system, user, schema, max_tokens, web_search))
+                response = client.chat.completions.create(**request)
             except openai.APIError as error:
                 failures.append(f"{group.label} 调用失败（{describe_error(error)}）")
                 continue
 
             served = response.model or group.models[0]
             self.budget.record(stage, group.provider, served, response.usage, web_search=web_search)
+            if self.budget.spent > self.budget.max_cost_usd:
+                self.notes.append("实际费用超过软预算；已停止后续调用。请在服务商设置硬额度。")
             choice = response.choices[0] if response.choices else None
             if choice is None or choice.finish_reason == "length":
                 failures.append(f"{served} 输出为空或被截断")
@@ -215,8 +251,34 @@ class LLM:
             except pydantic.ValidationError as error:
                 failures.append(f"{served} 输出不符合结构（{error.error_count()} 处错误）")
                 continue
+            if web_search and hasattr(result, "sources"):
+                # Official contract: https://openrouter.ai/docs/guides/features/plugins/web-search
+                from radar.evidence import canonical_url
+                cited = set()
+                for annotation in getattr(choice.message, "annotations", None) or []:
+                    value = annotation if isinstance(annotation, dict) else annotation.model_dump()
+                    url = (value.get("url_citation") or {}).get("url")
+                    if url:
+                        try:
+                            cited.add(canonical_url(url))
+                        except ValueError:
+                            pass
+                try:
+                    grounded = bool(result.sources) and all(canonical_url(s.url) in cited for s in result.sources)
+                except ValueError:
+                    grounded = False
+                if not grounded:
+                    failures.append(f"{served} 方案来源未匹配搜索返回的引用")
+                    continue
             if failures:
                 self.notes.append(f"{stage} 降级到 {served}：{'；'.join(failures)}")
+            if cache:
+                cache.parent.mkdir(parents=True, exist_ok=True)
+                temporary = cache.with_suffix(".tmp")
+                temporary.write_text(json.dumps({"stage": stage, "model": served, "system": system, "input": user,
+                                                  "output": result.model_dump(mode="json"),
+                                                  "usage": self.budget.records[-1].model_dump()}, ensure_ascii=False))
+                temporary.replace(cache)
             return result
         raise StageFailed(f"{stage} 的所有模型都失败：{'；'.join(failures) or '没有配置模型'}")
 
@@ -244,8 +306,16 @@ class LLM:
             catalog: dict[str, frozenset[str]] = {}
             if client is not None:
                 try:
-                    catalog = {item.id: frozenset(getattr(item, "supported_parameters", None) or ())
-                               for item in client.models.list()}
+                    for item in client.models.list():
+                        catalog[item.id] = frozenset(getattr(item, "supported_parameters", None) or ())
+                        pricing = getattr(item, "pricing", None)
+                        if isinstance(pricing, dict):
+                            try:
+                                price = (float(pricing["prompt"]) * 1_000_000, float(pricing["completion"]) * 1_000_000)
+                                if all(math.isfinite(p) and p >= 0 for p in price):
+                                    self._prices[item.id] = price
+                            except (ValueError, KeyError, TypeError):
+                                pass
                 except openai.APIError as error:
                     self.notes.append(f"读取 {provider.name} 模型目录失败（{describe_error(error)}），全部按严格结构化输出请求")
             self._catalogs[provider.name] = catalog
@@ -255,7 +325,7 @@ class LLM:
         if provider.name not in self._clients:
             key = self._env.get(provider.key_env)
             self._clients[provider.name] = (
-                openai.OpenAI(api_key=key, base_url=provider.base_url, timeout=900, max_retries=2) if key else None
+                openai.OpenAI(api_key=key, base_url=provider.base_url, timeout=180, max_retries=0) if key else None
             )
         return self._clients[provider.name]
 

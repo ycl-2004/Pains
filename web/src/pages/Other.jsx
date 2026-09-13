@@ -30,10 +30,10 @@ export function ClusterPage({ data, id }) {
 }
 
 export function Signals({ data }) {
-  const signals = [...data.signals].sort((a, b) => b.last_detected.localeCompare(a.last_detected))
+  const signals = data.signals.filter((s) => s.status === 'watching').sort((a, b) => b.last_detected.localeCompare(a.last_detected))
   return (
     <div className="pt-8">
-      <SectionTitle note="单条证据弱但值得盯的变化；跨社区重复出现后会升级为簇">新兴信号</SectionTitle>
+      <SectionTitle note="单条证据弱但值得盯的变化；复查后可晋升为观察簇或放弃">新兴信号</SectionTitle>
       <ul className="mt-3 divide-y divide-line border-y border-line">
         {signals.map((signal) => (
           <li key={signal.id} className="grid gap-x-6 gap-y-3 py-6 md:grid-cols-[4.5rem_1fr]">
@@ -87,12 +87,12 @@ export function Demoted({ data }) {
 }
 
 const PIPELINE = [
-  ['抓取', '各数据源抓最近 72 小时的帖子、评论和 issue，原始数据按日期落盘，已看过的条目跳过。'],
+  ['抓取', '公开接口有限采样；业务社区优先，GitHub 包含近期更新的旧 issue。另有每周旧帖复查队列。'],
   ['规则预筛', '用痛点关键词（中英文）和互动量粗筛，目的是不漏，不负责判断。'],
-  ['初筛', '便宜模型逐条判断：有没有具体的人、具体的动作、具体的损失，能不能用代码解决。'],
+  ['初筛', '业务来源加权轮询，优先具体成本与买方信号；已解决内容保留为反证，信息不足时补评论。'],
   ['补评论', '给互动最高的条目拉高赞回复，变通做法和付费信号大多在回复里。'],
   ['聚类与打分', '强模型按根因并入已有簇或新建簇，先写反方论证再打分，写明分数变化的理由。'],
-  ['现有方案核查', '对新簇和分数变化大的簇联网搜索竞品、原生功能和价格门槛。'],
+  ['现有方案核查', '核查新簇、分数变化和每周到期项；已解决则降级。新簇先观察，证据与核查达标才进入候选。'],
   ['台账', '每期保存运行报告和台账快照，同一簇一期最多计一次检出。'],
 ]
 
@@ -106,7 +106,7 @@ const RULES = [
 
 const LIMITS = [
   'Reddit 没有覆盖：新 API 需要人工审批，免登录 JSON 接口据报道已关闭，云端定时任务抓不到。X、Discord、Product Hunt、应用商店评论也没有覆盖。',
-  '来源偏开发者、偏英语；中文目前只有 V2EX。',
+  '新增 Make、n8n 和 WooCommerce 支持社区，仍偏软件使用者和英语。RSS 每条订阅只返回有限帖子，不能代表整个行业。',
   '分数来自有限样本和模型判断，没有用户访谈、成交或市场规模数据。',
   'LLM 的聚类和转述可能出错，重要结论请点开原文核对。',
   '第 0 期基线里标注“agy-pp 记录，未复核”的证据，原文没有被重新打开确认过。',

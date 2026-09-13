@@ -4,9 +4,11 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "predev": "cd .. && uv run python -m radar refresh",
+    "predev": "cd .. && uv run python -m radar export",
+    "refresh": "cd .. && uv run python -m radar refresh",
     "dev": "vite",
     "build": "vite build",
+    "test": "node --test tests/*.test.js",
     "preview": "vite preview"
   },
   "dependencies": {

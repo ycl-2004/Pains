@@ -11,6 +11,7 @@ web/dist/
 # Ledger, runs, snapshots, seen.json and web/public/data are durable state and stay tracked:
 # CI starts from a fresh clone, so an untracked seen.json would re-judge (and re-pay for) old items.
 data/raw/
+data/audit/
 *.tmp
 
 # OS / editor

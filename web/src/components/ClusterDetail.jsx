@@ -85,6 +85,14 @@ export function ClusterDetail({ cluster, rubric }) {
       <div className="grid gap-8 md:grid-cols-[1fr_16rem]">
         <div className="space-y-5">
           <Field label="谁在痛">{cluster.who}</Field>
+          <Field label="谁批准花钱">{cluster.buyer || '尚未确认付款方'}</Field>
+          <Field label="购买或预算证据">{cluster.payment_evidence || '未记录明确购买或预算证据；损失金额不等于愿意付费。'}</Field>
+          {cluster.buying_evidence_urls?.length > 0 && <Field label="购买证据原文">
+            <ul className="space-y-1">
+              {cluster.buying_evidence_urls.map((url, index) => <li key={url}><a href={url} target="_blank" rel="noopener noreferrer" className="text-accent underline underline-offset-4">购买或预算来源 {index + 1}</a></li>)}
+            </ul>
+          </Field>}
+          <Field label="当前成本">{cluster.current_cost || '待核实手工耗时、现有工具支出和切换成本'}</Field>
           <Field label="问题">{cluster.problem}</Field>
           <Field label="他们现在怎么凑合">{cluster.workaround}</Field>
           <Field label="现有方案">

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-13T13:59:14.251963+00:00",
+ "generated_at": "2026-09-13T14:35:47.866308+00:00",
  "last_run_id": "2026-09-13-1352",
  "rubric": {
   "dimensions": {
@@ -26,24 +26,53 @@
  },
  "sources": [
   {
+   "name": "make",
+   "label": "Make Community",
+   "description": "Make Community：业务流程、订单、集成与手工成本；公开 RSS 有限条数采样。",
+   "business_source": true,
+   "coverage": "固定条数采样，不代表时间窗口内全量。"
+  },
+  {
+   "name": "n8n",
+   "label": "n8n Community",
+   "description": "n8n Community：业务流程、订单、集成与手工成本；公开 RSS 有限条数采样。",
+   "business_source": true,
+   "coverage": "固定条数采样，不代表时间窗口内全量。"
+  },
+  {
+   "name": "wordpress",
+   "label": "WooCommerce 商家支持",
+   "description": "WooCommerce 商家支持：业务流程、订单、集成与手工成本；公开 RSS 有限条数采样。",
+   "business_source": true,
+   "coverage": "固定条数采样，不代表时间窗口内全量。"
+  },
+  {
    "name": "hackernews",
    "label": "Hacker News",
-   "description": "Algolia 官方 API：72 小时内的 Ask HN 和高分故事，以及含“I wish there was”等痛点短语的评论（关闭拼写容错）"
+   "description": "Algolia 官方 API：72 小时内的 Ask HN 和高分故事，以及含“I wish there was”等痛点短语的评论（关闭拼写容错）",
+   "business_source": false,
+   "coverage": "固定条数采样，不代表时间窗口内全量。"
   },
   {
    "name": "github",
    "label": "GitHub Issues",
-   "description": "限定仓库的新 issue，按反应数排序：n8n、Claude Code、Codex、LiteLLM、MCP servers、certbot、win-acme、Langfuse"
+   "description": "限定仓库近期更新的 issue（含旧帖和关闭状态）；每仓库最多 30 条，优先最近更新。",
+   "business_source": false,
+   "coverage": "固定条数采样，不代表时间窗口内全量。"
   },
   {
    "name": "v2ex",
    "label": "V2EX",
-   "description": "公开 v1 接口：最新、最热，以及问与答、分享创造、奇思妙想、程序员节点"
+   "description": "公开 v1 接口：最新、最热，以及问与答、分享创造、奇思妙想、程序员节点",
+   "business_source": false,
+   "coverage": "固定条数采样，不代表时间窗口内全量。"
   },
   {
    "name": "stackexchange",
    "label": "Stack Exchange",
-   "description": "Software Recommendations、Web Applications 的全部新问题，Super User 里提到 workaround / manually 的问题"
+   "description": "Software Recommendations、Web Applications 的全部新问题，Super User 里提到 workaround / manually 的问题",
+   "business_source": false,
+   "coverage": "固定条数采样，不代表时间窗口内全量。"
   }
  ],
  "clusters": [
@@ -77,6 +106,7 @@
      "kind": "workaround",
      "paraphrase": "花 $220 投 Google App 广告，约 60% 安装是机器人；评论补充 Reddit 广告 $500 零转化、买量后反被 AdMob 以无效流量封号、只能手动排除数据中心 IP 段，基本拿不到退款。",
      "engagement": "730 分 / 402 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -87,6 +117,7 @@
      "kind": "budget_or_payment",
      "paraphrase": "$4,500 广告费打水漂：假表单、目标美国却来自海外的点击；高赞指出是默认位置选项加 tCPA 被垃圾表单训练。",
      "engagement": "26 赞 / 31 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -97,6 +128,7 @@
      "kind": "budget_or_payment",
      "paraphrase": "南佛州门窗维修商 3 年花了 30 万美元以上，一直没有转化追踪，单次点击最高 $335。",
      "engagement": "19 赞 / 51 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -107,6 +139,7 @@
      "kind": "complaint",
      "paraphrase": "流量暴涨、销售为零，会话形态高度一致；另一店主称日 55,000 会话大多是机器人。",
      "engagement": "16 赞 / 42 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -117,6 +150,7 @@
      "kind": "workaround",
      "paraphrase": "来自新加坡的海量机器人流量；有人专门做报表剔除机器人才看清真实表现。",
      "engagement": "34 赞 / 41 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -127,6 +161,7 @@
      "kind": "complaint",
      "paraphrase": "反向问题：CDN 默认机器人规则把运营商 NAT 后面的真实手机用户拦掉，广告费同样漏掉。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -137,6 +172,7 @@
      "kind": "news",
      "paraphrase": "ClickCease 与 Lunio 的定位和价格门槛对比，用于现有方案检查。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -183,7 +219,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-002",
@@ -215,6 +255,7 @@
      "kind": "complaint",
      "paraphrase": "工作流零报错地停了 17 天：调度停了，执行列表没有记录，仪表盘全绿。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -225,6 +266,7 @@
      "kind": "budget_or_payment",
      "paraphrase": "AI 自动化碰到真实数据就坏：跑两遍造出两份真相、超时重试重复写入、返回 200 的其实是登录页把有效值覆盖成 null；有人称一个自动化几小时亏了 3.6 万。",
      "engagement": "10 赞 / 33 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -235,6 +277,7 @@
      "kind": "complaint",
      "paraphrase": "设了 Continue on fail 的节点不触发 error workflow；重试会回放整个流程，CRM 被重复写入。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -245,6 +288,7 @@
      "kind": "buyer_request",
      "paraphrase": "业务融资运营方已有 Gmail → Drive → AI 提取 → Airtable 流程，要求去重、防空值覆盖、区分商家与中介，愿意先付费做短期审查。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -255,6 +299,7 @@
      "kind": "budget_or_payment",
      "paraphrase": "公司招长期维护人员，不愿关键自动化依赖一个人；预算每小时 18–22 美元、最高 25，每周 15–20 小时。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -265,6 +310,7 @@
      "kind": "workaround",
      "paraphrase": "从业者描述接手无文档流程时按执行历史逐个检查重建；服务商解释空分支和空搜索，也有人反驳必须另买工具。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -275,6 +321,7 @@
      "kind": "counterevidence",
      "paraphrase": "反例：错误触发器不触发的求助，原作者当天标记已解决，原因是测试与生产环境差别。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -285,6 +332,7 @@
      "kind": "official_doc",
      "paraphrase": "Make 原生支持保存未完成执行并自动或手工恢复，默认关闭。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -295,6 +343,7 @@
      "kind": "official_doc",
      "paraphrase": "任务心跳监控，免费 20 个；只能证明任务跑了，不能证明业务结果对。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -336,7 +385,11 @@
     "claude-pp",
     "codex-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-003",
@@ -368,6 +421,7 @@
      "kind": "workaround",
      "paraphrase": "200 天证书开始到期：楼主有 50 台 WatchGuard 防火墙只能手工买证装证；WatchGuard 的 ACME 据称是约两年来呼声最高的功能；Namecheap 续期引导重新购买、API 有消费门槛；有人说一批供应商只收手动证书。",
      "engagement": "266 赞 / 204 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -378,6 +432,7 @@
      "kind": "workaround",
      "paraphrase": "证书管理靠电子表格加每季度邮件核对负责人，全手工。",
      "engagement": "28 赞 / 38 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -388,6 +443,7 @@
      "kind": "official_doc",
      "paraphrase": "Let's Encrypt / ACME 客户端功能请求（FBX-3727）仍开放。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -398,6 +454,7 @@
      "kind": "news",
      "paraphrase": "CA/B 论坛证书有效期逐步缩短到 47 天的时间表。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -408,6 +465,7 @@
      "kind": "official_doc",
      "paraphrase": "反例：FortiGate 已内置 ACME。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -418,6 +476,7 @@
      "kind": "official_doc",
      "paraphrase": "反例：新版 SonicOS 已支持 ACME。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -458,7 +517,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-004",
@@ -490,6 +553,7 @@
      "kind": "complaint",
      "paraphrase": "Gemini 2.5 Pro / Flash 将在 10 月下线，而 3.1 Pro 仍未 GA，美国合规负载无处可迁；有人按评测迁移后看到回归。",
      "engagement": "22 分 / 14 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -500,6 +564,7 @@
      "kind": "complaint",
      "paraphrase": "gemini-2.5-pro 已对新用户返回不再可用，与官方 2026-10-16 的日期矛盾。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -510,6 +575,7 @@
      "kind": "complaint",
      "paraphrase": "2.5 Flash 早于公布日期被弃用，没有预警。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -520,6 +586,7 @@
      "kind": "news",
      "paraphrase": "弃用页上已公布的下线日期被悄悄删除；同一模型在不同平台的通知期相差很大。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -530,6 +597,7 @@
      "kind": "workaround",
      "paraphrase": "怎么把应用迁到别的模型：大家各自写 shadow eval 或 golden set 脚本；有人说弃用通知在邮件里、模型 ID 在代码里。",
      "engagement": "23 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -540,6 +608,7 @@
      "kind": "workaround",
      "paraphrase": "模型悄悄变了靠客户投诉才发现；有人每 6 小时跑 50 条固定 prompt 做 canary。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     }
    ],
@@ -579,7 +648,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-005",
@@ -611,6 +684,7 @@
      "kind": "complaint",
      "paraphrase": "Notion 官方 MCP 连接器注入指令，让代理在任务中途推销 Notion 商业版。",
      "engagement": "2253 赞 / 151 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -621,6 +695,7 @@
      "kind": "complaint",
      "paraphrase": "Notion MCP 仓库里的提示注入安全通告 issue。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -631,6 +706,7 @@
      "kind": "complaint",
      "paraphrase": "子代理通过提示注入让主会话删了数据库。",
      "engagement": "1761 赞 / 223 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -641,6 +717,7 @@
      "kind": "workaround",
      "paraphrase": "给 AI 代理用什么沙箱：自写 bubblewrap 函数、Docker、VM 快照、microVM；楼主想要一行命令的沙箱。",
      "engagement": "54 赞 / 140 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -651,6 +728,7 @@
      "kind": "workaround",
      "paraphrase": "API key 怎么处理：.env 是明文、任何包都能读；有人故意用非常规变量名，或进程启动后 unsetenv。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -661,6 +739,7 @@
      "kind": "news",
      "paraphrase": "AI 编码代理在企业网络里安装未知代码。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -700,7 +779,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-006",
@@ -732,6 +815,7 @@
      "kind": "complaint",
      "paraphrase": "法国目录从约 1,400 个已批准商品降为零，其他市场正常；9 月 1 日另一商家报告非美国市场异常；9 月 3 日原帖仍未解决。同一帖内两个自称商家，不算两个独立平台证明。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -742,6 +826,7 @@
      "kind": "workaround",
      "paraphrase": "营销顾问描述下载 GMC TSV 用 XLOOKUP 找缺失商品和价格差；自报成果，正文打开失败，弱证据。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -752,6 +837,7 @@
      "kind": "official_doc",
      "paraphrase": "已宣传商品数量下降监控和提醒，“商品少了发通知”不是空白。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -762,6 +848,7 @@
      "kind": "official_doc",
      "paraphrase": "Content API 8 月 18 日进入 sunset，9 月 1 日起对无延期请求渐进引入失败；是排查背景，不能证明个案根因。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -798,7 +885,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-007",
@@ -830,6 +921,7 @@
      "kind": "workaround",
      "paraphrase": "约 24 个客户的事务所并用 Dropbox、Sharefile、Asana、CCH，文件埋在邮件里，无法一眼判断谁能开始结账；回帖有人退回 Excel，有人为 100 多客户建 Notion 加任务系统。已超过 30 天。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -840,6 +932,7 @@
      "kind": "complaint",
      "paraphrase": "查清缺了哪些月份太费时，倾向重新索取整年材料，经理担心重复上传；作者承认经验不足也是原因。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -850,6 +943,7 @@
      "kind": "workaround",
      "paraphrase": "按客户 / 类型 / 月组织 Drive 并统一上传入口的做法，同时是方法和反证。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -860,6 +954,7 @@
      "kind": "official_doc",
      "paraphrase": "已有资料请求、提醒、验证、审批和多格式采集。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -870,6 +965,7 @@
      "kind": "official_doc",
      "paraphrase": "已有周期性银行对账单请求、通知和客户门户。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -880,6 +976,7 @@
      "kind": "official_doc",
      "paraphrase": "Plus 支持邮件和短信收票，不能宣称现有工具都不支持跨渠道。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -916,7 +1013,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-008",
@@ -948,6 +1049,7 @@
      "kind": "complaint",
      "paraphrase": "押金晚退 7 天被租客起诉要 3 倍；379 条评论对 21 天从交钥匙算还是从租约到期算意见相反。30 天内 r/Landlord 押金相关帖 16 个。",
      "engagement": "60 赞 / 379 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -958,6 +1060,7 @@
      "kind": "news",
      "paraphrase": "各州押金退还期限的二手汇总。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -968,6 +1071,7 @@
      "kind": "official_doc",
      "paraphrase": "TurboTenant 支持在平台内退还押金；是否按交房事件自动起算法定期限未证实。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1006,7 +1110,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-009",
@@ -1038,6 +1146,7 @@
      "kind": "counterevidence",
      "paraphrase": "迁移用户 9 月 10 日反馈替代方案日常运营正常，但仍要备份历史并补测部分收货；大量厂商回帖，不计为独立需求。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1048,6 +1157,7 @@
      "kind": "vendor_reply",
      "paraphrase": "停用后补货计算与自建脚本讨论，参与者多是供应商，不能证明愿为历史归档付费。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1058,6 +1168,7 @@
      "kind": "vendor_reply",
      "paraphrase": "对商家采购单导出求助的回复，原帖未读取成功，不作主证据。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1068,6 +1179,7 @@
      "kind": "official_doc",
      "paraphrase": "8 月 31 日停止 Stocky 管理与 API；至少保留 90 天只读导出；历史采购单不自动迁移也不能原样导入，供应商不能直接导出。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1104,7 +1216,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-010",
@@ -1136,6 +1252,7 @@
      "kind": "workaround",
      "paraphrase": "QuickBooks 账户反复断连，排障 2.5 小时只有聊天机器人；评论里换 Zoho 一年省 $700、Venmo 连接把借贷记反，还有人用 Codex 加 Plaid 自己写了替代品。",
      "engagement": "169 赞 / 52 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1146,6 +1263,7 @@
      "kind": "complaint",
      "paraphrase": "2026 年还推荐初创用 QuickBooks 吗：一位 CPA 称 90% 客户用 QBO；有人账户被无故停用；专有格式让以后很难迁移。",
      "engagement": "36 赞 / 137 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1156,6 +1274,7 @@
      "kind": "news",
      "paraphrase": "QuickBooks Online 2026 年 8 月涨价细节。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1166,6 +1285,7 @@
      "kind": "news",
      "paraphrase": "续费前迁移指南（作者本身是替代方案，注意立场）。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1176,6 +1296,7 @@
      "kind": "complaint",
      "paraphrase": "财务从业者评论：程序员严重低估业务人员靠眼睛和键盘让表格流程跑通的手工量，大量例外靠未成文的隐性经验处理。（agy-pp 记录，未复核原文）",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1186,6 +1307,7 @@
      "kind": "vendor_launch",
      "paraphrase": "DataRiver 用私有模型解析银行流水的发布帖；是供给信号，不是需求证据，且已超过半年。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1196,6 +1318,7 @@
      "kind": "complaint",
      "paraphrase": "Ask HN: QuickBooks 替代品？讨论多币种和第三方收款手续费对账难自动化。（agy-pp 记录，未复核原文，已超过两个月）",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     }
    ],
@@ -1234,7 +1357,11 @@
     "claude-pp",
     "agy-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-011",
@@ -1266,6 +1393,7 @@
      "kind": "complaint",
      "paraphrase": "欧洲如何扼杀创客和微型企业：卖家说要逐国注册、几个国家加起来数千欧元，有人已停止向其他 EU 国家发货。反方：欧盟 FAQ 称使用通用包装的微型企业不适用，修正正在推进。",
      "engagement": "1647 分 / 1033 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1276,6 +1404,7 @@
      "kind": "news",
      "paraphrase": "服务商页面信息：德国 LUCID 新义务卖家截止 2026-09-12，已有注册须在 11-12 前更新；代办每国首年约 £240 起。立场为卖方。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1312,7 +1441,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-012",
@@ -1344,6 +1477,7 @@
      "kind": "workaround",
      "paraphrase": "每班负责 8–13 位学生，已用 Google Form 记录，但每节课末仍要拿 Chromebook 逐个填写；正文打开失败，弱证据。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1354,6 +1488,7 @@
      "kind": "workaround",
      "paraphrase": "K–3 教师求数学、语言和社交目标记录工具；回帖教师用 Google Sheets 让助教勾选完成情况。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1364,6 +1499,7 @@
      "kind": "official_doc",
      "paraphrase": "已有服务时长记录、多学生同时计时器、按课表建立服务组。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1400,7 +1536,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-013",
@@ -1432,6 +1572,7 @@
      "kind": "complaint",
      "paraphrase": "多个家长列出 3–5 个学校应用和两个独立支付入口；同帖也有只用邮件或一个应用的反例。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1442,6 +1583,7 @@
      "kind": "complaint",
      "paraphrase": "教师从校方一侧列出多套重叠系统。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1452,6 +1594,7 @@
      "kind": "workaround",
      "paraphrase": "原帖已删，仍可读的评论描述用 Gemini 把学校 PDF 转为共享日历。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1462,6 +1605,7 @@
      "kind": "vendor_launch",
      "paraphrase": "开发者发布把学校消息转成提醒和家庭任务的工具，是供给信号。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1472,6 +1616,7 @@
      "kind": "official_doc",
      "paraphrase": "已覆盖学校邮件解析、日历、提醒与共享。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1482,6 +1627,7 @@
      "kind": "official_doc",
      "paraphrase": "支持邮件、图片和 PDF 导入；官方说明背景日期和菜单可能被误识别，提供检查和撤销。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1518,7 +1664,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": "2026-09-12"
+   "solution_checked_at": "2026-09-12",
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-014",
@@ -1541,6 +1691,7 @@
      "kind": "workaround",
      "paraphrase": "Ask HN: 怎么管理 skills 文件：有团队写私有 bootstrap 脚本把公司规范推到每个开发者仓库，有人手写类 brew 的 CLI，有人用 chezmoi 软链接但多工具并存时很脆弱。",
      "engagement": "319 分 / 297 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1551,6 +1702,7 @@
      "kind": "complaint",
      "paraphrase": "开发者抱怨团队成员都往 CLAUDE.md 写个人偏好，导致指令冲突。（agy-pp 记录，未复核原文）",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1561,6 +1713,7 @@
      "kind": "vendor_launch",
      "paraphrase": "Kin 发布帖：作者因自费用编码代理、看着它反复重新探索已走过的代码而做了产品；是供给信号。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1589,7 +1742,11 @@
     "agy-pp",
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-015",
@@ -1621,6 +1778,7 @@
      "kind": "complaint",
      "paraphrase": "QuickSync 每逢新增同步经常断连，需要找客服。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1631,6 +1789,7 @@
      "kind": "official_doc",
      "paraphrase": "已有 Clover 商品与库存同步和方向规则，可靠性未实测。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1657,7 +1816,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-016",
@@ -1689,6 +1852,7 @@
      "kind": "workaround",
      "paraphrase": "Google Sheet 转 PDF、附图片、Bluebeam 签署、追加批准页；历史背景。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1699,6 +1863,7 @@
      "kind": "official_doc",
      "paraphrase": "免费 Basic 含数字 T&M、变更请求和协作日志。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1725,7 +1890,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-017",
@@ -1757,6 +1926,7 @@
      "kind": "complaint",
      "paraphrase": "5 辆车的清洁公司，Google Calendar 和表格负担大。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1767,6 +1937,7 @@
      "kind": "complaint",
      "paraphrase": "个人清洁工用了 Jobber 一个月嫌重，考虑回到日历 + 笔记 + QuickBooks。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1777,6 +1948,7 @@
      "kind": "official_doc",
      "paraphrase": "已有清洁预约开票和追踪。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -1787,6 +1959,7 @@
      "kind": "official_doc",
      "paraphrase": "已有循环清洁预约安排。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1813,7 +1986,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-018",
@@ -1845,6 +2022,7 @@
      "kind": "counterevidence",
      "paraphrase": "收纳管理小程序讨论里，用户反驳手动记录冰箱内容比打开冰箱更麻烦。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -1871,7 +2049,11 @@
    "origin": [
     "codex-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-019",
@@ -1894,6 +2076,7 @@
      "kind": "complaint",
      "paraphrase": "Ask HN: Google reCAPTCHA 在拒绝 Firefox 用户吗；讨论的是真实用户被误伤。",
      "engagement": "256 分 / 136 评论",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -1904,6 +2087,7 @@
      "kind": "complaint",
      "paraphrase": "SeleniumBase 与 Playwright 讨论里抱怨被 Cloudflare 拦截；已近两年，不算近期证据。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     }
    ],
@@ -1923,7 +2107,11 @@
    "origin": [
     "agy-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-020",
@@ -1946,6 +2134,7 @@
      "kind": "complaint",
      "paraphrase": "开发者说每月追一张 $450 的未付发票不值得花力气；三年前的评论。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     }
    ],
@@ -1965,7 +2154,11 @@
    "origin": [
     "agy-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-021",
@@ -1996,7 +2189,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-022",
@@ -2027,7 +2224,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-023",
@@ -2058,7 +2259,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-024",
@@ -2089,7 +2294,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-025",
@@ -2120,7 +2329,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-026",
@@ -2151,7 +2364,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-027",
@@ -2182,7 +2399,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   },
   {
    "id": "OP-028",
@@ -2213,7 +2434,11 @@
    "origin": [
     "claude-pp"
    ],
-   "solution_checked_at": null
+   "solution_checked_at": null,
+   "buyer": "",
+   "payment_evidence": "",
+   "current_cost": "",
+   "buying_evidence_urls": []
   }
  ],
  "signals": [
@@ -2231,6 +2456,7 @@
      "kind": "complaint",
      "paraphrase": "Drake 2026 EULA 明确禁止脚本、机器人、RPA 和 AI 代理访问；评论称 Thomson Reuters 有类似条款。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     }
    ],
@@ -2240,7 +2466,8 @@
    "origin": [
     "claude-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   },
   {
    "id": "SIG-002",
@@ -2256,6 +2483,7 @@
      "kind": "complaint",
      "paraphrase": "Notion 官方 MCP 连接器在任务中途让代理推销商业版。",
      "engagement": "2253 赞 / 151 评论",
+     "source_key": "",
      "counts_as_demand": true
     }
    ],
@@ -2265,7 +2493,8 @@
    "origin": [
     "claude-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   },
   {
    "id": "SIG-003",
@@ -2281,6 +2510,7 @@
      "kind": "complaint",
      "paraphrase": "reCAPTCHA 拒绝 Firefox 用户的讨论；同期 r/ecommerce（08-19）有人无法区分真实用户的 AI 代理和抢库存机器人。",
      "engagement": "256 分 / 136 评论",
+     "source_key": "",
      "counts_as_demand": true
     }
    ],
@@ -2291,7 +2521,8 @@
     "claude-pp",
     "agy-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   },
   {
    "id": "SIG-004",
@@ -2307,6 +2538,7 @@
      "kind": "news",
      "paraphrase": ".name 三级域约 22,000 个注册被终止，有人付费到 2040 年却将在 2027-02 失效，邮箱一起丢。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     },
     {
@@ -2317,6 +2549,7 @@
      "kind": "official_doc",
      "paraphrase": "Gmail 将在 2027-01 停止支持第三方地址的 Send as。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -2326,7 +2559,8 @@
    "origin": [
     "claude-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   },
   {
    "id": "SIG-005",
@@ -2340,7 +2574,8 @@
    "origin": [
     "claude-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   },
   {
    "id": "SIG-006",
@@ -2354,7 +2589,8 @@
    "origin": [
     "claude-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   },
   {
    "id": "SIG-007",
@@ -2370,6 +2606,7 @@
      "kind": "complaint",
      "paraphrase": "Meta 显示连接成功，Make 却不保存凭据；9 月 10 日有复现反馈，回帖者是否同团队未知。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": true
     },
     {
@@ -2380,6 +2617,7 @@
      "kind": "vendor_launch",
      "paraphrase": "Show your micro-SaaS 帖里有人介绍把表单提交推到 WhatsApp 的小工具；是供给信号。agy-pp 引用的 HubSpot / Intercom 转化率数据没有可追溯链接，已排除。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -2390,7 +2628,8 @@
     "codex-pp",
     "agy-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   },
   {
    "id": "SIG-008",
@@ -2406,6 +2645,7 @@
      "kind": "official_doc",
      "paraphrase": "Stocky 停用边界：只读导出期、历史采购单不能原样迁入。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -2415,7 +2655,8 @@
    "origin": [
     "codex-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   },
   {
    "id": "SIG-009",
@@ -2431,6 +2672,7 @@
      "kind": "official_doc",
      "paraphrase": "官方说明照片背景日期、学校菜单可能被误识别为事件，需要核验。",
      "engagement": "",
+     "source_key": "",
      "counts_as_demand": false
     }
    ],
@@ -2440,7 +2682,8 @@
    "origin": [
     "codex-pp"
    ],
-   "status": "watching"
+   "status": "watching",
+   "promoted_to": null
   }
  ],
  "merge_log": [
@@ -2801,6 +3044,10 @@
      "fetched": 162,
      "new": 132,
      "prefiltered": 101,
+     "selected": null,
+     "analyzed": null,
+     "warnings": [],
+     "degraded": false,
      "error": null
     },
     {
@@ -2808,6 +3055,10 @@
      "fetched": 88,
      "new": 88,
      "prefiltered": 65,
+     "selected": null,
+     "analyzed": null,
+     "warnings": [],
+     "degraded": false,
      "error": null
     },
     {
@@ -2815,6 +3066,10 @@
      "fetched": 57,
      "new": 57,
      "prefiltered": 31,
+     "selected": null,
+     "analyzed": null,
+     "warnings": [],
+     "degraded": false,
      "error": null
     },
     {
@@ -2822,6 +3077,10 @@
      "fetched": 3,
      "new": 3,
      "prefiltered": 2,
+     "selected": null,
+     "analyzed": null,
+     "warnings": [],
+     "degraded": false,
      "error": null
     }
    ],
@@ -2839,6 +3098,7 @@
     "triage 降级到 qwen/qwen3.7-flash：nex-agi/nex-n2.5-mini:free 输出为空或被截断",
     "analyze 降级到 openai/gpt-5.6-luna：qwen/qwen3.7-flash 输出不符合结构（1 处错误）"
    ],
+   "status": "success",
    "cost_usd": 0.0068
   },
   {
@@ -2852,6 +3112,10 @@
      "fetched": 162,
      "new": 162,
      "prefiltered": 130,
+     "selected": null,
+     "analyzed": null,
+     "warnings": [],
+     "degraded": false,
      "error": null
     },
     {
@@ -2859,6 +3123,10 @@
      "fetched": 88,
      "new": 88,
      "prefiltered": 65,
+     "selected": null,
+     "analyzed": null,
+     "warnings": [],
+     "degraded": false,
      "error": null
     },
     {
@@ -2866,6 +3134,10 @@
      "fetched": 55,
      "new": 55,
      "prefiltered": 30,
+     "selected": null,
+     "analyzed": null,
+     "warnings": [],
+     "degraded": false,
      "error": null
     },
     {
@@ -2873,6 +3145,10 @@
      "fetched": 3,
      "new": 3,
      "prefiltered": 2,
+     "selected": null,
+     "analyzed": null,
+     "warnings": [],
+     "degraded": false,
      "error": null
     }
    ],
@@ -2899,6 +3175,7 @@
     "triage 降级到 deepseek-flash：openrouter:qwen/qwen3.7-flash > openai/gpt-5.6-luna > z-ai/glm-5.3-flash > deepseek/deepseek-v4.1-flash 调用失败（BadRequestError）",
     "analyze 降级到 deepseek-flash：openrouter:qwen/qwen3.7-flash > openai/gpt-5.6-luna > z-ai/glm-5.3-flash > deepseek/deepseek-v4.1-flash 调用失败（BadRequestError）"
    ],
+   "status": "success",
    "cost_usd": 0.0139
   }
  ]

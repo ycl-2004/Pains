@@ -20,6 +20,9 @@ on:
       - "web/**"
       - "data/**"
       - "radar/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/update-radar.yml"
 
 concurrency:
@@ -55,6 +58,8 @@ jobs:
         run: uv run python -m unittest discover -s tests
 
       - name: Run radar
+        id: radar
+        continue-on-error: true
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -92,6 +97,12 @@ jobs:
           git pull --rebase origin main
           git push origin HEAD:main
 
+      - name: Report incomplete research
+        if: steps.radar.outcome == 'failure'
+        run: |
+          echo "::error::Research was incomplete. Its partial report and completed data were preserved; retry after checking the report."
+          exit 1
+
   build:
     needs: update
     if: always() && (needs.update.result == 'success' || needs.update.result == 'skipped')
@@ -109,10 +120,19 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
 
+      - name: Setup uv for regression checks
+        uses: astral-sh/setup-uv@v10.1.0
+
+      - name: Regression tests
+        run: |
+          uv sync --frozen
+          uv run python -m unittest discover -s tests
+
       - name: Build site
         working-directory: web
         run: |
           npm ci
+          npm test
           npm run build
 
       - name: Upload Pages artifact

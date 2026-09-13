@@ -34,6 +34,8 @@ class RawItem(BaseModel):
     title: str
     body: str = ""
     created_at: datetime
+    updated_at: datetime | None = None
+    resolved: bool | None = None
     score: int = 0
     comments: int = 0
     tags: list[str] = []
@@ -42,6 +44,10 @@ class RawItem(BaseModel):
     @property
     def key(self) -> str:
         return f"{self.source}:{self.external_id}"
+
+    @property
+    def revision_key(self) -> str:
+        return f"{self.key}@{self.updated_at.isoformat()}" if self.updated_at else self.key
 
 
 class Evidence(BaseModel):
@@ -52,6 +58,7 @@ class Evidence(BaseModel):
     kind: EvidenceKind
     paraphrase: str
     engagement: str
+    source_key: str = ""
 
     @computed_field
     @property
@@ -94,6 +101,10 @@ class Cluster(BaseModel):
     score_history: list[ScoreEvent] = []
     origin: list[str] = []
     solution_checked_at: str | None = None
+    buyer: str = ""
+    payment_evidence: str = ""
+    current_cost: str = ""
+    buying_evidence_urls: list[str] = []
 
 
 class Signal(BaseModel):
@@ -109,6 +120,7 @@ class Signal(BaseModel):
     detected_runs: int = 1
     origin: list[str] = []
     status: Literal["watching", "promoted", "dropped"] = "watching"
+    promoted_to: str | None = None
 
 
 class MergeRecord(BaseModel):
@@ -136,6 +148,10 @@ class SourceStat(BaseModel):
     fetched: int = 0
     new: int = 0
     prefiltered: int = 0
+    selected: int | None = None
+    analyzed: int | None = None
+    warnings: list[str] = []
+    degraded: bool = False
     error: str | None = None
 
 
@@ -173,6 +189,7 @@ class RunReport(BaseModel):
     summary: str = ""
     usage: list[UsageRecord] = []
     notes: list[str] = []
+    status: Literal["success", "partial", "failed"] = "success"
 
 
 # ---- LLM structured outputs -------------------------------------------------
@@ -188,6 +205,7 @@ class TriageVerdict(BaseModel):
     workaround: str
     kind: EvidenceKind
     reject_reason: str
+    needs_context: bool = False
 
 
 class TriageResult(BaseModel):
@@ -216,10 +234,23 @@ class ClusterUpdate(BaseModel):
     score_reason: str
     pain_confidence: Level
     gap_confidence: Level
+    buyer: str = ""
+    payment_evidence: str = ""
+    current_cost: str = ""
+    buying_evidence_urls: list[str] = []
 
 
 class SignalDraft(BaseModel):
     title: str
+    why_watch: str
+    watch_next: str
+    evidence: list[Evidence]
+
+
+class SignalUpdate(BaseModel):
+    signal_id: str
+    status: Literal["watching", "promoted", "dropped"]
+    cluster_id: str = ""
     why_watch: str
     watch_next: str
     evidence: list[Evidence]
@@ -230,6 +261,7 @@ class AnalysisResult(BaseModel):
     new_signals: list[SignalDraft]
     top_opportunity_ids: list[str]
     summary: str
+    signal_updates: list[SignalUpdate] = []
 
 
 class SolutionCheck(BaseModel):

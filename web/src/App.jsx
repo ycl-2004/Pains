@@ -21,7 +21,7 @@ export default function App() {
 
   const counts = {
     ledger: data.clusters.filter((cluster) => cluster.status !== 'demoted').length,
-    signals: data.signals.length,
+    signals: data.signals.filter((signal) => signal.status === 'watching').length,
     demoted: data.clusters.filter((cluster) => cluster.status === 'demoted').length,
   }
   const Page = PAGES[section] ?? Latest

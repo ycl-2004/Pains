@@ -176,7 +176,7 @@ class StageTest(unittest.TestCase):
         kept, judged, notes = run_triage(llm, [raw("1"), raw("2"), raw("3"), raw("4")], routes=["a/x"], chunk_size=3)
         self.assertEqual([item.external_id for item, _ in kept], ["1"])
         self.assertEqual([item.external_id for item in judged], ["1", "2"])  # item 3 got no verdict, 4 was skipped
-        self.assertEqual(len(notes), 1)
+        self.assertEqual(len(notes), 2)
         self.assertIn("hackernews:3", llm.complete.calls[0]["user"])
 
     def test_analysis_payload_carries_ledger_signals_and_rubric(self):
@@ -189,7 +189,9 @@ class StageTest(unittest.TestCase):
         self.assertIn("item?id=9", call["user"])
 
     def test_solution_check_requests_web_search(self):
-        check = SolutionCheck(existing_solutions=["Tool X"], why_insufficient="gap", solution_class="B", sources=[])
+        from radar.models import Evidence
+        check = SolutionCheck(existing_solutions=["Tool X"], why_insufficient="gap", solution_class="B", sources=[
+            Evidence(url="https://example.com/tool", platform="official", date=None, date_basis="checked", kind="official_doc", paraphrase="tool", engagement="")])
         llm = FakeLLM(check)
         self.assertEqual(check_solutions(llm, ledger().clusters[0], today="2026-09-13", routes=["a/x"]), check)
         call = llm.complete.calls[0]

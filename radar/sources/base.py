@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from html.parser import HTMLParser
 
 from radar.models import RawItem
+from radar.privacy import redact
 
 USER_AGENT = "pain-radar/0.1 (personal research; read-only)"
 
@@ -60,13 +61,19 @@ class SourceAdapter(ABC):
     thread_limit: int = 8
     body_chars: int = 1500
     thread_chars: int = 400
+    business_source: bool = False
+    coverage_note: str = "固定条数采样，不代表时间窗口内全量。"
 
     def __init__(self) -> None:
         self._last_request = 0.0
+        self.warnings: list[str] = []
+        self.degraded = False
 
     def collect(self, now: datetime, window: timedelta) -> list[RawItem]:
         since = now - window
-        items = [item for item in self.fetch(since) if item.created_at >= since]
+        self.warnings = []
+        self.degraded = False
+        items = [item for item in self.fetch(since) if since <= (item.updated_at or item.created_at) <= now]
         return dedupe(items)
 
     def prefilter(self, items: list[RawItem]) -> list[RawItem]:
@@ -79,7 +86,7 @@ class SourceAdapter(ABC):
 
     def attach_thread(self, item: RawItem) -> RawItem:
         replies = self.fetch_thread(item)
-        return item.model_copy(update={"thread": [r[: self.thread_chars] for r in replies[: self.thread_limit] if r]})
+        return item.model_copy(update={"thread": [redact(r)[: self.thread_chars] for r in replies[: self.thread_limit] if r]})
 
     @abstractmethod
     def fetch(self, since: datetime) -> list[RawItem]:
@@ -90,6 +97,13 @@ class SourceAdapter(ABC):
         """Return the most-engaged replies as plain text, best first."""
 
     def get_json(self, url: str, params: dict[str, str | int] | None = None, headers: dict[str, str] | None = None):
+        result = json.loads(self.get_bytes(url, params, headers))
+        if isinstance(result, dict) and result.get("backoff"):
+            # https://api.stackexchange.com/docs/throttle
+            self._last_request = time.monotonic() + float(result["backoff"])
+        return result
+
+    def get_bytes(self, url: str, params: dict[str, str | int] | None = None, headers: dict[str, str] | None = None):
         if params:
             url = f"{url}?{urllib.parse.urlencode(params)}"
         request = urllib.request.Request(
@@ -102,7 +116,7 @@ class SourceAdapter(ABC):
                     payload = response.read()
                     if response.headers.get("Content-Encoding") == "gzip":
                         payload = gzip.decompress(payload)
-                    return json.loads(payload)
+                    return payload
             except urllib.error.HTTPError as error:
                 if error.code not in RETRYABLE_STATUS or attempt == 2:
                     raise
@@ -120,7 +134,7 @@ class SourceAdapter(ABC):
         self._last_request = time.monotonic()
 
     def clip(self, text: str) -> str:
-        return text[: self.body_chars]
+        return redact(text)[: self.body_chars]
 
 
 def dedupe(items: list[RawItem]) -> list[RawItem]:
