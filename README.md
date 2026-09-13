@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/deploy-GitHub%20Actions%20+%20Pages-111111?style=flat-square" alt="Deploy: GitHub Actions + Pages">
   <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/models-OpenRouter%20+%20DeepSeek%20fallback-111111?style=flat-square" alt="Models: OpenRouter with DeepSeek fallback">
-  <img src="https://img.shields.io/badge/tests-31%20passing-111111?style=flat-square" alt="31 unit tests passing">
+  <img src="https://img.shields.io/badge/tests-33%20passing-111111?style=flat-square" alt="33 unit tests passing">
 </p>
 
 <p align="center">
@@ -88,10 +88,23 @@ uv run python -m radar run --limit 30 --max-cost 1
 3. **DeepSeek 官方 API 只支持 JSON 模式，不校验结构。** 所以 schema 会写进提示词，返回后再用 pydantic 校验。
 4. **花费超过上限就停。** 不再往下降级，已完成的部分照常保存。
 
-**请求怎么发。** 发给 OpenRouter 的请求会带上：
+**当前配置**（仓库 Variables，按价格优先排列；随时可以在 Settings 里改，不用改代码）：
 
-- `response_format: json_schema`，并开启 `strict`，要求输出严格符合结构。
-- `provider.require_parameters: true`，只路由到支持结构化输出的服务商。
+| 位置 | 模型 | 输出方式 |
+|---|---|---|
+| 1 | `qwen/qwen3.7-flash` | JSON 模式（只有阿里云一家服务商，不支持严格 schema） |
+| 2 | `openai/gpt-5.6-luna` | 严格 JSON Schema |
+| 3 | `z-ai/glm-5.3-flash` | 严格 JSON Schema |
+| 兜底 1 | `deepseek/deepseek-v4.1-flash`（经 OpenRouter） | 严格 JSON Schema |
+| 兜底 2 | `deepseek:deepseek-flash`（DeepSeek 官方 API） | JSON 模式 |
+
+初筛和分析用同一条链。MiniMax M3 目前没有免费版（2026-09-13 核对 OpenRouter 模型目录），收费版比上面几个都贵，所以没有放进链里。
+
+**请求怎么发。** 每期第一次调用前，会读一次 OpenRouter 的公开模型目录，按每个模型的 `supported_parameters` 选择输出方式；目录读不到时，全部按严格结构化输出请求。发给 OpenRouter 的请求会带上：
+
+- 支持 `structured_outputs` 的模型：`response_format: json_schema` 并开启 `strict`，要求输出严格符合结构。相邻且支持的模型合成一个 `models` 列表，一次请求发出。
+- 不支持的模型（例如 Qwen3.7 Flash）：`response_format: json_object`，schema 写进提示词，返回后在本地校验。
+- `provider.require_parameters: true`，只路由到支持本次请求参数（JSON Schema 或 JSON 模式）的服务商。
 - `response-healing` 插件，修复多余逗号、Markdown 代码块包裹等小格式问题。
 - 现有方案核查时，另加 `web` 插件（最多 5 条搜索结果）；DeepSeek 官方 API 没有联网能力，这一步会跳过它。
 
@@ -203,7 +216,7 @@ Pains/
 ## Build and test
 
 ```bash
-uv run python -m unittest discover -s tests   # 31 个测试
+uv run python -m unittest discover -s tests   # 33 个测试
 cd web && npm run build                        # 输出到 web/dist/
 ```
 
@@ -218,7 +231,7 @@ cd web && npm run build                        # 输出到 web/dist/
 
 - **还没有用真实模型跑过。** 第一次建议手动触发，并设 `limit=30`，跑完看 `data/runs/` 里的报告和费用。
 - **OpenRouter 的 `web` 插件能不能和 `json_schema` 结构化输出一起用，官方文档没说明，还没实测。** 如果不兼容，现有方案核查会失败并写进报告，不影响其他阶段。
-- **不是所有模型都支持结构化输出。** 选模型时请在 OpenRouter 模型页按 `structured_outputs` 筛选；不支持的模型会被 `require_parameters` 过滤掉，自动降级到下一个。
+- **JSON 模式的模型更容易输出不合格。** Qwen3.7 Flash 这类不支持严格 schema 的模型，只能靠提示词约束结构；尤其是分析阶段的结构比较复杂，输出不合格时会降级到 GPT-5.6 Luna，这种情况会写进报告的 `notes`。
 - **GitHub 的定时任务不保证准点。** ai-news-radar 写的是每 30 分钟，实际间隔 2–4 小时。
 - **来源偏开发者、偏英语。** 中文只有 V2EX，另外没有 Reddit、X、Discord 和应用商店评论。
 - **分数是判断，不是市场测算。** 没有用户访谈、成交或市场规模数据；LLM 的聚类和转述可能出错，重要结论请点开原文核对。

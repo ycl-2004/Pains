@@ -1,14 +1,18 @@
 """Model access through OpenAI-compatible APIs, with an ordered fallback chain, spend accounting and a hard cap.
 
 Fallback strategy for every stage:
-1. Consecutive OpenRouter models go out as ONE request with `models=[...]`. OpenRouter itself moves to the
-   next model on provider errors, rate limits, downtime, context-length and moderation failures.
-2. OpenRouter does not fall back on bad output, so we do: a truncated answer, non-JSON, or a schema
+1. Consecutive OpenRouter models that share an output mode go out as ONE request with `models=[...]`.
+   OpenRouter itself moves to the next model on provider errors, rate limits, downtime, context-length
+   and moderation failures.
+2. Output mode is picked per model from OpenRouter's public catalog: models with `structured_outputs`
+   get strict `json_schema`; the rest get `json_object` with the schema written into the prompt.
+3. OpenRouter does not fall back on bad output, so we do: a truncated answer, non-JSON, or a schema
    validation failure moves on to the next route group.
-3. Direct-provider routes such as `deepseek:deepseek-flash` are their own request, usually last in the chain.
-4. Running out of budget stops the stage immediately; it never triggers a fallback.
+4. Direct-provider routes such as `deepseek:deepseek-flash` are their own request, usually last in the chain.
+5. Running out of budget stops the stage immediately; it never triggers a fallback.
 """
 
+import itertools
 import json
 import os
 import re
@@ -26,14 +30,17 @@ from radar.models import UsageRecord
 
 PROMPTS_DIR = Path(__file__).parent / "prompts"
 
+OutputMode = Literal["json_schema", "json_object"]
+
 
 @dataclass(frozen=True)
 class Provider:
     name: str
     base_url: str
     key_env: str
-    output_mode: Literal["json_schema", "json_object"]
-    # Accepts OpenRouter's body extensions: `models` fallback list, `provider` routing, `plugins` (web, healing).
+    output_mode: OutputMode
+    # Accepts OpenRouter's extensions: `models` fallback list, `provider` routing, `plugins` (web, healing),
+    # and a model catalog that lists each model's `supported_parameters`.
     openrouter_api: bool
 
 
@@ -66,6 +73,7 @@ class StageFailed(RuntimeError):
 class RouteGroup:
     provider: Provider
     models: tuple[str, ...]
+    output_mode: OutputMode
 
     @property
     def label(self) -> str:
@@ -85,9 +93,9 @@ def parse_routes(entries: Iterable[str]) -> list[RouteGroup]:
         else:
             provider, model = DEFAULT_PROVIDER, entry
         if groups and groups[-1].provider is provider and provider.openrouter_api:
-            groups[-1] = RouteGroup(provider, groups[-1].models + (model,))
+            groups[-1] = RouteGroup(provider, groups[-1].models + (model,), provider.output_mode)
         else:
-            groups.append(RouteGroup(provider, (model,)))
+            groups.append(RouteGroup(provider, (model,), provider.output_mode))
     return groups
 
 
@@ -175,12 +183,13 @@ class LLM:
         self.budget = budget
         self.notes: list[str] = []
         self._clients: dict[str, object | None] = dict(clients or {})
+        self._catalogs: dict[str, dict[str, frozenset[str]]] = {}
         self._env = env
 
     def complete(self, stage: str, *, system: str, user: str, schema: type[T], routes: Iterable[str],
                  max_tokens: int, web_search: bool = False) -> T:
         failures: list[str] = []
-        for group in parse_routes(routes):
+        for group in self._resolve_output_modes(parse_routes(routes)):
             if web_search and not group.provider.openrouter_api:
                 failures.append(f"{group.label} 不支持联网搜索")
                 continue
@@ -211,6 +220,37 @@ class LLM:
             return result
         raise StageFailed(f"{stage} 的所有模型都失败：{'；'.join(failures) or '没有配置模型'}")
 
+    def _resolve_output_modes(self, groups: list[RouteGroup]) -> list[RouteGroup]:
+        """Split OpenRouter groups where adjacent models need different output modes, keeping chain order."""
+        resolved: list[RouteGroup] = []
+        for group in groups:
+            if not group.provider.openrouter_api:
+                resolved.append(group)
+                continue
+            for mode, models in itertools.groupby(group.models, key=lambda model: self._output_mode(group.provider, model)):
+                resolved.append(RouteGroup(group.provider, tuple(models), mode))
+        return resolved
+
+    def _output_mode(self, provider: Provider, model: str) -> OutputMode:
+        catalog = self._catalog(provider)
+        parameters = catalog.get(model, catalog.get(model.partition(":")[0]))
+        if parameters is None:
+            return provider.output_mode  # not in the catalog: let the provider accept or reject strict mode
+        return "json_schema" if "structured_outputs" in parameters else "json_object"
+
+    def _catalog(self, provider: Provider) -> dict[str, frozenset[str]]:
+        if provider.name not in self._catalogs:
+            client = self._client(provider)
+            catalog: dict[str, frozenset[str]] = {}
+            if client is not None:
+                try:
+                    catalog = {item.id: frozenset(getattr(item, "supported_parameters", None) or ())
+                               for item in client.models.list()}
+                except openai.APIError as error:
+                    self.notes.append(f"读取 {provider.name} 模型目录失败（{type(error).__name__}），全部按严格结构化输出请求")
+            self._catalogs[provider.name] = catalog
+        return self._catalogs[provider.name]
+
     def _client(self, provider: Provider):
         if provider.name not in self._clients:
             key = self._env.get(provider.key_env)
@@ -222,7 +262,7 @@ class LLM:
     def _request(self, group: RouteGroup, system: str, user: str, schema: type[BaseModel], max_tokens: int,
                  web_search: bool) -> dict:
         request = {"model": group.models[0], "max_tokens": max_tokens}
-        if group.provider.output_mode == "json_schema":
+        if group.output_mode == "json_schema":
             request["response_format"] = {
                 "type": "json_schema",
                 "json_schema": {"name": schema.__name__, "strict": True, "schema": strict_schema(schema)},

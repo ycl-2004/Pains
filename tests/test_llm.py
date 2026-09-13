@@ -42,9 +42,18 @@ class Recorder:
         return result
 
 
-def stub_client(*results):
+def stub_client(*results, catalog=()):
+    """`catalog` stands in for OpenRouter's model list: (model id, supported_parameters) pairs, or an exception."""
     recorder = Recorder(results)
-    return SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=recorder))), recorder
+
+    def list_models():
+        if isinstance(catalog, Exception):
+            raise catalog
+        return [SimpleNamespace(id=model, supported_parameters=list(parameters)) for model, parameters in catalog]
+
+    client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=recorder)),
+                             models=SimpleNamespace(list=list_models))
+    return client, recorder
 
 
 def complete(llm: LLM, routes, **overrides):
@@ -55,6 +64,7 @@ def complete(llm: LLM, routes, **overrides):
 class RoutingContractTest(unittest.TestCase):
     def test_openrouter_models_group_and_direct_providers_split(self):
         groups = parse_routes(["a/x", "b/y:free", "deepseek:deepseek-flash", "c/z"])
+        self.assertEqual([g.output_mode for g in groups], ["json_schema", "json_object", "json_schema"])
         self.assertEqual([(g.provider.name, g.models) for g in groups], [
             ("openrouter", ("a/x", "b/y:free")), ("deepseek", ("deepseek-flash",)), ("openrouter", ("c/z",))])
 
@@ -94,6 +104,27 @@ class FallbackContractTest(unittest.TestCase):
         self.assertAlmostEqual(budget.spent, 0.001 + (1000 * 0.30 + 200 * 1.20) / 1_000_000)
         self.assertEqual(len(llm.notes), 1)
         self.assertIn("deepseek-flash", llm.notes[0])
+
+    def test_catalog_picks_json_mode_per_model_and_keeps_chain_order(self):
+        catalog = [("q/flash", ["response_format"]), ("a/x", ["response_format", "structured_outputs"]),
+                   ("b/y", ["response_format", "structured_outputs"])]
+        client, calls = stub_client(response("{}", model="q/flash", cost=0), response(VALID, cost=0), catalog=catalog)
+        llm = LLM(Budget(1), clients={"openrouter": client})
+        self.assertEqual(len(complete(llm, ["q/flash", "a/x", "b/y"]).verdicts), 1)
+        first, second = calls.calls
+        self.assertEqual((first["model"], first["response_format"]), ("q/flash", {"type": "json_object"}))
+        self.assertIn("JSON Schema", first["messages"][0]["content"])
+        self.assertNotIn("models", first["extra_body"])
+        self.assertEqual(second["response_format"]["type"], "json_schema")
+        self.assertEqual(second["extra_body"]["models"], ["a/x", "b/y"])
+
+    def test_catalog_failure_falls_back_to_strict_mode_with_a_note(self):
+        timeout = openai.APITimeoutError(request=httpx2.Request("GET", "https://openrouter.ai/api/v1/models"))
+        client, calls = stub_client(response(VALID, cost=0), catalog=timeout)
+        llm = LLM(Budget(1), clients={"openrouter": client})
+        complete(llm, ["q/flash"])
+        self.assertEqual(calls.calls[0]["response_format"]["type"], "json_schema")
+        self.assertIn("模型目录", llm.notes[0])
 
     def test_truncated_output_moves_on(self):
         client, _ = stub_client(response("{", finish="length", cost=0), response(VALID, model="c/z", cost=0))
