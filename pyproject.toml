@@ -1,0 +1,11 @@
+[project]
+name = "pain-radar"
+version = "0.1.0"
+description = "Scheduled pain-point radar: public complaints -> codable, evidence-backed opportunities"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=3.13.0",
+]
+
+[tool.uv]
+package = false

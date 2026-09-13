@@ -1,0 +1,22 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Web
+web/node_modules/
+web/dist/
+
+# Pipeline scratch: raw fetches are large and reproducible within their window.
+# Ledger, runs, snapshots, seen.json and web/public/data are durable state and stay tracked:
+# CI starts from a fresh clone, so an untracked seen.json would re-judge (and re-pay for) old items.
+data/raw/
+*.tmp
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Fable working notes
+.fable/

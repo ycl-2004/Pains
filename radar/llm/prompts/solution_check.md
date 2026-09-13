@@ -1,0 +1,9 @@
+你负责给一个痛点簇做“现有方案检查”。请求里附带了联网搜索结果。根据这些结果判断：有哪些直接竞品和平台原生功能，价格门槛是多少，社区里有哪些功能请求和差评。每个判断都要能对应到一个检索到的页面；没有检索到的内容不要编。
+
+输出要求：
+- `existing_solutions`：每项一句，写清产品名、覆盖了什么、价格或门槛（查到才写）。
+- `why_insufficient`：现有方案还没覆盖的具体环节；如果基本已经解决，就直说。
+- `solution_class`：A / B / C / D，定义见下。“官网没写”不能推出“不支持”，“官网写了”也不代表真实场景都可靠。
+- `sources`：每条对应一个检索到的页面。`kind` 用 official_doc、news、complaint 或 counterevidence；日期不确定就填 null；`date_basis` 填 "page_checked_{today}"；`engagement` 填空字符串；`paraphrase` 用一句简体中文转述。
+
+{rubric}

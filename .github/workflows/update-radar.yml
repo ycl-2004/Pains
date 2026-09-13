@@ -1,0 +1,132 @@
+name: Update pain radar
+
+on:
+  schedule:
+    # Once a day at 14:17 UTC (07:17 in Vancouver during PDT). Off the hour to avoid the top-of-hour queue.
+    - cron: "17 14 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Run now even if the last run is less than 20 hours old"
+        type: boolean
+        default: false
+      limit:
+        description: "Max items sent to triage (empty = no limit)"
+        type: string
+        default: ""
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "data/**"
+      - "radar/**"
+      - ".github/workflows/update-radar.yml"
+
+concurrency:
+  # Queue instead of cancelling: a half-finished run would waste paid model calls.
+  group: pain-radar
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update:
+    # Pushes only rebuild the site; scheduled and manual runs refresh the data first.
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Unit tests
+        run: uv run python -m unittest discover -s tests
+
+      - name: Run radar
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RADAR_TRIAGE_MODELS: ${{ vars.RADAR_TRIAGE_MODELS }}
+          RADAR_ANALYZE_MODELS: ${{ vars.RADAR_ANALYZE_MODELS }}
+          RADAR_SOLUTION_MODELS: ${{ vars.RADAR_SOLUTION_MODELS }}
+          RADAR_FALLBACK_MODELS: ${{ vars.RADAR_FALLBACK_MODELS }}
+          RADAR_MAX_COST_USD: ${{ vars.RADAR_MAX_COST_USD }}
+          RADAR_MAX_THREADS: ${{ vars.RADAR_MAX_THREADS }}
+          FORCE_RUN: ${{ inputs.force }}
+          TRIAGE_LIMIT: ${{ inputs.limit }}
+        run: |
+          args=(--strict --stale-after 20h)
+          if [ "$FORCE_RUN" = "true" ]; then args=(--strict --stale-after 0m); fi
+          if [ -n "$TRIAGE_LIMIT" ]; then args+=(--limit "$TRIAGE_LIMIT"); fi
+          uv run python -m radar refresh "${args[@]}"
+
+      - name: Commit data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Stage whole directories, never a filename list: a missed new file would freeze the site silently.
+          git add data/ web/public/data/
+          if [ -n "$(git status --porcelain --untracked-files=all -- data/ web/public/data/ | grep -v '^[MADRC]' || true)" ]; then
+            echo "::error::Generated files were not staged:"
+            git status --porcelain --untracked-files=all -- data/ web/public/data/
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo "No data changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: update pain radar snapshot"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+  build:
+    needs: update
+    if: always() && (needs.update.result == 'success' || needs.update.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Build site
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    if: always() && needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

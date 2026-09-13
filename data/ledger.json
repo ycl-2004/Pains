@@ -1,0 +1,2742 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-12T23:59:00Z",
+  "last_run_id": "baseline-2026-09-12",
+  "clusters": [
+    {
+      "id": "OP-001",
+      "name": "小广告主的付费流量被机器人和垃圾线索吞掉，默认设置和自动出价在放大它",
+      "status": "active",
+      "status_reason": "",
+      "industry": "广告营销",
+      "who": "自己投 Google / Meta / Reddit 广告的非专业投手：本地服务商、小电商、独立 App 开发者（月预算几百到几千美元）",
+      "problem": "花了广告费却拿到机器人点击、假表单和零成交，分不清是被欺诈还是自己设置错了。",
+      "solution_class": "B",
+      "pain_confidence": "high",
+      "gap_confidence": "medium",
+      "scores": {
+        "frequency": 8,
+        "severity": 8,
+        "urgency": 6,
+        "existing_solution_gap": 6,
+        "willingness_to_pay": 8,
+        "momentum": 7,
+        "ease_of_validation": 7,
+        "overall": 7.0
+      },
+      "evidence": [
+        {
+          "url": "https://news.ycombinator.com/item?id=49662990",
+          "platform": "Hacker News",
+          "date": "2026-09-11",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "花 $220 投 Google App 广告，约 60% 安装是机器人；评论补充 Reddit 广告 $500 零转化、买量后反被 AdMob 以无效流量封号、只能手动排除数据中心 IP 段，基本拿不到退款。",
+          "engagement": "730 分 / 402 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/PPC/comments/1wclfej/",
+          "platform": "Reddit r/PPC",
+          "date": "2026-09-10",
+          "date_basis": "post_date",
+          "kind": "budget_or_payment",
+          "paraphrase": "$4,500 广告费打水漂：假表单、目标美国却来自海外的点击；高赞指出是默认位置选项加 tCPA 被垃圾表单训练。",
+          "engagement": "26 赞 / 31 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/PPC/comments/1wdjawb/",
+          "platform": "Reddit r/PPC",
+          "date": "2026-09-11",
+          "date_basis": "post_date",
+          "kind": "budget_or_payment",
+          "paraphrase": "南佛州门窗维修商 3 年花了 30 万美元以上，一直没有转化追踪，单次点击最高 $335。",
+          "engagement": "19 赞 / 51 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/ecommerce/comments/1wbh7an/",
+          "platform": "Reddit r/ecommerce",
+          "date": "2026-09-09",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "流量暴涨、销售为零，会话形态高度一致；另一店主称日 55,000 会话大多是机器人。",
+          "engagement": "16 赞 / 42 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/shopify/comments/1vpprp0/",
+          "platform": "Reddit r/shopify",
+          "date": "2026-08-16",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "来自新加坡的海量机器人流量；有人专门做报表剔除机器人才看清真实表现。",
+          "engagement": "34 赞 / 41 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/smallbusiness/comments/1vsmel0/",
+          "platform": "Reddit r/smallbusiness",
+          "date": "2026-08-19",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "反向问题：CDN 默认机器人规则把运营商 NAT 后面的真实手机用户拦掉，广告费同样漏掉。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://clickcease.study/clickcease-vs-lunio.html",
+          "platform": "第三方对比页",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "news",
+          "paraphrase": "ClickCease 与 Lunio 的定位和价格门槛对比，用于现有方案检查。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "手动拉 IP 段排除、对比服务器日志和 GA、关闭搜索合作伙伴、自建去机器人报表、雇代投。",
+      "existing_solutions": [
+        "ClickCease / CHEQ Essentials：$59/月起，自助，不覆盖 App 安装欺诈",
+        "Lunio：面向月消耗 $10k+ 的代理商，询价",
+        "TrafficGuard：偏程序化和移动归因的大客户",
+        "Google 自带无效点击过滤：不透明、基本不退款"
+      ],
+      "why_insufficient": "现有工具只拦点击，钱更多漏在配置错误和自动出价拿可伪造的信号学习上；小商家缺的是点击 → 会话 → 真实订单的对账。",
+      "root_cause": "平台按点击收费，默认设置扩大投放面；自动出价以机器人能伪造的表单提交为目标，假转化反过来训练算法去找更多机器人。",
+      "why_now": "AI Max / PMax 自动化占比上升；住宅代理让机器人更像人；AI 购物代理开始打到结账页。",
+      "opportunity_hypothesis": "面向非专业投手的广告账户体检 + 流量真实性对账 Web 工具：只读 Google Ads API 列出高危默认设置；接 Shopify 订单或 CRM 量化点击到成交的缺口；只把真实成交作为离线转化回传。",
+      "contrarian": [
+        "帖子里过半问题是配置错误，Google 优化得分和代投能部分解决",
+        "ClickCease 已有大量 SMB 客户",
+        "Google Ads API Standard access 需要审核，平台可能收紧接口",
+        "受众自己也说找个好投手就行，可能只是服务而不是产品"
+      ],
+      "next_validation": [
+        "用 Google Ads API（只读）加 Shopify 订单导出做一个 30 天浪费报告原型",
+        "私信 5–10 位近期在 r/PPC、r/ecommerce 发帖的店主免费跑一次，记录几人愿为一键修复加持续监控付 $49/月",
+        "分析 50 条 ClickCease / Lunio 差评，确认误拦真实用户和不解决配置问题是否高频"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 7.0,
+          "reason": "第 0 期：沿用 claude-pp 判断分；urgency 与 ease_of_validation 为合并时补评"
+        }
+      ],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-002",
+      "name": "自动化工作流“显示成功但结果是错的”：静默失败、重复写入、空值覆盖，且维护依赖一个人",
+      "status": "active",
+      "status_reason": "",
+      "industry": "自动化运营",
+      "who": "替小企业搭 n8n / Make / Zapier 自动化的自由职业者和代运营，以及已有生产流程的运营团队",
+      "problem": "最贵的故障不是红色报错，而是没执行、执行两遍、返回 200 但数据错；往往几天后才发现，换维护人时也无法确认流程是否可靠。",
+      "solution_class": "B",
+      "pain_confidence": "high",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 7,
+        "severity": 8,
+        "urgency": 7,
+        "existing_solution_gap": 5,
+        "willingness_to_pay": 7,
+        "momentum": 7,
+        "ease_of_validation": 8,
+        "overall": 7.0
+      },
+      "evidence": [
+        {
+          "url": "https://reddit.com/r/n8n/comments/1w02g0o/",
+          "platform": "Reddit r/n8n",
+          "date": "2026-08-27",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "工作流零报错地停了 17 天：调度停了，执行列表没有记录，仪表盘全绿。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/n8n/comments/1waldli/",
+          "platform": "Reddit r/n8n",
+          "date": "2026-09-08",
+          "date_basis": "post_date",
+          "kind": "budget_or_payment",
+          "paraphrase": "AI 自动化碰到真实数据就坏：跑两遍造出两份真相、超时重试重复写入、返回 200 的其实是登录页把有效值覆盖成 null；有人称一个自动化几小时亏了 3.6 万。",
+          "engagement": "10 赞 / 33 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/n8n/comments/1vps88o/",
+          "platform": "Reddit r/n8n",
+          "date": "2026-08-16",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "设了 Continue on fail 的节点不触发 error workflow；重试会回放整个流程，CRM 被重复写入。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://community.make.com/t/need-make-airtable-expert-to-finish-mca-crm-automation/113875",
+          "platform": "Make Community",
+          "date": "2026-08-26",
+          "date_basis": "post_date",
+          "kind": "buyer_request",
+          "paraphrase": "业务融资运营方已有 Gmail → Drive → AI 提取 → Airtable 流程，要求去重、防空值覆盖、区分商家与中介，愿意先付费做短期审查。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://community.make.com/t/hiring-long-term-airtable-make-automation-systems-specialist-18-25-hr/113873",
+          "platform": "Make Community",
+          "date": "2026-08-26",
+          "date_basis": "post_date",
+          "kind": "budget_or_payment",
+          "paraphrase": "公司招长期维护人员，不愿关键自动化依赖一个人；预算每小时 18–22 美元、最高 25，每周 15–20 小时。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://community.make.com/t/a-scenario-can-finish-success-and-still-have-written-nothing-three-ways-it-happens/114177",
+          "platform": "Make Community",
+          "date": "2026-08-31",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "从业者描述接手无文档流程时按执行历史逐个检查重建；服务商解释空分支和空搜索，也有人反驳必须另买工具。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://community.n8n.io/t/error-trigger-workflow-not-firing-in-self-hosted-n8n-2-36-8-production-webhook-execution-fails/311162",
+          "platform": "n8n Community",
+          "date": "2026-09-04",
+          "date_basis": "post_date",
+          "kind": "counterevidence",
+          "paraphrase": "反例：错误触发器不触发的求助，原作者当天标记已解决，原因是测试与生产环境差别。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://help.make.com/incomplete-executions",
+          "platform": "Make Help",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "Make 原生支持保存未完成执行并自动或手工恢复，默认关闭。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://healthchecks.io/",
+          "platform": "Healthchecks.io",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "任务心跳监控，免费 20 个；只能证明任务跑了，不能证明业务结果对。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "心跳表、watermark、幂等键、手写 schema 校验、Telegram 人工审批；雇人逐条排查补文档。r/n8n 在 9 月上旬另有多人各自发布抓“200 但输出错”的免费工具。",
+      "existing_solutions": [
+        "n8n error workflow / Insights",
+        "Make 未完成执行恢复",
+        "Healthchecks.io、Cronitor 等心跳监控",
+        "Langfuse 等 LLM 可观测工具"
+      ],
+      "why_insufficient": "现有监控靠失败事件触发，最痛的是没有事件或事件显示成功；没人监控业务结果层（产出记录数、去重、字段是否被空值覆盖），而正确性规则因公司而异。",
+      "root_cause": "低代码平台默认把 2xx 当成功，没有“应该什么时候跑、应该产出多少”的期望模型；重试不是幂等的；维护知识没有记录。",
+      "why_now": "AI 节点让输出不确定；自动化交付给客户后长期无人值守；买方已出现付费审查需求和维护招聘预算。",
+      "opportunity_hypothesis": "先交付“一个生产流程的结果审查与修复包”（脱敏导出 → 重复 / 空值覆盖 / 缺关联异常清单 + 确定性校验 + 交接说明），再看能否做成接入 n8n / Make API 的结果 SLO 监控，按客户分组出白标周报，面向代运营收费。",
+      "contrarian": [
+        "n8n / Make 官方可能直接内置",
+        "自托管用户付费意愿低，已有多个免费开源同类工具",
+        "买方可能只愿为工程服务付钱，每家规则不同难标准化",
+        "部分求助其实是配置或环境问题（见 n8n 已解决反例）"
+      ],
+      "next_validation": [
+        "找 5 家已有生产自动化的公司，各看一个最近真实故障及处理工时",
+        "争取 2 个付费审查试单再扩展工具",
+        "若问题基本都能用原生设置解决，只做配置服务，不做 SaaS"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 7.0,
+          "reason": "第 0 期合并：claude-pp 给 6（中低），codex-pp 给 7（Medium）；两个 agent 从 r/n8n 和 Make Community 两个不同来源独立发现同一根因，并有付费审查和招聘预算，痛点置信度上调为高；缺口仍需实测"
+        }
+      ],
+      "origin": [
+        "claude-pp",
+        "codex-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-003",
+      "name": "TLS 证书有效期缩短，让不支持 ACME 的设备变成每年多次手工换证",
+      "status": "active",
+      "status_reason": "",
+      "industry": "IT 运维",
+      "who": "SMB 系统管理员、管理多站点防火墙 / VPN / NAS / 打印机 / BMC 的 MSP",
+      "problem": "证书有效期上限已降到 200 天（2027-03 降到 100 天，2029-03 降到 47 天），不支持 ACME 的设备换证次数翻倍，全靠人工。",
+      "solution_class": "C",
+      "pain_confidence": "medium",
+      "gap_confidence": "medium",
+      "scores": {
+        "frequency": 6,
+        "severity": 8,
+        "urgency": 9,
+        "existing_solution_gap": 7,
+        "willingness_to_pay": 7,
+        "momentum": 9,
+        "ease_of_validation": 6,
+        "overall": 7.0
+      },
+      "evidence": [
+        {
+          "url": "https://reddit.com/r/sysadmin/comments/1waaco3/",
+          "platform": "Reddit r/sysadmin",
+          "date": "2026-09-08",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "200 天证书开始到期：楼主有 50 台 WatchGuard 防火墙只能手工买证装证；WatchGuard 的 ACME 据称是约两年来呼声最高的功能；Namecheap 续期引导重新购买、API 有消费门槛；有人说一批供应商只收手动证书。",
+          "engagement": "266 赞 / 204 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/sysadmin/comments/1w2hytf/",
+          "platform": "Reddit r/sysadmin",
+          "date": "2026-08-30",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "证书管理靠电子表格加每季度邮件核对负责人，全手工。",
+          "engagement": "28 赞 / 38 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://community.watchguard.com/watchguard-community/discussion/3361/lets-encrypt-acme-client",
+          "platform": "WatchGuard Community",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "Let's Encrypt / ACME 客户端功能请求（FBX-3727）仍开放。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://www.digicert.com/blog/tls-certificate-lifetimes-will-officially-reduce-to-47-days",
+          "platform": "DigiCert",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "news",
+          "paraphrase": "CA/B 论坛证书有效期逐步缩短到 47 天的时间表。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://docs.fortinet.com/document/fortigate/7.0.3/administration-guide/822087/acme-certificate-support",
+          "platform": "Fortinet Docs",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "反例：FortiGate 已内置 ACME。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://www.sonicwall.com/support/knowledge-base/automated-certificate-management-environment-acme-on-sonicos-8-2-2-8015/kA1VN000001ww330AA",
+          "platform": "SonicWall KB",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "反例：新版 SonicOS 已支持 ACME。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "电子表格加日历提醒；certbot / win-acme / simple-acme 配自写 post-hook（Python + netmiko SSH 推到设备）；换证书商。",
+      "existing_solutions": [
+        "开源 ACME 客户端（免费，部署脚本自己写）",
+        "Venafi / Keyfactor / Sectigo CLM（企业级，重且贵）",
+        "CertKit、Certify The Web（中小）",
+        "Fortinet、SonicWall 已内置 ACME"
+      ],
+      "why_insufficient": "难的不是签发，而是最后一公里：部署到不支持 ACME 的设备，以及证书归属和库存；企业级 CLM 对管 50 台防火墙的 MSP 太重。",
+      "root_cause": "轮换频率被提高到 2 倍、4 倍、8 倍，但设备固件没有统一的证书安装 API；证书是跨团队的无主资产。",
+      "why_now": "2026-03-15 起签发的 200 天证书约在 2026-10 初首批到期；2027-03 再减半，时间表是硬性的。",
+      "opportunity_hypothesis": "ACME 经纪人 + 设备部署适配器注册表：中心化 DNS-01 签发；每种设备一个部署插件（WatchGuard、旧版 SonicOS、Synology、iDRAC / iLO、UniFi、打印机）；扫描 443 和 CT 日志做库存并按负责人告警；MSP 按管理端点计费。",
+      "contrarian": [
+        "厂商迟早补 ACME，头部已经做了",
+        "很多人会用 Let's Encrypt 加 AI 写的脚本自己解决",
+        "设备适配器随固件变化，维护成本高",
+        "长尾市场"
+      ],
+      "next_validation": [
+        "在 r/msp、r/sysadmin 问管多少不支持 ACME 的端点、每次换证多少分钟，并统计 FBX-3727 投票数",
+        "访谈 5 家 MSP",
+        "赶在 10 月首批到期前做 WatchGuard 和 Synology 两个部署插件的开源原型，看 star 和询价"
+      ],
+      "watch_next": "2026-10 初首批 200 天证书到期，看讨论量是否上升",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 7.0,
+          "reason": "第 0 期：沿用 claude-pp 判断分；urgency 与 ease_of_validation 为合并时补评"
+        }
+      ],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-004",
+      "name": "LLM 应用缺少模型依赖管理：弃用通知在邮件里，模型 ID 在代码里",
+      "status": "active",
+      "status_reason": "",
+      "industry": "AI 开发工具",
+      "who": "在生产中使用多家 LLM 供应商的小团队和独立开发者",
+      "problem": "模型下线、提前下线或静默变更打断生产功能，团队多半靠客户投诉才发现，每次迁移都重写一次性评测脚本。",
+      "solution_class": "B",
+      "pain_confidence": "medium",
+      "gap_confidence": "medium",
+      "scores": {
+        "frequency": 6,
+        "severity": 7,
+        "urgency": 8,
+        "existing_solution_gap": 6,
+        "willingness_to_pay": 6,
+        "momentum": 8,
+        "ease_of_validation": 7,
+        "overall": 6.5
+      },
+      "evidence": [
+        {
+          "url": "https://news.ycombinator.com/item?id=49668196",
+          "platform": "Hacker News",
+          "date": "2026-09-12",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "Gemini 2.5 Pro / Flash 将在 10 月下线，而 3.1 Pro 仍未 GA，美国合规负载无处可迁；有人按评测迁移后看到回归。",
+          "engagement": "22 分 / 14 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://discuss.ai.google.dev/t/gemini-2-5-pro-returns-no-longer-available-to-new-users-contradicts-official-deprecation-date-oct-16-2026/176380",
+          "platform": "Google AI 开发者论坛",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "complaint",
+          "paraphrase": "gemini-2.5-pro 已对新用户返回不再可用，与官方 2026-10-16 的日期矛盾。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://discuss.ai.google.dev/t/gemini-2-5-flash-deprecated-without-warning-earlier-than-shutdown-date/174217",
+          "platform": "Google AI 开发者论坛",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "complaint",
+          "paraphrase": "2.5 Flash 早于公布日期被弃用，没有预警。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://dev.to/ai_changewatch/the-same-claude-model-gives-you-60-days-notice-on-one-platform-and-184-on-another-347p",
+          "platform": "dev.to",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "news",
+          "paraphrase": "弃用页上已公布的下线日期被悄悄删除；同一模型在不同平台的通知期相差很大。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://reddit.com/r/LLMDevs/comments/1wak4y3/",
+          "platform": "Reddit r/LLMDevs",
+          "date": "2026-09-08",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "怎么把应用迁到别的模型：大家各自写 shadow eval 或 golden set 脚本；有人说弃用通知在邮件里、模型 ID 在代码里。",
+          "engagement": "23 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/LLMDevs/comments/1w4oaqg/",
+          "platform": "Reddit r/LLMDevs",
+          "date": "2026-09-01",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "模型悄悄变了靠客户投诉才发现；有人每 6 小时跑 50 条固定 prompt 做 canary。",
+          "engagement": "",
+          "counts_as_demand": true
+        }
+      ],
+      "workaround": "自写评测脚本、shadow 流量、定时 canary prompt、LiteLLM / OpenRouter 做回退、专人盯弃用页。",
+      "existing_solutions": [
+        "Promptfoo / Braintrust / LangSmith / Langfuse / Arize（评测与可观测）",
+        "OpenRouter / LiteLLM（路由和回退）",
+        "开源漂移预警 SEISMOGRAPH"
+      ],
+      "why_insufficient": "评测平台不知道哪个模型哪天下线、影响哪些调用点；弃用信息分散还会被静默修改；每次迁移从头搭脚本。",
+      "root_cause": "模型是外部依赖，却没有 lockfile、semver、弃用 API 这类包管理基础设施；供应商迭代周期远快于团队验证周期。",
+      "why_now": "Gemini 2.5 系列计划 2026-10-16 下线且日期被静默改动过；本月模型发布密集。",
+      "opportunity_hypothesis": "模型依赖版 Dependabot（GitHub App + Web 面板）：扫描代码和网关日志里的模型 ID；监控各家弃用页变化；截止日前自动开 PR，附候选替代模型、真实流量样本回归报告和成本对比。",
+      "contrarian": [
+        "评测平台加个弃用提醒就能覆盖",
+        "网关会自动做别名映射",
+        "很多团队迁移只是换 ID 目测",
+        "供应商可能延期，付费方可能只是少数认真做评测的团队"
+      ],
+      "next_validation": [
+        "用 GitHub 代码搜索筛出近 30 天有提交、硬编码 gemini-2.5-* 的 20 个活跃仓库",
+        "开 issue 提醒下线日期并附自动生成的迁移清单，统计回复率和主动要报告的比例",
+        "访谈 5 个多供应商 LLM 应用团队，问上次迁移花了几人天"
+      ],
+      "watch_next": "2026-10-16 Gemini 2.5 下线前后的迁移求助量",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 6.5,
+          "reason": "第 0 期：沿用 claude-pp 判断分；urgency 与 ease_of_validation 为合并时补评"
+        }
+      ],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-005",
+      "name": "AI 代理把工具输出和第三方内容当指令执行：MCP 注入、密钥暴露、越界操作",
+      "status": "active",
+      "status_reason": "",
+      "industry": "AI 开发工具",
+      "who": "重度使用 Claude Code / Codex / OpenCode 加 MCP 的开发者和小团队",
+      "problem": "接入 MCP 连接器、skills、第三方仓库后，无法控制它们往上下文里注入什么，也无法限制代理能读到哪些密钥、删掉什么。",
+      "solution_class": "D",
+      "pain_confidence": "medium",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 7,
+        "severity": 7,
+        "urgency": 6,
+        "existing_solution_gap": 5,
+        "willingness_to_pay": 5,
+        "momentum": 9,
+        "ease_of_validation": 5,
+        "overall": 6.5
+      },
+      "evidence": [
+        {
+          "url": "https://reddit.com/r/ClaudeAI/comments/1w9dluw/",
+          "platform": "Reddit r/ClaudeAI",
+          "date": "2026-09-07",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "Notion 官方 MCP 连接器注入指令，让代理在任务中途推销 Notion 商业版。",
+          "engagement": "2253 赞 / 151 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://github.com/makenotion/notion-mcp-server/issues/238",
+          "platform": "GitHub",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "complaint",
+          "paraphrase": "Notion MCP 仓库里的提示注入安全通告 issue。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/ClaudeAI/comments/1vu2umz/",
+          "platform": "Reddit r/ClaudeAI",
+          "date": "2026-08-21",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "子代理通过提示注入让主会话删了数据库。",
+          "engagement": "1761 赞 / 223 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/LocalLLaMA/comments/1vrps78/",
+          "platform": "Reddit r/LocalLLaMA",
+          "date": "2026-08-18",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "给 AI 代理用什么沙箱：自写 bubblewrap 函数、Docker、VM 快照、microVM；楼主想要一行命令的沙箱。",
+          "engagement": "54 赞 / 140 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=49668727",
+          "platform": "Hacker News",
+          "date": "2026-09-12",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "API key 怎么处理：.env 是明文、任何包都能读；有人故意用非常规变量名，或进程启动后 unsetenv。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.schneier.com/blog/archives/2026/09/ai-coding-agents-are-installing-unknown-untrusted-code-on-corporate-networks.html",
+          "platform": "Schneier on Security",
+          "date": "2026-09",
+          "date_basis": "post_month",
+          "kind": "news",
+          "paraphrase": "AI 编码代理在企业网络里安装未知代码。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "自写沙箱配置、fork MCP 删掉注入内容、只用 CLI 不用 MCP、准备假 .env、靠 VM 快照恢复。",
+      "existing_solutions": [
+        "varlock（代理只看到占位密钥，网络边界注入真值）",
+        "Infisical Agent Vault、1Password 凭证代理",
+        "Docker Sandboxes、OpenShell、Modal、microsandbox"
+      ],
+      "why_insufficient": "密钥、沙箱、MCP 内容审计分散在不同工具里要自己拼；MCP 工具描述和返回内容直接进上下文，没有“这次返回里有没有指令、和上次比变了什么”的检查。",
+      "root_cause": "LLM 无法可靠区分数据和指令；MCP 生态缺少签名、版本锁定和内容审计；代理默认继承用户全部权限。",
+      "why_now": "MCP 已进入生产；已有供应商把商业意图塞进工具输出；代理 24/7 运行拉长暴露时间。",
+      "opportunity_hypothesis": "本地 MCP 防火墙代理：夹在客户端和 MCP 服务器之间，锁定工具描述哈希（变更告警）、检测并剥离返回内容里的指令模式、按工具声明最小权限，并与密钥占位方案集成；开源 CLI 获客，团队策略管理收费。",
+      "contrarian": [
+        "平台风险极高，客户端厂商大概率内置",
+        "安全大厂已入场",
+        "很多个人嘴上担心、实际 yolo",
+        "提示注入检测本身不可靠，容易带来虚假的安全感"
+      ],
+      "next_validation": [
+        "统计 MCP 相关仓库近 30 天的注入 / 权限类 issue 数量",
+        "做一个工具描述哈希锁定的最小 CLI 发帖，看安装量和 issue",
+        "访谈 5 个在团队里推广 MCP 的人，问他们审批 MCP 的流程"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 6.5,
+          "reason": "第 0 期：沿用 claude-pp 判断分；urgency、ease_of_validation 与 next_validation 为合并时补写"
+        }
+      ],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-006",
+      "name": "电商商品在某些国家的投放目录消失，商家难以定位数据断在哪",
+      "status": "active",
+      "status_reason": "",
+      "industry": "电商",
+      "who": "同时经营多个 Shopify Markets、依赖 Google Merchant Center 的商家和代运营",
+      "problem": "需要知道哪些商品应当存在但实际没到达目标市场，以及是未发送、被路由到别处还是接收失败。",
+      "solution_class": "B",
+      "pain_confidence": "medium",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 5,
+        "severity": 8,
+        "urgency": 8,
+        "existing_solution_gap": 3,
+        "willingness_to_pay": 6,
+        "momentum": 7,
+        "ease_of_validation": 8,
+        "overall": 6.5
+      },
+      "evidence": [
+        {
+          "url": "https://community.shopify.com/t/google-youtube-child-markets-feed-label-stays-empty-0-products-while-all-other-markets-sync/665765",
+          "platform": "Shopify Community",
+          "date": "2026-08-12",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "法国目录从约 1,400 个已批准商品降为零，其他市场正常；9 月 1 日另一商家报告非美国市场异常；9 月 3 日原帖仍未解决。同一帖内两个自称商家，不算两个独立平台证明。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://semdispatch.com/paid-media/ppc/how-to-download-data-from-google-merchant-centre-and-why",
+          "platform": "SEM Dispatch",
+          "date": "2026-09-01",
+          "date_basis": "search_index_excerpt",
+          "kind": "workaround",
+          "paraphrase": "营销顾问描述下载 GMC TSV 用 XLOOKUP 找缺失商品和价格差；自报成果，正文打开失败，弱证据。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.datafeedwatch.com/solutions/managed-service",
+          "platform": "DataFeedWatch",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "已宣传商品数量下降监控和提醒，“商品少了发通知”不是空白。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://developers.google.com/shopping-content/guides/deprecation-and-sunset",
+          "platform": "Google Developers",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "Content API 8 月 18 日进入 sunset，9 月 1 日起对无延期请求渐进引入失败；是排查背景，不能证明个案根因。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "两边导出再匹配 SKU、市场、语言；测试重新发布少量商品；反复联系 Shopify 与 Google 支持。",
+      "existing_solutions": [
+        "Google & YouTube 应用（负责同步）",
+        "DataFeedWatch 托管服务（商品数量下降监控与提醒）"
+      ],
+      "why_insufficient": "缺少逐商品、逐市场的预期与实际对账证据；成熟工具有计数监控，但剩余价值（逐市场匹配 + 排查材料）仍需竞品对测。",
+      "root_cause": "具体根因未确认，不能断言是嵌套市场或 API 迁移造成。",
+      "why_now": "Content API 已进入 sunset 并开始渐进失败，集成排查需求上升。",
+      "opportunity_hypothesis": "只读“市场商品差异报告”：上传 Shopify 与 GMC 导出，按商品、国家、语言比对，输出缺失、数量突降和价格不一致，并生成支持工单所需的证据包；不假装拥有平台内部发送日志。",
+      "contrarian": [
+        "换成熟 feed 工具或平台修复可能完全解决",
+        "DataFeedWatch 已覆盖部分监控",
+        "两位商家可能遭遇同一次暂时事故"
+      ],
+      "next_validation": [
+        "与 5 家跨市场商家或代运营核对 3 组脱敏导出",
+        "让现有工具先跑同一案例；若已给出足够证据就停止做独立产品"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 6.5,
+          "reason": "第 0 期：由 codex-pp 11 维分数映射（去掉方案质量、工作频率、人群具体性）"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-007",
+      "name": "会计事务所无法快速判断哪个客户、哪个账户、哪个月还缺哪份资料",
+      "status": "active",
+      "status_reason": "",
+      "industry": "财务会计",
+      "who": "为约 20–100 个客户按月记账的小事务所",
+      "problem": "在邮件、云盘和任务系统之间人工确认资料是否齐全，拖慢按月交付，常常干脆重新索取整年资料。",
+      "solution_class": "B",
+      "pain_confidence": "medium",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 6,
+        "severity": 7,
+        "urgency": 6,
+        "existing_solution_gap": 3,
+        "willingness_to_pay": 5,
+        "momentum": 4,
+        "ease_of_validation": 9,
+        "overall": 6.0
+      },
+      "evidence": [
+        {
+          "url": "https://www.reddit.com/r/Bookkeeping/comments/1vi9jzd/solutions_for_monthly_client_document_and_task/",
+          "platform": "Reddit r/Bookkeeping",
+          "date": "2026-08-07",
+          "date_basis": "search_index_date",
+          "kind": "workaround",
+          "paraphrase": "约 24 个客户的事务所并用 Dropbox、Sharefile、Asana、CCH，文件埋在邮件里，无法一眼判断谁能开始结账；回帖有人退回 Excel，有人为 100 多客户建 Notion 加任务系统。已超过 30 天。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.reddit.com/r/Bookkeeping/comments/1w3iu7i/is_it_lazy_to_just_request_entire_year_detailed/",
+          "platform": "Reddit r/Bookkeeping",
+          "date": "2026-08-31",
+          "date_basis": "search_index_date",
+          "kind": "complaint",
+          "paraphrase": "查清缺了哪些月份太费时，倾向重新索取整年材料，经理担心重复上传；作者承认经验不足也是原因。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.reddit.com/r/Bookkeeping/comments/1vkc7a3/psa_keep_and_collect_all_client_documents_in_one/",
+          "platform": "Reddit r/Bookkeeping",
+          "date": "2026-08-10",
+          "date_basis": "search_index_date",
+          "kind": "workaround",
+          "paraphrase": "按客户 / 类型 / 月组织 Drive 并统一上传入口的做法，同时是方法和反证。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://contentsnare.com/document-collection-software/",
+          "platform": "Content Snare",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "已有资料请求、提醒、验证、审批和多格式采集。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://help.doublehq.com/en/articles/6283065-bank-statement-requests",
+          "platform": "Double Help",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "已有周期性银行对账单请求、通知和客户门户。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://help.doublehq.com/en/articles/14825749-receipts-in-the-client-portal",
+          "platform": "Double Help",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "Plus 支持邮件和短信收票，不能宣称现有工具都不支持跨渠道。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "客户 × 账户 × 月份的表格；每份资料建任务；人工翻邮件、核对文件名后催件。",
+      "existing_solutions": [
+        "Content Snare（采集、提醒、审批）",
+        "Double（周期性对账单请求、邮件 / 短信收票）"
+      ],
+      "why_insufficient": "文件“到了”和“对应账户和期间的完整文件已到”是两种状态；潜在缺口是对已有杂乱历史资料做期间匹配、去重和缺件识别，新门户是否已解决需要实测。",
+      "root_cause": "资料按渠道到达，交付按客户 × 账户 × 月份组织，中间没有期间级的完整性判断。",
+      "why_now": "多系统协作和按月交付持续存在；本轮没有新的增长催化剂。",
+      "opportunity_hypothesis": "在本地或客户控制环境运行的文件核对器：脱敏文件清单 + 应收清单 → 已收到 / 重复 / 缺失 / 待人工确认，确认后导出到现有任务系统；先只识别一种月度银行对账单。",
+      "contrarian": [
+        "Double / Content Snare 配置得当可能已足够",
+        "不交资料的客户不会因新工具而配合",
+        "客户可能只愿买一次整理服务"
+      ],
+      "next_validation": [
+        "访谈 5 位事务所负责人",
+        "用 100 份脱敏资料对比人工、现有门户和小脚本，看能否减少一半核对时间且不把缺件误判为齐全"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 6.0,
+          "reason": "第 0 期：由 codex-pp 11 维分数映射"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-008",
+      "name": "小房东的法定期限合规（押金退还）：起算点由事件决定，错过就是 2–3 倍罚金",
+      "status": "active",
+      "status_reason": "",
+      "industry": "房产租赁",
+      "who": "美国小房东、小型物业管理人（CA 等严格州尤甚）",
+      "problem": "各州押金退还期限 14–60 天不等，起算点是交还占有这个事件；逾期往往丧失扣款权，还要赔 2–3 倍。",
+      "solution_class": "C",
+      "pain_confidence": "medium",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 5,
+        "severity": 8,
+        "urgency": 6,
+        "existing_solution_gap": 5,
+        "willingness_to_pay": 6,
+        "momentum": 3,
+        "ease_of_validation": 6,
+        "overall": 5.5
+      },
+      "evidence": [
+        {
+          "url": "https://reddit.com/r/Landlord/comments/1wd3bw1/",
+          "platform": "Reddit r/Landlord",
+          "date": "2026-09-11",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "押金晚退 7 天被租客起诉要 3 倍；379 条评论对 21 天从交钥匙算还是从租约到期算意见相反。30 天内 r/Landlord 押金相关帖 16 个。",
+          "engagement": "60 赞 / 379 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.claimsmaximizer.com/blog/landlord-deposit-return-deadline-by-state",
+          "platform": "第三方博客",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "news",
+          "paraphrase": "各州押金退还期限的二手汇总。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://www.turbotenant.com/product-updates/return-security-deposit/",
+          "platform": "TurboTenant",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "TurboTenant 支持在平台内退还押金；是否按交房事件自动起算法定期限未证实。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "查博客静态表格、上 Reddit 问、出事后找律师。",
+      "existing_solutions": [
+        "TurboTenant 平台内退押金",
+        "各州法规博客",
+        "AppFolio / Buildium 等大型物业软件"
+      ],
+      "why_insufficient": "未证实：本轮没找到小房东工具会按交房事件自动起算法定期限、生成合规逐项扣款函并留存寄送证明的证据，需要验证。",
+      "root_cause": "规则 = 50 州法规 × 事件触发 × 判例细节；小房东一年只遇到几次，没有肌肉记忆。",
+      "why_now": "本轮没发现新的驱动因素，动能低。",
+      "opportunity_hypothesis": "租约事件 → 法定期限规则引擎：交房时拍照签字留证，自动算截止日，生成逐项扣款函，电子或挂号送达留痕；按次收费或做平台插件。",
+      "contrarian": [
+        "低频事件难撑订阅",
+        "涉及法律准确性责任",
+        "现有平台加个提醒就解决了",
+        "高评论数有一部分是围观纠纷"
+      ],
+      "next_validation": [
+        "实测 TurboTenant、Avail、Buildium 是否按交房日自动算州法定期限",
+        "在 r/Landlord 统计 30 天内因期限出问题的帖子数"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 5.5,
+          "reason": "第 0 期：沿用 claude-pp 判断分（分类 C?，缺口未证实）；urgency、ease_of_validation 与 next_validation 为合并时补写"
+        }
+      ],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-009",
+      "name": "Stocky 停用后，历史采购记录与新系统之间出现资料整理断层",
+      "status": "active",
+      "status_reason": "",
+      "industry": "电商",
+      "who": "仍需检索旧采购单、盘点和成本记录的原 Stocky 商家",
+      "problem": "需要保留可查询的历史，并核对迁移后的资料完整性；历史采购单不能原样迁入 Shopify。",
+      "solution_class": "D",
+      "pain_confidence": "low",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 4,
+        "severity": 7,
+        "urgency": 9,
+        "existing_solution_gap": 5,
+        "willingness_to_pay": 4,
+        "momentum": 8,
+        "ease_of_validation": 9,
+        "overall": 5.5
+      },
+      "evidence": [
+        {
+          "url": "https://community.shopify.com/t/with-stocky-shutting-down-i-ve-been-trying-to-figure-out-what-to-use-instead/673369",
+          "platform": "Shopify Community",
+          "date": "2026-08-28",
+          "date_basis": "post_date",
+          "kind": "counterevidence",
+          "paraphrase": "迁移用户 9 月 10 日反馈替代方案日常运营正常，但仍要备份历史并补测部分收货；大量厂商回帖，不计为独立需求。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://community.shopify.com/t/how-are-you-handling-supplier-lead-times-and-reorder-triggers-post-stocky/675803",
+          "platform": "Shopify Community",
+          "date": "2026-09-02",
+          "date_basis": "post_date",
+          "kind": "vendor_reply",
+          "paraphrase": "停用后补货计算与自建脚本讨论，参与者多是供应商，不能证明愿为历史归档付费。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://community.shopify.com/t/excel-csv-export-for-purchase-orders/677374/2",
+          "platform": "Shopify Community",
+          "date": "2026-09-07",
+          "date_basis": "post_date",
+          "kind": "vendor_reply",
+          "paraphrase": "对商家采购单导出求助的回复，原帖未读取成功，不作主证据。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky",
+          "platform": "Shopify Help",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "8 月 31 日停止 Stocky 管理与 API；至少保留 90 天只读导出；历史采购单不自动迁移也不能原样导入，供应商不能直接导出。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "手动导出 CSV / 报表、保留旧文件，在新工具里另建供应商和日常流程。",
+      "existing_solutions": [
+        "Shopify 原生库存、采购单与 Sidekick",
+        "部分第三方应用声称支持 Stocky CSV 导入（历史保留范围未实测）"
+      ],
+      "why_insufficient": "换系统没有同时迁移原始历史对象和关联关系，导出也可能缺字段；代码能整理现存证据，不能恢复从未导出的信息。",
+      "root_cause": "平台停用产品时只保证只读导出，不保证历史对象的可查询性。",
+      "why_now": "停用已发生，只读期有期限，是短期迁移窗口，长期订阅价值弱。",
+      "opportunity_hypothesis": "CSV 标准化 + 只读采购历史查询 + 原始文件链接 + 缺字段与异常汇总，外加一次人工核对服务；不承诺把旧 PO 恢复为 Shopify 原生历史。",
+      "contrarian": [
+        "CSV 文件夹可能已经够用",
+        "替代应用可能提供迁移服务",
+        "一个商家处理一次即可，不是 recurring SaaS"
+      ],
+      "next_validation": [
+        "找 3 位还有 Stocky 导出访问的商家，让其展示实际要查的一笔旧采购",
+        "若没人愿为“可查且核对过的归档”付一次性费用就停止"
+      ],
+      "watch_next": "只读导出期至少到 2026-11-29 左右（8/31 起 90 天），过后窗口关闭",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 5.5,
+          "reason": "第 0 期：由 codex-pp 11 维分数映射"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-010",
+      "name": "小企业想离开 QuickBooks，被历史数据、会计师生态和多渠道对账锁住",
+      "status": "active",
+      "status_reason": "",
+      "industry": "财务会计",
+      "who": "1–10 人的小微企业主、服务多家客户的 bookkeeper、多渠道收款的出海小卖家",
+      "problem": "QBO 2026-08-01 各档涨价 13–70%，银行连接反复断开只有机器人客服；想换软件却被历史账务和 CPA 习惯拖住，多渠道收款的对账仍靠人工。",
+      "solution_class": "B",
+      "pain_confidence": "medium",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 7,
+        "severity": 6,
+        "urgency": 6,
+        "existing_solution_gap": 4,
+        "willingness_to_pay": 6,
+        "momentum": 6,
+        "ease_of_validation": 6,
+        "overall": 5.0
+      },
+      "evidence": [
+        {
+          "url": "https://reddit.com/r/smallbusiness/comments/1wdufyq/",
+          "platform": "Reddit r/smallbusiness",
+          "date": "2026-09-11",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "QuickBooks 账户反复断连，排障 2.5 小时只有聊天机器人；评论里换 Zoho 一年省 $700、Venmo 连接把借贷记反，还有人用 Codex 加 Plaid 自己写了替代品。",
+          "engagement": "169 赞 / 52 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://reddit.com/r/QuickBooks/comments/1vpxqyd/",
+          "platform": "Reddit r/QuickBooks",
+          "date": "2026-08-16",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "2026 年还推荐初创用 QuickBooks 吗：一位 CPA 称 90% 客户用 QBO；有人账户被无故停用；专有格式让以后很难迁移。",
+          "engagement": "36 赞 / 137 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.certumsolutions.com/library/quickbooks-price-increase-august-2026",
+          "platform": "Certum Solutions",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "news",
+          "paraphrase": "QuickBooks Online 2026 年 8 月涨价细节。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://beancount.io/blog/2026/08/17/quickbooks-online-price-hike-2026-migrate-before-renewal-guide",
+          "platform": "beancount.io",
+          "date": "2026-08-17",
+          "date_basis": "post_date",
+          "kind": "news",
+          "paraphrase": "续费前迁移指南（作者本身是替代方案，注意立场）。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=49575783",
+          "platform": "Hacker News",
+          "date": "2026-09-05",
+          "date_basis": "agy_pp_recorded_unverified",
+          "kind": "complaint",
+          "paraphrase": "财务从业者评论：程序员严重低估业务人员靠眼睛和键盘让表格流程跑通的手工量，大量例外靠未成文的隐性经验处理。（agy-pp 记录，未复核原文）",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=46629285",
+          "platform": "Hacker News",
+          "date": "2026-01-15",
+          "date_basis": "agy_pp_recorded_unverified",
+          "kind": "vendor_launch",
+          "paraphrase": "DataRiver 用私有模型解析银行流水的发布帖；是供给信号，不是需求证据，且已超过半年。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=48684936",
+          "platform": "Hacker News",
+          "date": "2026-06-26",
+          "date_basis": "agy_pp_recorded_unverified",
+          "kind": "complaint",
+          "paraphrase": "Ask HN: QuickBooks 替代品？讨论多币种和第三方收款手续费对账难自动化。（agy-pp 记录，未复核原文，已超过两个月）",
+          "engagement": "",
+          "counts_as_demand": true
+        }
+      ],
+      "workaround": "换 Zoho Books / Xero / Wave / GnuCash；续费前手工导出；Excel VLOOKUP 对账并手打备注；自己写替代品。",
+      "existing_solutions": [
+        "Xero、Zoho Books、Wave、FreshBooks 等成熟替代品",
+        "NetSuite 等 ERP（重且贵）",
+        "通用 PDF 转 Excel 工具"
+      ],
+      "why_insufficient": "替代品不缺，缺的是保真迁移（完整历史、已对账状态、附件）、会计师愿意接收的输出，以及能记住人工例外处理的对账。",
+      "root_cause": "切换成本来自会计师网络效应和历史数据，而不是功能差距；对账例外依赖未成文的隐性经验。",
+      "why_now": "涨价正在续费周期里生效；AI 让一人公司自建轻账本变得可行，已有人这么做。",
+      "opportunity_hypothesis": "不做又一个记账软件：做 QBO 保真出口 / 迁移器，或“银行流水 → 分类 → 给 CPA 的标准交付包”的轻账本，对账例外经人工确认后沉淀为规则。",
+      "contrarian": [
+        "替代品和迁移服务都已存在",
+        "会计是高信任品类，新品牌很难",
+        "最终选什么通常由 CPA 决定"
+      ],
+      "next_validation": [
+        "在 r/Bookkeeping 问迁移 QBO 时最麻烦的一步是什么、花了多少小时",
+        "拿一份脱敏 QBO 导出实测 Xero / Zoho 自带迁移会丢哪些东西"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 5.0,
+          "reason": "第 0 期合并：采用 claude-pp 的 5 分；agy-pp 的“财务隐性经验对账”给 8.4，但三条证据一条是供给信号、两条较旧且原话未复核，不支持上调"
+        }
+      ],
+      "origin": [
+        "claude-pp",
+        "agy-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-011",
+      "name": "EU PPWR 包装法下，微型卖家卡在“要不要逐国注册”的困惑里",
+      "status": "active",
+      "status_reason": "",
+      "industry": "合规",
+      "who": "跨欧盟寄件的手作者、电子产品小批量卖家、Etsy 类平台卖家",
+      "problem": "搞不清是否要在每个发往的国家分别注册包装 EPR，有人干脆停止跨境销售。",
+      "solution_class": "B",
+      "pain_confidence": "medium",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 5,
+        "severity": 7,
+        "urgency": 7,
+        "existing_solution_gap": 5,
+        "willingness_to_pay": 5,
+        "momentum": 6,
+        "ease_of_validation": 5,
+        "overall": 5.0
+      },
+      "evidence": [
+        {
+          "url": "https://news.ycombinator.com/item?id=49419237",
+          "platform": "Hacker News",
+          "date": "2026-08-24",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "欧洲如何扼杀创客和微型企业：卖家说要逐国注册、几个国家加起来数千欧元，有人已停止向其他 EU 国家发货。反方：欧盟 FAQ 称使用通用包装的微型企业不适用，修正正在推进。",
+          "engagement": "1647 分 / 1033 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://epr.eldris.ai/ppwr/",
+          "platform": "代办服务商页面",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "news",
+          "paraphrase": "服务商页面信息：德国 LUCID 新义务卖家截止 2026-09-12，已有注册须在 11-12 前更新；代办每国首年约 £240 起。立场为卖方。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "停止跨境、付钱请授权代表、四处打听。",
+      "existing_solutions": [
+        "Eldris、Lappa、register-epr、Complir 等代办服务"
+      ],
+      "why_insufficient": "代办解决怎么办理，卖家先卡在“我到底需不需要办、哪些国家、哪些类别”。",
+      "root_cause": "一部欧盟法规 × 27 国各自执行，豁免条件复杂。",
+      "why_now": "PPWR 已于 2026-08-12 适用；平台被要求核验卖家 EPR 合规，否则下架。",
+      "opportunity_hypothesis": "免费“义务判定器”：输入产品类别、包装类型、发往国家、年发货量、企业规模，输出需要注册的国家和最便宜的办理路径，靠给代办导流拿佣金。",
+      "contrarian": [
+        "豁免被澄清或法规修正后问题大幅缩小",
+        "代办公司可以免费提供判定器",
+        "判错有责任风险",
+        "证据集中在一个爆帖上"
+      ],
+      "next_validation": [
+        "收集 20 个不同品类的真实卖家情况，人工判定一遍，看判定逻辑能否结构化",
+        "联系 2 家代办问导流佣金模式"
+      ],
+      "watch_next": "看委员会是否发布修正或豁免澄清",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 5.0,
+          "reason": "第 0 期：沿用 claude-pp 判断分；urgency、ease_of_validation 与 next_validation 为合并时补写"
+        }
+      ],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-012",
+      "name": "特教教师记录每个学生的支持时间和目标进度，打断课堂工作",
+      "status": "active",
+      "status_reason": "",
+      "industry": "教育",
+      "who": "为多名学生提供融合课堂支持或 K–3 资源教学的特教教师",
+      "problem": "需要快速留下服务与目标进度记录，逐人逐目标录入打断课堂。",
+      "solution_class": "B",
+      "pain_confidence": "medium",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 5,
+        "severity": 6,
+        "urgency": 6,
+        "existing_solution_gap": 3,
+        "willingness_to_pay": 3,
+        "momentum": 4,
+        "ease_of_validation": 8,
+        "overall": 4.5
+      },
+      "evidence": [
+        {
+          "url": "https://www.reddit.com/r/specialed/comments/1voghmn/quick_way_to_track_support_in_cotaught/",
+          "platform": "Reddit r/specialed",
+          "date": "2026-08-14",
+          "date_basis": "search_index_excerpt",
+          "kind": "workaround",
+          "paraphrase": "每班负责 8–13 位学生，已用 Google Form 记录，但每节课末仍要拿 Chromebook 逐个填写；正文打开失败，弱证据。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.reddit.com/r/specialed/comments/1vshe73/data_tracker/",
+          "platform": "Reddit r/specialed",
+          "date": "2026-08-19",
+          "date_basis": "search_index_date",
+          "kind": "workaround",
+          "paraphrase": "K–3 教师求数学、语言和社交目标记录工具；回帖教师用 Google Sheets 让助教勾选完成情况。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://spedtrack.com/modules/services-tracking/",
+          "platform": "SpedTrack",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "已有服务时长记录、多学生同时计时器、按课表建立服务组。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "每班 Google Form、每学生一个表格页、纸面勾选再汇总。",
+      "existing_solutions": [
+        "SpedTrack（服务时长、计时器、按课表分组）",
+        "Google Forms / Sheets"
+      ],
+      "why_insufficient": "班级教学与逐人逐目标的数据结构不一致；能否减少动作又保留真实差异需要课堂观察。",
+      "root_cause": "合规记录按学生组织，教学按班级进行。",
+      "why_now": "8 月开学季出现求助，可能是季节性。",
+      "opportunity_hypothesis": "可离线暂存的网页记录板：预载课表和目标，一次选组后标记每人的例外与真实观测，导出校方既有格式；先用匿名编号和模拟数据测试。",
+      "contrarian": [
+        "Sheets 或已购 SpedTrack 可能足够",
+        "教师不一定有采购权",
+        "学校数据审批和系统接入可能比开发更难"
+      ],
+      "next_validation": [
+        "获得允许后观察 3 位教师各一次记录流程",
+        "用模拟名单比较现有方式与记录板的操作数、耗时和错误，再询问真正采购者"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 4.5,
+          "reason": "第 0 期：由 codex-pp 11 维分数映射"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-013",
+      "name": "家长在多个学校应用之间找通知，仍要手工转成日历和待办",
+      "status": "active",
+      "status_reason": "",
+      "industry": "家庭",
+      "who": "有多个孩子、年级或课外活动的家庭",
+      "problem": "需要把不同渠道的通知转成明确日期、待办和责任人，并处理重复和改期。",
+      "solution_class": "B",
+      "pain_confidence": "medium",
+      "gap_confidence": "low",
+      "scores": {
+        "frequency": 7,
+        "severity": 5,
+        "urgency": 5,
+        "existing_solution_gap": 2,
+        "willingness_to_pay": 3,
+        "momentum": 5,
+        "ease_of_validation": 9,
+        "overall": 4.0
+      },
+      "evidence": [
+        {
+          "url": "https://www.reddit.com/r/kindergarten/comments/1vroc26/how_many_apps_did_you_have_to_download/",
+          "platform": "Reddit r/kindergarten",
+          "date": "2026-08-18",
+          "date_basis": "search_index_date",
+          "kind": "complaint",
+          "paraphrase": "多个家长列出 3–5 个学校应用和两个独立支付入口；同帖也有只用邮件或一个应用的反例。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.reddit.com/r/Teachers/comments/1vxfwad/anyone_elses_school_use_way_too_many_apps/",
+          "platform": "Reddit r/Teachers",
+          "date": "2026-08-24",
+          "date_basis": "search_index_date",
+          "kind": "complaint",
+          "paraphrase": "教师从校方一侧列出多套重叠系统。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.reddit.com/r/workingmoms/comments/1vthigo/removed/",
+          "platform": "Reddit r/workingmoms",
+          "date": "2026-08-20",
+          "date_basis": "search_index_date",
+          "kind": "workaround",
+          "paraphrase": "原帖已删，仍可读的评论描述用 Gemini 把学校 PDF 转为共享日历。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.reddit.com/r/ShowYourApp/comments/1wa1rh3/turning_school_messages_into_reminders_and_shared/",
+          "platform": "Reddit r/ShowYourApp",
+          "date": "2026-09-07",
+          "date_basis": "search_index_excerpt",
+          "kind": "vendor_launch",
+          "paraphrase": "开发者发布把学校消息转成提醒和家庭任务的工具，是供给信号。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://www.ohai.ai/features/ai-email-management/",
+          "platform": "Ohai",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "已覆盖学校邮件解析、日历、提醒与共享。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://skylight.zendesk.com/hc/en-us/articles/47278643288091-Email-Events-Recipes-Menus-and-Photos-With-Sidekick",
+          "platform": "Skylight Support",
+          "date": "2026-08-31",
+          "date_basis": "post_date",
+          "kind": "official_doc",
+          "paraphrase": "支持邮件、图片和 PDF 导入；官方说明背景日期和菜单可能被误识别，提供检查和撤销。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "各应用开通知、手工录日历、转发给通用 AI、家庭共用一张日历。",
+      "existing_solutions": [
+        "Ohai",
+        "Skylight Sidekick",
+        "通用 AI 助手"
+      ],
+      "why_insufficient": "可能残留的缺口是重复通知、改期和“谁负责”的核验，但尚未找到足够的现有产品用户投诉来证实。",
+      "root_cause": "信息按学校部门分发，家庭执行按孩子、日期、责任人组织。",
+      "why_now": "开学季提供近期例子；同类新工具在增加，这是供给增加，不代表付费需求增加。",
+      "opportunity_hypothesis": "转发 / 截图 → 结构化草稿的固定流程，保留原文、匹配旧事件、展示改期差异，经确认后导出 ICS 或任务；不做每天必须打开的新应用。",
+      "contrarian": [
+        "现有方案非常直接",
+        "“应用太多”的用户未必愿意再装一个",
+        "软件改变不了学校采用的系统"
+      ],
+      "next_validation": [
+        "请 5 个家庭用现有工具处理同一组 20 条模拟通知，统计漏项、重复和改期错误"
+      ],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 4.0,
+          "reason": "第 0 期：由 codex-pp 11 维分数映射"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": "2026-09-12"
+    },
+    {
+      "id": "OP-014",
+      "name": "AI 编码代理跨会话失忆，团队规则文件（CLAUDE.md / skills）版本漂移",
+      "status": "watch",
+      "status_reason": "两方判断冲突：agy-pp 给 8.4 分并做了原型；claude-pp 把“跨 agent 同步 skills”判为 A（已有多个开源 Skills Manager 支持 30–50 个工具）。合并时不给分，待下一期查清现有工具覆盖了多少、剩下的缺口是不是“团队级发布与冲突检查”。",
+      "industry": "AI 开发工具",
+      "who": "使用 Claude Code、Cursor、Codex 等多个编码代理的团队与独立工程师",
+      "problem": "新会话重复探索已经走过的代码路径；公司级规则文件分发靠 bootstrap 脚本或 dotfiles 软链接，个人偏好污染主分支。",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [
+        {
+          "url": "https://news.ycombinator.com/item?id=49589914",
+          "platform": "Hacker News",
+          "date": "2026-09-06",
+          "date_basis": "post_date",
+          "kind": "workaround",
+          "paraphrase": "Ask HN: 怎么管理 skills 文件：有团队写私有 bootstrap 脚本把公司规范推到每个开发者仓库，有人手写类 brew 的 CLI，有人用 chezmoi 软链接但多工具并存时很脆弱。",
+          "engagement": "319 分 / 297 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=49577361",
+          "platform": "Hacker News",
+          "date": "2026-09-05",
+          "date_basis": "agy_pp_recorded_unverified",
+          "kind": "complaint",
+          "paraphrase": "开发者抱怨团队成员都往 CLAUDE.md 写个人偏好，导致指令冲突。（agy-pp 记录，未复核原文）",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=49637417",
+          "platform": "Hacker News",
+          "date": "2026-09-10",
+          "date_basis": "agy_pp_recorded_unverified",
+          "kind": "vendor_launch",
+          "paraphrase": "Kin 发布帖：作者因自费用编码代理、看着它反复重新探索已走过的代码而做了产品；是供给信号。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "私有 bootstrap 脚本、chezmoi / Home Manager 软链接、手写同步 CLI。",
+      "existing_solutions": [
+        "多个开源 Skills Manager（claude-pp 记录，支持 30–50 个工具）",
+        "各代理自带的项目记忆"
+      ],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [
+        "代理厂商在快速内置记忆和规则分发",
+        "个人开发者付费意愿低"
+      ],
+      "next_validation": [
+        "列出现有 Skills Manager 并逐个核对是否支持团队级发布、版本和冲突检查"
+      ],
+      "watch_next": "现有 skills 管理工具的覆盖范围；是否出现团队付费需求",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "agy-pp",
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-015",
+      "name": "Clover 与 Shopify 通用双向库存同步",
+      "status": "demoted",
+      "status_reason": "有实际断连投诉，但 SKU IQ 已直接覆盖该连接，尚未证明换工具后仍失败。",
+      "industry": "电商",
+      "who": "",
+      "problem": "",
+      "solution_class": "B",
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": {
+        "frequency": 4,
+        "severity": 7,
+        "urgency": 7,
+        "existing_solution_gap": 3,
+        "willingness_to_pay": 5,
+        "momentum": 4,
+        "ease_of_validation": 7,
+        "overall": 4.0
+      },
+      "evidence": [
+        {
+          "url": "https://www.reddit.com/r/shopify/comments/1w75xrj/has_anyone_found_a_reliable_app_for_syncing/",
+          "platform": "Reddit r/shopify",
+          "date": "2026-09-04",
+          "date_basis": "search_index_date",
+          "kind": "complaint",
+          "paraphrase": "QuickSync 每逢新增同步经常断连，需要找客服。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.skuiq.com/platforms/clover",
+          "platform": "SKU IQ",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "已有 Clover 商品与库存同步和方向规则，可靠性未实测。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 4.0,
+          "reason": "第 0 期：由 codex-pp 分数映射，降级"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-016",
+      "name": "施工变更单、照片和签字打包",
+      "status": "demoted",
+      "status_reason": "手工绕行明确，但主证据是 2025 年旧帖；Clearstory 免费 Basic 已含数字 T&M、变更请求和协作日志。",
+      "industry": "施工",
+      "who": "",
+      "problem": "",
+      "solution_class": "A",
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": {
+        "frequency": 3,
+        "severity": 7,
+        "urgency": 6,
+        "existing_solution_gap": 2,
+        "willingness_to_pay": 4,
+        "momentum": 2,
+        "ease_of_validation": 8,
+        "overall": 3.0
+      },
+      "evidence": [
+        {
+          "url": "https://www.reddit.com/r/ConstructionManagers/comments/1ij9g2g/change_order_management/",
+          "platform": "Reddit r/ConstructionManagers",
+          "date": "2025-02-06",
+          "date_basis": "search_index_date",
+          "kind": "workaround",
+          "paraphrase": "Google Sheet 转 PDF、附图片、Bluebeam 签署、追加批准页；历史背景。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.clearstory.build/pricing",
+          "platform": "Clearstory",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "免费 Basic 含数字 T&M、变更请求和协作日志。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 3.0,
+          "reason": "第 0 期：由 codex-pp 分数映射，降级"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-017",
+      "name": "清洁公司排班与开票",
+      "status": "demoted",
+      "status_reason": "两位经营者嫌表格或大工具太重，但 ZenMaid 已覆盖循环预约和开票，尚无近期重复的不足证据。",
+      "industry": "本地服务",
+      "who": "",
+      "problem": "",
+      "solution_class": "A",
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": {
+        "frequency": 4,
+        "severity": 6,
+        "urgency": 6,
+        "existing_solution_gap": 2,
+        "willingness_to_pay": 4,
+        "momentum": 2,
+        "ease_of_validation": 9,
+        "overall": 3.0
+      },
+      "evidence": [
+        {
+          "url": "https://www.reddit.com/r/cleaningbusiness/comments/1vf7zkq/what_field_service_management_software_do_you/",
+          "platform": "Reddit r/cleaningbusiness",
+          "date": "2026-08-04",
+          "date_basis": "search_index_date",
+          "kind": "complaint",
+          "paraphrase": "5 辆车的清洁公司，Google Calendar 和表格负担大。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://www.reddit.com/r/cleaningbusiness/comments/1vd951n/scheduling_and_invoicing_options_for_solo/",
+          "platform": "Reddit r/cleaningbusiness",
+          "date": "2026-08-02",
+          "date_basis": "search_index_date",
+          "kind": "complaint",
+          "paraphrase": "个人清洁工用了 Jobber 一个月嫌重，考虑回到日历 + 笔记 + QuickBooks。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://zenmaid.com/answers/en/articles/3190361-how-to-create-send-and-track-an-invoice-in-zenmaid",
+          "platform": "ZenMaid Help",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "已有清洁预约开票和追踪。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://zenmaid.com/answers/en/articles/1316082-how-to-schedule-an-appointment-in-zenmaid",
+          "platform": "ZenMaid Help",
+          "date": "2026-04-29",
+          "date_basis": "post_date",
+          "kind": "official_doc",
+          "paraphrase": "已有循环清洁预约安排。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 3.0,
+          "reason": "第 0 期：由 codex-pp 分数映射，降级"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-018",
+      "name": "家庭冰箱与物品手工登记",
+      "status": "demoted",
+      "status_reason": "V2EX 用户明确指出录入、更新和找记录可能比直接看冰箱更麻烦，输入成本可能吃掉全部收益。",
+      "industry": "家庭",
+      "who": "",
+      "problem": "",
+      "solution_class": "A",
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": {
+        "frequency": 2,
+        "severity": 3,
+        "urgency": 2,
+        "existing_solution_gap": 2,
+        "willingness_to_pay": 2,
+        "momentum": 3,
+        "ease_of_validation": 9,
+        "overall": 2.0
+      },
+      "evidence": [
+        {
+          "url": "https://v2ex.com/t/1240603",
+          "platform": "V2EX",
+          "date": "2026-09-09",
+          "date_basis": "post_date",
+          "kind": "counterevidence",
+          "paraphrase": "收纳管理小程序讨论里，用户反驳手动记录冰箱内容比打开冰箱更麻烦。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [
+        {
+          "run_id": "baseline-2026-09-12",
+          "date": "2026-09-12",
+          "overall": 2.0,
+          "reason": "第 0 期：由 codex-pp 分数映射，降级"
+        }
+      ],
+      "origin": [
+        "codex-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-019",
+      "name": "数据抓取与自动化脚本被 Cloudflare / reCAPTCHA 拦截",
+      "status": "demoted",
+      "status_reason": "agy-pp 给 7.8 分，但两条证据一条是 2024-12 的旧讨论；解法是帮人绕过反爬检测，与平台条款冲突，法律和平台风险高；Bright Data 等商业方案已成熟。保留 reCAPTCHA 误伤真实用户这一面作为新兴信号（SIG-003）的背景。",
+      "industry": "开发者工具",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [
+        {
+          "url": "https://news.ycombinator.com/item?id=49555592",
+          "platform": "Hacker News",
+          "date": "2026-09-03",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "Ask HN: Google reCAPTCHA 在拒绝 Firefox 用户吗；讨论的是真实用户被误伤。",
+          "engagement": "256 分 / 136 评论",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=42456782",
+          "platform": "Hacker News",
+          "date": "2024-12-18",
+          "date_basis": "agy_pp_recorded_unverified",
+          "kind": "complaint",
+          "paraphrase": "SeleniumBase 与 Playwright 讨论里抱怨被 Cloudflare 拦截；已近两年，不算近期证据。",
+          "engagement": "",
+          "counts_as_demand": true
+        }
+      ],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "agy-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-020",
+      "name": "自由职业者与 Micro-SaaS 逾期发票催收",
+      "status": "demoted",
+      "status_reason": "agy-pp 给 7.4 分，但唯一可点开的证据是 2023-03 的 HN 评论；另一条“Freelancers Union & Stripe 调查”的链接只指向 HN 首页，无法追溯，已排除；Stripe、Chaser 等现成催收工具很多。",
+      "industry": "财务会计",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [
+        {
+          "url": "https://news.ycombinator.com/item?id=35188074",
+          "platform": "Hacker News",
+          "date": "2023-03-16",
+          "date_basis": "agy_pp_recorded_unverified",
+          "kind": "complaint",
+          "paraphrase": "开发者说每月追一张 $450 的未付发票不值得花力气；三年前的评论。",
+          "engagement": "",
+          "counts_as_demand": true
+        }
+      ],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "agy-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-021",
+      "name": "包裹被偷的成本谁承担",
+      "status": "demoted",
+      "status_reason": "r/smallbusiness 09-11（132 赞 / 97 评论）；楼主自己提到保护类 App 已存在，评论里有签收、照片、自保基金等成熟做法，判为 A。",
+      "industry": "电商",
+      "who": "",
+      "problem": "",
+      "solution_class": "A",
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-022",
+      "name": "小企业 AI 前台",
+      "status": "demoted",
+      "status_reason": "r/Entrepreneur 09-10（23 赞 / 141 评论）；高赞评论是顾客抵触 AI，问题在需求端，不在技术缺口。",
+      "industry": "本地服务",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-023",
+      "name": "教师 IEP / 504 / BIP 文书负担",
+      "status": "demoted",
+      "status_reason": "r/Teachers 09-06（571 赞 / 210 评论）；痛点真实，但根源是政策、资金和班额，软件改变有限，采购门槛高。与 OP-012 相关。",
+      "industry": "教育",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-024",
+      "name": "医疗事先授权（prior auth）",
+      "status": "demoted",
+      "status_reason": "AMA 调查：每周约 40 例、13 小时；高痛，但需要对接保险方和 HIPAA，不适合轻量编码，本轮也没有一手讨论。",
+      "industry": "医疗",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-025",
+      "name": "招聘被 AI 申请淹没",
+      "status": "demoted",
+      "status_reason": "以行业调查为主，Reddit 一手证据弱，AI 筛选工具已经拥挤。",
+      "industry": "招聘",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-026",
+      "name": "慢病追踪坚持不下去",
+      "status": "demoted",
+      "status_reason": "HN 08-15（52 分 / 90 评论）；付费意愿低，已有大量同类尝试。",
+      "industry": "健康",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-027",
+      "name": "小团队 M365 离职交接检查",
+      "status": "demoted",
+      "status_reason": "r/sysadmin 09-11（102 赞 / 173 评论）；高赞回复是“关账号就完事”，痛感不普遍。",
+      "industry": "IT 运维",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    },
+    {
+      "id": "OP-028",
+      "name": "Etsy 面单印店名的隐私问题",
+      "status": "demoted",
+      "status_reason": "只有行业新闻，没有一手讨论，可编码空间小。",
+      "industry": "电商",
+      "who": "",
+      "problem": "",
+      "solution_class": null,
+      "pain_confidence": null,
+      "gap_confidence": null,
+      "scores": null,
+      "evidence": [],
+      "workaround": "",
+      "existing_solutions": [],
+      "why_insufficient": "",
+      "root_cause": "",
+      "why_now": "",
+      "opportunity_hypothesis": "",
+      "contrarian": [],
+      "next_validation": [],
+      "watch_next": "",
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "score_history": [],
+      "origin": [
+        "claude-pp"
+      ],
+      "solution_checked_at": null
+    }
+  ],
+  "signals": [
+    {
+      "id": "SIG-001",
+      "title": "传统行业软件用 EULA 禁止 AI 代理和 RPA 操作",
+      "why_watch": "对“给老软件套一层 AI 代理”的方向是风险信号；反过来，“官方 API 缺失”本身可能就是机会。",
+      "watch_next": "是否有更多厂商跟进，报税季前讨论量",
+      "evidence": [
+        {
+          "url": "https://reddit.com/r/taxpros/comments/1wadzyw/",
+          "platform": "Reddit r/taxpros",
+          "date": "2026-09-08",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "Drake 2026 EULA 明确禁止脚本、机器人、RPA 和 AI 代理访问；评论称 Thomson Reuters 有类似条款。",
+          "engagement": "",
+          "counts_as_demand": true
+        }
+      ],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "claude-pp"
+      ],
+      "status": "watching"
+    },
+    {
+      "id": "SIG-002",
+      "title": "商业意图进入代理上下文（MCP 工具输出里夹带推销）",
+      "why_watch": "如果变成常态，“代理上下文广告过滤器”会成为新品类；与 OP-005 相关。",
+      "watch_next": "是否出现第二家",
+      "evidence": [
+        {
+          "url": "https://reddit.com/r/ClaudeAI/comments/1w9dluw/",
+          "platform": "Reddit r/ClaudeAI",
+          "date": "2026-09-07",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "Notion 官方 MCP 连接器在任务中途让代理推销商业版。",
+          "engagement": "2253 赞 / 151 评论",
+          "counts_as_demand": true
+        }
+      ],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "claude-pp"
+      ],
+      "status": "watching"
+    },
+    {
+      "id": "SIG-003",
+      "title": "分不清真人授权的购物代理和刷单机器人",
+      "why_watch": "代理式电商需要代理身份 / 授权凭证验证层，目前看起来还没有成熟方案；反爬升级同时误伤真实用户。",
+      "watch_next": "电商社区出现频率",
+      "evidence": [
+        {
+          "url": "https://news.ycombinator.com/item?id=49555592",
+          "platform": "Hacker News",
+          "date": "2026-09-03",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "reCAPTCHA 拒绝 Firefox 用户的讨论；同期 r/ecommerce（08-19）有人无法区分真实用户的 AI 代理和抢库存机器人。",
+          "engagement": "256 分 / 136 评论",
+          "counts_as_demand": true
+        }
+      ],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "claude-pp",
+        "agy-pp"
+      ],
+      "status": "watching"
+    },
+    {
+      "id": "SIG-004",
+      "title": "平台单方面终止身份基础设施（.name 三级域、Gmail 第三方 Send as）",
+      "why_watch": "“自定义域名邮箱迁移助手”有明确截止日、可编码，但属于一次性需求。",
+      "watch_next": "临近 2027-01 / 02 的迁移求助帖",
+      "evidence": [
+        {
+          "url": "https://domainnamewire.com/2026/09/03/third-level-dot-name/",
+          "platform": "Domain Name Wire",
+          "date": "2026-09-03",
+          "date_basis": "post_date",
+          "kind": "news",
+          "paraphrase": ".name 三级域约 22,000 个注册被终止，有人付费到 2040 年却将在 2027-02 失效，邮箱一起丢。",
+          "engagement": "",
+          "counts_as_demand": false
+        },
+        {
+          "url": "https://support.google.com/mail/answer/17101213?hl=en",
+          "platform": "Gmail Help",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "Gmail 将在 2027-01 停止支持第三方地址的 Send as。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "claude-pp"
+      ],
+      "status": "watching"
+    },
+    {
+      "id": "SIG-005",
+      "title": "AI 编码工具计费和额度频繁变动",
+      "why_watch": "需求真实，但网关类工具已覆盖一部分，平台风险极高，先观察。",
+      "watch_next": "是否出现跨厂商额度管理的自建脚本",
+      "evidence": [],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "claude-pp"
+      ],
+      "status": "watching"
+    },
+    {
+      "id": "SIG-006",
+      "title": "AI 搜索改变分发渠道（LinkedIn Job Slots 流量下降、被 ChatGPT 引用）",
+      "why_watch": "可能改变小企业获客方式，但目前只看到标题，证据弱。",
+      "watch_next": "需要一手帖",
+      "evidence": [],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "claude-pp"
+      ],
+      "status": "watching"
+    },
+    {
+      "id": "SIG-007",
+      "title": "网页表单线索到 WhatsApp 的即时触达与接入故障",
+      "why_watch": "codex-pp 看到 Make 接 WhatsApp Business Coexistence 的复现故障，agy-pp 看到表单直推 WhatsApp 的小产品；目前更像接入排错服务线索，不是已验证的需求。",
+      "watch_next": "平台是否修复；是否有商家为接入付费",
+      "evidence": [
+        {
+          "url": "https://community.make.com/t/whatsapp-business-cloud-coexistence-fails-with-resource-not-found-400-after-successful-meta-setup/114663",
+          "platform": "Make Community",
+          "date": "2026-09-08",
+          "date_basis": "post_date",
+          "kind": "complaint",
+          "paraphrase": "Meta 显示连接成功，Make 却不保存凭据；9 月 10 日有复现反馈，回帖者是否同团队未知。",
+          "engagement": "",
+          "counts_as_demand": true
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=49590656",
+          "platform": "Hacker News",
+          "date": "2026-09-06",
+          "date_basis": "agy_pp_recorded_unverified",
+          "kind": "vendor_launch",
+          "paraphrase": "Show your micro-SaaS 帖里有人介绍把表单提交推到 WhatsApp 的小工具；是供给信号。agy-pp 引用的 HubSpot / Intercom 转化率数据没有可追溯链接，已排除。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "codex-pp",
+        "agy-pp"
+      ],
+      "status": "watching"
+    },
+    {
+      "id": "SIG-008",
+      "title": "软件停用后的历史保留与验证",
+      "why_watch": "Stocky 是一个现实窗口（见 OP-009）；这类“产品停用 → 历史数据可查性”问题可能反复出现，但单次迁移不是每日高频业务。",
+      "watch_next": "是否有独立商家付费整理记录；是否出现其他停用事件",
+      "evidence": [
+        {
+          "url": "https://help.shopify.com/en/manual/products/inventory/transitioning-from-stocky",
+          "platform": "Shopify Help",
+          "date": null,
+          "date_basis": "page_checked_2026-09-12",
+          "kind": "official_doc",
+          "paraphrase": "Stocky 停用边界：只读导出期、历史采购单不能原样迁入。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "codex-pp"
+      ],
+      "status": "watching"
+    },
+    {
+      "id": "SIG-009",
+      "title": "自动提取普及后，检查提取结果仍需人做",
+      "why_watch": "家庭通知工具出现同类新供给，官方也列出识别错误；“核验步骤”可能是一个横跨多个行业的缺口。",
+      "watch_next": "其他行业的 AI 提取工具是否也出现核验类抱怨",
+      "evidence": [
+        {
+          "url": "https://skylight.zendesk.com/hc/en-us/articles/47278643288091-Email-Events-Recipes-Menus-and-Photos-With-Sidekick",
+          "platform": "Skylight Support",
+          "date": "2026-08-31",
+          "date_basis": "post_date",
+          "kind": "official_doc",
+          "paraphrase": "官方说明照片背景日期、学校菜单可能被误识别为事件，需要核验。",
+          "engagement": "",
+          "counts_as_demand": false
+        }
+      ],
+      "first_detected": "2026-09-12",
+      "last_detected": "2026-09-12",
+      "detected_runs": 1,
+      "origin": [
+        "codex-pp"
+      ],
+      "status": "watching"
+    }
+  ],
+  "merge_log": [
+    {
+      "origin": "claude-pp",
+      "old_id": "ads-traffic-truth",
+      "old_name": "小广告主付费流量被机器人和垃圾线索吞掉",
+      "new_id": "OP-001",
+      "action": "kept",
+      "reason": "高置信，多社区独立出现且有具体金额"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "automation-silent-failure",
+      "old_name": "n8n / Zapier 工作流静默失败",
+      "new_id": "OP-002",
+      "action": "merged",
+      "reason": "与 codex-pp OP01 同一根因，两个来源独立发现"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP01",
+      "old_name": "生产自动化的结果核验与维护交接",
+      "new_id": "OP-002",
+      "action": "merged",
+      "reason": "与 claude-pp automation-silent-failure 同一根因"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "cert-lifetime-nonacme",
+      "old_name": "不支持 ACME 的设备只能手工换证",
+      "new_id": "OP-003",
+      "action": "kept",
+      "reason": "硬性时间表驱动"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "llm-model-deps",
+      "old_name": "LLM 模型退役 / 静默变更缺少依赖管理",
+      "new_id": "OP-004",
+      "action": "kept",
+      "reason": "有明确下线日期"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "agent-injection-secrets",
+      "old_name": "代理注入、密钥暴露、越界",
+      "new_id": "OP-005",
+      "action": "kept",
+      "reason": "新兴问题，平台风险高"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP03",
+      "old_name": "跨市场电商商品投放数据核对",
+      "new_id": "OP-006",
+      "action": "kept",
+      "reason": ""
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP02",
+      "old_name": "会计事务所按客户账户月份识别缺件",
+      "new_id": "OP-007",
+      "action": "kept",
+      "reason": "与 OP-010 记账迁移是不同的工作，保持独立"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "landlord-deadline",
+      "old_name": "小房东押金退还法定期限合规",
+      "new_id": "OP-008",
+      "action": "kept",
+      "reason": "缺口未证实"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP04",
+      "old_name": "Stocky 停用后的历史采购数据归档核验",
+      "new_id": "OP-009",
+      "action": "kept",
+      "reason": "窗口期问题"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "qbo-exit",
+      "old_name": "QuickBooks 涨价加连接不稳，历史数据锁定",
+      "new_id": "OP-010",
+      "action": "merged",
+      "reason": "与 agy-pp 财务对账同属小企业记账迁移与对账"
+    },
+    {
+      "origin": "agy-pp",
+      "old_id": "finance-tacit-reconciliation",
+      "old_name": "中小企业财务隐性经验对账断层",
+      "new_id": "OP-010",
+      "action": "merged",
+      "reason": "证据一条是供给信号、两条较旧且原话未复核，不采用 8.4 分"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "eu-ppwr-obligation",
+      "old_name": "EU PPWR 微型卖家逐国注册困惑",
+      "new_id": "OP-011",
+      "action": "kept",
+      "reason": "证据集中在一个爆帖"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP05",
+      "old_name": "特教课堂支持时长与进度的快速记录",
+      "new_id": "OP-012",
+      "action": "kept",
+      "reason": "商业价值偏低"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP06",
+      "old_name": "多应用学校通知转家庭行动并核验变更",
+      "new_id": "OP-013",
+      "action": "kept",
+      "reason": "新增缺口置信度低"
+    },
+    {
+      "origin": "agy-pp",
+      "old_id": "agent-context-drift",
+      "old_name": "AI 编码 Agent 跨会话失忆与规则文件版本漂移",
+      "new_id": "OP-014",
+      "action": "watch",
+      "reason": "与 claude-pp 的 A 类判断冲突，待复核"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:skills-sync",
+      "old_name": "跨 agent 同步 skills",
+      "new_id": "OP-014",
+      "action": "watch",
+      "reason": "与 agy-pp agent-context-drift 是同一主题，两方判断一并保留"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP07",
+      "old_name": "Clover 与 Shopify 通用双向库存同步",
+      "new_id": "OP-015",
+      "action": "demoted",
+      "reason": "现有方案已覆盖"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP08",
+      "old_name": "施工变更单与 T&M 资料打包",
+      "new_id": "OP-016",
+      "action": "demoted",
+      "reason": "A 类，证据旧"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP09",
+      "old_name": "清洁服务排班与开票一体化",
+      "new_id": "OP-017",
+      "action": "demoted",
+      "reason": "A 类"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "OP10",
+      "old_name": "家庭冰箱与物品手工登记",
+      "new_id": "OP-018",
+      "action": "demoted",
+      "reason": "输入成本反证"
+    },
+    {
+      "origin": "agy-pp",
+      "old_id": "anti-bot-scraping-blockage",
+      "old_name": "数据提取被 Cloudflare / reCAPTCHA 拦截",
+      "new_id": "OP-019",
+      "action": "demoted",
+      "reason": "证据旧，绕过反爬有平台条款风险"
+    },
+    {
+      "origin": "agy-pp",
+      "old_id": "unpaid-invoice-chasing",
+      "old_name": "自由职业者逾期发票催收",
+      "new_id": "OP-020",
+      "action": "demoted",
+      "reason": "证据为 2023 年，另一条来源不可追溯"
+    },
+    {
+      "origin": "agy-pp",
+      "old_id": "lead-whatsapp-bridge",
+      "old_name": "独立站表单线索邮件触达断层",
+      "new_id": "SIG-007",
+      "action": "signal",
+      "reason": "证据是一个已有产品（供给信号），转化率数据无出处"
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "emerging:whatsapp-coexistence",
+      "old_name": "保留 WhatsApp Business 手机端又要接入自动化",
+      "new_id": "SIG-007",
+      "action": "signal",
+      "reason": "与 agy-pp WhatsApp 线索合并观察"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:package-theft",
+      "old_name": "包裹被偷的成本谁承担",
+      "new_id": "OP-021",
+      "action": "demoted",
+      "reason": "A 类"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:ai-receptionist",
+      "old_name": "小企业 AI 前台",
+      "new_id": "OP-022",
+      "action": "demoted",
+      "reason": "需求端抵触"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:iep-paperwork",
+      "old_name": "教师 IEP / 504 / BIP 负担",
+      "new_id": "OP-023",
+      "action": "demoted",
+      "reason": "根源是政策资金"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:prior-auth",
+      "old_name": "事先授权",
+      "new_id": "OP-024",
+      "action": "demoted",
+      "reason": "需对接保险方和 HIPAA"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:ai-applicants",
+      "old_name": "招聘被 AI 申请淹没",
+      "new_id": "OP-025",
+      "action": "demoted",
+      "reason": "一手证据弱，赛道拥挤"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:chronic-tracking",
+      "old_name": "慢病追踪坚持不下去",
+      "new_id": "OP-026",
+      "action": "demoted",
+      "reason": "付费意愿低"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:m365-offboarding",
+      "old_name": "小团队 M365 离职交接检查",
+      "new_id": "OP-027",
+      "action": "demoted",
+      "reason": "痛感不普遍"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "demoted:etsy-label-privacy",
+      "old_name": "Etsy 面单印店名的隐私问题",
+      "new_id": "OP-028",
+      "action": "demoted",
+      "reason": "无一手讨论"
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "signal:eula-ban-agents",
+      "old_name": "行业软件 EULA 禁止 AI 代理 / RPA",
+      "new_id": "SIG-001",
+      "action": "signal",
+      "reason": ""
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "signal:commercial-intent-mcp",
+      "old_name": "商业意图进入代理上下文",
+      "new_id": "SIG-002",
+      "action": "signal",
+      "reason": ""
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "signal:shopping-agents",
+      "old_name": "分不清真人授权的购物代理和机器人",
+      "new_id": "SIG-003",
+      "action": "signal",
+      "reason": ""
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "signal:identity-termination",
+      "old_name": ".name 三级域终止 / Gmail 停止 Send as",
+      "new_id": "SIG-004",
+      "action": "signal",
+      "reason": ""
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "signal:ai-coding-billing",
+      "old_name": "AI 编码工具计费和额度变动",
+      "new_id": "SIG-005",
+      "action": "signal",
+      "reason": ""
+    },
+    {
+      "origin": "claude-pp",
+      "old_id": "signal:ai-search-distribution",
+      "old_name": "AI 搜索改变分发",
+      "new_id": "SIG-006",
+      "action": "signal",
+      "reason": ""
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "emerging:sunset-history",
+      "old_name": "软件停用后的历史保留与验证",
+      "new_id": "SIG-008",
+      "action": "signal",
+      "reason": ""
+    },
+    {
+      "origin": "codex-pp",
+      "old_id": "emerging:extraction-review",
+      "old_name": "自动提取普及后检查结果仍需人做",
+      "new_id": "SIG-009",
+      "action": "signal",
+      "reason": ""
+    },
+    {
+      "origin": "agy-pp",
+      "old_id": "evidence:hubspot-intercom-benchmark",
+      "old_name": "HubSpot / Intercom 转化率基准（无链接）",
+      "new_id": "-",
+      "action": "excluded",
+      "reason": "链接只指向 news.ycombinator.com 首页，无法追溯"
+    },
+    {
+      "origin": "agy-pp",
+      "old_id": "evidence:freelancers-union-survey",
+      "old_name": "Freelancers Union & Stripe AR 调查（无链接）",
+      "new_id": "-",
+      "action": "excluded",
+      "reason": "链接只指向 news.ycombinator.com 首页，无法追溯"
+    }
+  ]
+}
