@@ -3,9 +3,9 @@ import { useRadarData } from './lib/data'
 import { useHashRoute } from './lib/useHashRoute'
 import { Latest } from './pages/Latest'
 import { Ledger } from './pages/Ledger'
-import { ClusterPage, Demoted, Method, Signals, Validation } from './pages/Other'
+import { ClusterPage, Demoted, Signals, Validation } from './pages/Other'
 
-const PAGES = { latest: Latest, ledger: Ledger, signals: Signals, validation: Validation, demoted: Demoted, method: Method }
+const PAGES = { latest: Latest, ledger: Ledger, signals: Signals, validation: Validation, demoted: Demoted }
 
 export default function App() {
   const { data, error } = useRadarData()
@@ -29,7 +29,7 @@ export default function App() {
   return (
     <div className="app-shell min-h-screen">
       <a className="skip-link" href="#main-content" onClick={event => { event.preventDefault(); document.getElementById('main-content')?.focus() }}>跳到内容</a>
-      <Sidebar data={data} current={section} counts={counts} />
+      <Sidebar current={section} counts={counts} />
       <div className="app-content">
         <Header data={data} section={section} />
         <Tabs current={section} counts={counts} />

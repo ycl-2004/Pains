@@ -178,7 +178,7 @@ export       web/public/data/radar.json → 静态网站
 
 ## 第 0 期基线：三份研究怎么合并的
 
-三份研究都在 2026-09-12 完成，互相没有读过对方。合并时逐条人工核对，结果写在 [`data/seed/baseline-2026-09-12.json`](data/seed/baseline-2026-09-12.json)，网站“方法与局限”页有完整对照表。
+三份研究都在 2026-09-12 完成，互相没有读过对方。合并时逐条人工核对，结果写在 [`data/seed/baseline-2026-09-12.json`](data/seed/baseline-2026-09-12.json)；对外网站不展示方法说明，完整设计与数据契约见 [`docs/research-desk.md`](docs/research-desk.md)。
 
 | 来源 | 拿了什么 | 没拿什么 |
 |---|---|---|

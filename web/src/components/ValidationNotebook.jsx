@@ -4,7 +4,7 @@ import { parseResearch, readResearch, RESEARCH_KEY, STAGES } from '../lib/resear
 export function ValidationNotebook({ id }) {
   const [initial] = useState(() => {
     try { return { records: readResearch(), error: '' } }
-    catch { return { records: {}, error: '无法读取本地记录；请先导出或检查浏览器存储，不会覆盖原记录。' } }
+    catch { return { records: {}, error: '无法读取验证记录' } }
   })
   const [records, setRecords] = useState(initial.records)
   const [message, setMessage] = useState(initial.error)
@@ -17,7 +17,7 @@ export function ValidationNotebook({ id }) {
       const merged = { ...readResearch(), [id]: next[id] }
       localStorage.setItem(RESEARCH_KEY, JSON.stringify(merged))
       setRecords(merged)
-      setMessage('已保存在此浏览器，不会上传。')
+      setMessage('已保存')
     } catch { setMessage('保存失败：存储不可用或已满。请导出当前记录备份。') }
   }
   function download() {
@@ -35,13 +35,12 @@ export function ValidationNotebook({ id }) {
       // Preserve current notes on conflict; importing is non-destructive.
       const next = { ...incoming, ...readResearch() }
       localStorage.setItem(RESEARCH_KEY, JSON.stringify(next)); setRecords(next)
-      setMessage('已导入；同一机会保留当前浏览器的记录。')
+      setMessage('已导入')
     } catch (error) { setMessage(`导入失败：${error.message}`) }
     event.target.value = ''
   }
   return <section className="dossier-section">
     <h3>我的验证记录</h3>
-    <p className="mb-3 text-xs text-muted">这不是模型结论。记录你联系了谁、实际成本、预算与下一步；请勿填写敏感个人信息。</p>
     <label className="block text-xs text-muted">验证阶段
       <select className="research-input mt-1 mb-3 block" value={record.stage} onChange={e => save({ stage: e.target.value })} disabled={Boolean(initial.error)}>
         {Object.entries(STAGES).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
@@ -55,6 +54,6 @@ export function ValidationNotebook({ id }) {
       <button className="filter-link" onClick={download}>导出全部记录</button>
       <label className="filter-link cursor-pointer">导入备份<input className="sr-only" type="file" accept="application/json,.json" onChange={restore} /></label>
     </div>
-    <p role="status" className="mt-2 text-xs text-muted">{message || '仅存本机；清理浏览器数据会丢失，请定期导出。'}</p>
+    {message && <p role="status" className="mt-2 text-xs text-muted">{message}</p>}
   </section>
 }

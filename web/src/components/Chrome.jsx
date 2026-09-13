@@ -1,4 +1,4 @@
-import { Archive, BookOpen, CheckSquare, CircleDot, FileText, LayoutDashboard, Monitor, Moon, Settings2, Sun, Waves } from 'lucide-react'
+import { Archive, BookOpen, CheckSquare, CircleDot, LayoutDashboard, Monitor, Moon, Sun, Waves } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { formatDateTime } from '../lib/data'
 
@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   ['validation', '验证清单', CheckSquare],
   ['demoted', '已归档', Archive],
 ]
-const PAGE_TITLES = { latest: '今天的研究', ledger: '机会库', signals: '新兴信号', validation: '验证清单', demoted: '已归档', method: '方法与局限' }
+const PAGE_TITLES = { latest: '今天的研究', ledger: '机会库', signals: '新兴信号', validation: '验证清单', demoted: '已归档' }
 
 function readTheme() {
   try {
@@ -44,10 +44,7 @@ function NavLink({ id, label, Icon, current, count }) {
   </a>
 }
 
-export function Sidebar({ data, current, counts }) {
-  const latest = data.runs[0]
-  const sourceStats = latest?.sources ?? []
-  const healthy = sourceStats.filter(source => !source.error && !source.degraded).length
+export function Sidebar({ current, counts }) {
   return <aside className="app-sidebar">
     <a href="#/latest" className="brand-lockup" aria-label="返回今日研究">
       <span className="brand-mark"><CircleDot className="size-5" aria-hidden="true" /></span>
@@ -57,21 +54,15 @@ export function Sidebar({ data, current, counts }) {
       {NAV_ITEMS.map(([id, label, Icon]) => <NavLink key={id} id={id} label={label} Icon={Icon} current={current} count={id === 'demoted' ? counts.demoted : id === 'ledger' ? counts.ledger : id === 'signals' ? counts.signals : undefined} />)}
     </nav>
     <div className="sidebar-spacer" />
-    <div className="sidebar-health">
-      <div className="sidebar-health-title"><span>来源状态</span><span className={healthy === sourceStats.length ? 'status-good' : 'status-warn'}>{sourceStats.length ? `${healthy} / ${sourceStats.length} 正常` : '未运行'}</span></div>
-      {sourceStats.slice(0, 5).map(source => <div className="sidebar-source" key={source.source}><span className={`status-dot ${source.error || source.degraded ? 'is-warn' : ''}`} />{source.source}</div>)}
-      {!sourceStats.length && <p className="sidebar-empty">运行后显示来源健康度</p>}
-    </div>
-    <nav className="sidebar-secondary" aria-label="其他"><NavLink id="method" label="方法与设置" Icon={Settings2} current={current} /></nav>
-    <div className="sidebar-identity"><span className="identity-avatar">YC</span><span><strong>研究工作区</strong><small>本地证据台账</small></span></div>
+    <div className="sidebar-identity"><span className="identity-avatar">YC</span><span><strong>YC 研究</strong><small>机会与证据</small></span></div>
   </aside>
 }
 
 export function Header({ data, section = 'latest' }) {
   const updated = data.runs.find((run) => !run.status || run.status === 'success')?.finished_at
   return <header className="workspace-header">
-    <div><p className="header-context">痛点雷达 · 研究工作区</p><h1>{PAGE_TITLES[section] ?? PAGE_TITLES.latest}</h1></div>
-    <div className="header-actions"><span className="last-updated">{updated ? <>最后更新 · <time className="num">{formatDateTime(updated)}</time></> : '尚无成功运行记录'}</span><a href="#/method" className="header-link"><FileText className="size-3.5" aria-hidden="true" />运行说明</a><ThemeToggle /></div>
+    <div><p className="header-context">痛点雷达</p><h1>{PAGE_TITLES[section] ?? PAGE_TITLES.latest}</h1></div>
+    <div className="header-actions"><span className="last-updated">{updated ? <>最后更新 · <time className="num">{formatDateTime(updated)}</time></> : '暂无更新记录'}</span><ThemeToggle /></div>
   </header>
 }
 
@@ -82,7 +73,7 @@ export function Tabs({ current, counts }) {
 }
 
 export function Footer() {
-  return <footer className="workspace-footer"><p>公开讨论的转述和原文链接归原作者及平台所有。分数不是市场规模；做决定前请核对证据原文。</p></footer>
+  return <footer className="workspace-footer"><p>内容来自公开来源；请核对原文。</p></footer>
 }
 
 export function SectionTitle({ children, note }) {

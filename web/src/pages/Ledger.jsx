@@ -40,20 +40,20 @@ export function Ledger({ data }) {
   const fullLink = c => `#/cluster/${c.id}?return=${encodeURIComponent(ledgerHash(params))}`
   return <div className="pt-8">
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-      <div><p className="header-context">研究工作区</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">机会库</h2></div>
-      <p className="max-w-xs text-xs text-muted">先读证据，再决定是否值得联系买方。讨论数量不等于独立买家数。</p>
+      <div><p className="header-context">机会库</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">机会库</h2></div>
+      <p className="max-w-xs text-xs text-muted">按行业、证据和状态查看机会。</p>
     </div>
     <div className="mb-4 flex flex-wrap gap-2">
       <label className="min-w-0 basis-full sm:flex-1 sm:basis-auto"><span className="sr-only">搜索人群、问题、行业</span><input className="research-input w-full" type="search" value={params.q || ''} onChange={e => change('q', e.target.value, true)} placeholder="搜索人群、问题、行业…" /></label>
       <details className="filter-popover"><summary><Filter className="size-3.5" aria-hidden="true" />筛选</summary><div className="filter-popover-body">
         <select className="research-input" aria-label="证据视角" value={params.lens || ''} onChange={e => change('lens', e.target.value)}><option value="">全部机会</option><option value="buying">有购买来源</option><option value="changed">本期有变化</option><option value="saved">我的验证清单</option></select>
         <select className="research-input" aria-label="行业适配" value={params.industry || ''} onChange={e => change('industry', e.target.value)}><option value="">行业：不限</option>{industries.map(i => <option key={i}>{i}</option>)}</select>
-        <select className="research-input" aria-label="排序" value={params.sort || ''} onChange={e => change('sort', e.target.value)}><option value="">购买来源优先</option><option value="recent">最近检出</option><option value="score">综合分</option></select>
+        <select className="research-input" aria-label="排序" value={params.sort || ''} onChange={e => change('sort', e.target.value)}><option value="">购买线索优先</option><option value="recent">最近更新</option><option value="score">机会评分</option></select>
         <select className="research-input" aria-label="状态" value={params.status || ''} onChange={e => change('status', e.target.value)}><option value="">活跃 + 观察</option><option value="active">活跃</option><option value="watch">观察</option></select>
         <select className="research-input max-w-full" aria-label="现有方案分类" value={params.class || ''} onChange={e => change('class', e.target.value)}><option value="">方案分类：全部</option>{Object.entries(data.rubric.classes).map(([key, label]) => <option key={key} value={key}>{key} · {label}</option>)}</select>
       </div></details>
     </div>
-    <p className="mb-3 text-xs text-muted" role="status">{rows.length} 个研究对象 · 来源讨论数不等于独立买家数</p>
+    <p className="mb-3 text-xs text-muted" role="status">{rows.length} 个机会</p>
     {rows.length ? <div className="desk">
       <div className="desk-list"><ul>{rows.map(c => {
         const summary = evidenceSummary(c)
@@ -64,7 +64,7 @@ export function Ledger({ data }) {
           <h3 className="text-base leading-relaxed font-semibold" title={c.name}>{displayTitle(c)}</h3>
           <p className="mt-2 line-clamp-2 text-sm text-muted">{c.problem}</p>
           <p className="mt-4 text-xs" style={{ color: 'var(--evidence)' }}>{summary.threads} 条需求讨论 · {summary.communities} 个来源社区</p>
-          <p className="mt-1 text-xs text-muted">{hasBuyingEvidence(c) ? '有引用的购买信号 · 待核实' : '预算尚未证实'} · 最近 {c.last_detected}</p>
+          <p className="mt-1 text-xs text-muted">{hasBuyingEvidence(c) ? '购买线索 · 待确认' : '预算待确认'} · 最近 {c.last_detected}</p>
         </a></li>
       })}</ul></div>
       <article className="desk-detail" key={selected.id} aria-label="选中机会详情">
@@ -73,6 +73,6 @@ export function Ledger({ data }) {
         <OpportunitySummary cluster={selected} />
         <ClusterDetail cluster={selected} rubric={data.rubric} />
       </article>
-    </div> : <div className="py-16 text-center"><h3>没有符合条件的机会</h3><p className="mt-2 text-sm text-muted">证据不足时，空白比虚假的推荐更有用。</p><a className="filter-link mt-5 inline-block" href="#/ledger">清除筛选</a></div>}
+    </div> : <div className="py-16 text-center"><h3>暂无匹配机会</h3><a className="filter-link mt-5 inline-block" href="#/ledger">清除筛选</a></div>}
   </div>
 }
