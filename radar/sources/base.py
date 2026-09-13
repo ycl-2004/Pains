@@ -53,7 +53,7 @@ def strip_html(markup: str | None) -> str:
 class SourceAdapter(ABC):
     name: str
     label: str
-    description: str  # shown on the site's method page
+    description: str  # retained as catalog metadata; detailed method text is not shown in the client UI
     # Items with at least this many comments/replies skip the keyword prefilter:
     # heated threads often have no pain words in the title.
     high_engagement_comments: int

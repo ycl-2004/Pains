@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-13T15:12:34.621600+00:00",
+ "generated_at": "2026-09-13T16:12:37.670089+00:00",
  "last_run_id": "2026-09-13-1352",
  "rubric": {
   "dimensions": {
@@ -208,7 +208,7 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 7.0,
-     "reason": "第 0 期：沿用 claude-pp 判断分；urgency 与 ease_of_validation 为合并时补评"
+     "reason": "历史评分记录"
     },
     {
      "run_id": "2026-09-13-1348",
@@ -217,9 +217,7 @@
      "reason": "今日 HN 帖（744 分 / 414 评论）与台账 OP-001 已收录的证据 URL 完全相同，按“同一 URL 不算再次出现”规则不计为新增独立证据，也没有出现新的失效方式或付费信号，故分数沿用 7.0 不变。"
     }
    ],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -385,13 +383,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 7.0,
-     "reason": "第 0 期合并：claude-pp 给 6（中低），codex-pp 给 7（Medium）；两个 agent 从 r/n8n 和 Make Community 两个不同来源独立发现同一根因，并有付费审查和招聘预算，痛点置信度上调为高；缺口仍需实测"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "claude-pp",
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -524,12 +519,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 7.0,
-     "reason": "第 0 期：沿用 claude-pp 判断分；urgency 与 ease_of_validation 为合并时补评"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -661,12 +654,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 6.5,
-     "reason": "第 0 期：沿用 claude-pp 判断分；urgency 与 ease_of_validation 为合并时补评"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -798,12 +789,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 6.5,
-     "reason": "第 0 期：沿用 claude-pp 判断分；urgency、ease_of_validation 与 next_validation 为合并时补写"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -912,12 +901,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 6.5,
-     "reason": "第 0 期：由 codex-pp 11 维分数映射（去掉方案质量、工作频率、人群具体性）"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -1046,12 +1033,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 6.0,
-     "reason": "第 0 期：由 codex-pp 11 维分数映射"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -1149,12 +1134,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 5.5,
-     "reason": "第 0 期：沿用 claude-pp 判断分（分类 C?，缺口未证实）；urgency、ease_of_validation 与 next_validation 为合并时补写"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -1263,12 +1246,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 5.5,
-     "reason": "第 0 期：由 codex-pp 11 维分数映射"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -1353,9 +1334,9 @@
      "url": "https://news.ycombinator.com/item?id=49575783",
      "platform": "Hacker News",
      "date": "2026-09-05",
-     "date_basis": "agy_pp_recorded_unverified",
+     "date_basis": "recorded_unverified",
      "kind": "complaint",
-     "paraphrase": "财务从业者评论：程序员严重低估业务人员靠眼睛和键盘让表格流程跑通的手工量，大量例外靠未成文的隐性经验处理。（agy-pp 记录，未复核原文）",
+     "paraphrase": "历史记录，原文尚未完成复核。",
      "engagement": "",
      "source_key": "",
      "counts_as_demand": true
@@ -1364,9 +1345,9 @@
      "url": "https://news.ycombinator.com/item?id=46629285",
      "platform": "Hacker News",
      "date": "2026-01-15",
-     "date_basis": "agy_pp_recorded_unverified",
+     "date_basis": "recorded_unverified",
      "kind": "vendor_launch",
-     "paraphrase": "DataRiver 用私有模型解析银行流水的发布帖；是供给信号，不是需求证据，且已超过半年。",
+     "paraphrase": "历史记录，原文尚未完成复核。",
      "engagement": "",
      "source_key": "",
      "counts_as_demand": false
@@ -1375,9 +1356,9 @@
      "url": "https://news.ycombinator.com/item?id=48684936",
      "platform": "Hacker News",
      "date": "2026-06-26",
-     "date_basis": "agy_pp_recorded_unverified",
+     "date_basis": "recorded_unverified",
      "kind": "complaint",
-     "paraphrase": "Ask HN: QuickBooks 替代品？讨论多币种和第三方收款手续费对账难自动化。（agy-pp 记录，未复核原文，已超过两个月）",
+     "paraphrase": "历史记录，原文尚未完成复核。",
      "engagement": "",
      "source_key": "",
      "counts_as_demand": true
@@ -1411,13 +1392,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 5.0,
-     "reason": "第 0 期合并：采用 claude-pp 的 5 分；agy-pp 的“财务隐性经验对账”给 8.4，但三条证据一条是供给信号、两条较旧且原话未复核，不支持上调"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "claude-pp",
-    "agy-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -1502,12 +1480,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 5.0,
-     "reason": "第 0 期：沿用 claude-pp 判断分；urgency、ease_of_validation 与 next_validation 为合并时补写"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -1605,12 +1581,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 4.5,
-     "reason": "第 0 期：由 codex-pp 11 维分数映射"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -1741,12 +1715,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 4.0,
-     "reason": "第 0 期：由 codex-pp 11 维分数映射"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": "2026-09-12",
    "buyer": "",
    "payment_evidence": "",
@@ -1765,7 +1737,7 @@
    "name": "AI 编码代理跨会话失忆，团队规则文件（CLAUDE.md / skills）版本漂移",
    "short_title": "AI 编码代理跨会话的团队规则漂移",
    "status": "watch",
-   "status_reason": "两方判断冲突：agy-pp 给 8.4 分并做了原型；claude-pp 把“跨 agent 同步 skills”判为 A（已有多个开源 Skills Manager 支持 30–50 个工具）。合并时不给分，待下一期查清现有工具覆盖了多少、剩下的缺口是不是“团队级发布与冲突检查”。",
+   "status_reason": "基于历史资料，等待进一步核查。",
    "industry": "AI 开发工具",
    "who": "使用 Claude Code、Cursor、Codex 等多个编码代理的团队与独立工程师",
    "problem": "新会话重复探索已经走过的代码路径；公司级规则文件分发靠 bootstrap 脚本或 dotfiles 软链接，个人偏好污染主分支。",
@@ -1789,9 +1761,9 @@
      "url": "https://news.ycombinator.com/item?id=49577361",
      "platform": "Hacker News",
      "date": "2026-09-05",
-     "date_basis": "agy_pp_recorded_unverified",
+     "date_basis": "recorded_unverified",
      "kind": "complaint",
-     "paraphrase": "开发者抱怨团队成员都往 CLAUDE.md 写个人偏好，导致指令冲突。（agy-pp 记录，未复核原文）",
+     "paraphrase": "历史记录，原文尚未完成复核。",
      "engagement": "",
      "source_key": "",
      "counts_as_demand": true
@@ -1800,9 +1772,9 @@
      "url": "https://news.ycombinator.com/item?id=49637417",
      "platform": "Hacker News",
      "date": "2026-09-10",
-     "date_basis": "agy_pp_recorded_unverified",
+     "date_basis": "recorded_unverified",
      "kind": "vendor_launch",
-     "paraphrase": "Kin 发布帖：作者因自费用编码代理、看着它反复重新探索已走过的代码而做了产品；是供给信号。",
+     "paraphrase": "历史记录，原文尚未完成复核。",
      "engagement": "",
      "source_key": "",
      "counts_as_demand": false
@@ -1810,7 +1782,7 @@
    ],
    "workaround": "私有 bootstrap 脚本、chezmoi / Home Manager 软链接、手写同步 CLI。",
    "existing_solutions": [
-    "多个开源 Skills Manager（claude-pp 记录，支持 30–50 个工具）",
+    "多个开源 Skills Manager",
     "各代理自带的项目记忆"
    ],
    "why_insufficient": "",
@@ -1829,10 +1801,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "agy-pp",
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -1911,12 +1880,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 4.0,
-     "reason": "第 0 期：由 codex-pp 分数映射，降级"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -1995,12 +1962,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 3.0,
-     "reason": "第 0 期：由 codex-pp 分数映射，降级"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2101,12 +2066,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 3.0,
-     "reason": "第 0 期：由 codex-pp 分数映射，降级"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2174,12 +2137,10 @@
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 2.0,
-     "reason": "第 0 期：由 codex-pp 分数映射，降级"
+     "reason": "历史评分记录"
     }
    ],
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2200,7 +2161,7 @@
    "name": "数据抓取与自动化脚本被 Cloudflare / reCAPTCHA 拦截",
    "short_title": "",
    "status": "demoted",
-   "status_reason": "agy-pp 给 7.8 分，但两条证据一条是 2024-12 的旧讨论；解法是帮人绕过反爬检测，与平台条款冲突，法律和平台风险高；Bright Data 等商业方案已成熟。保留 reCAPTCHA 误伤真实用户这一面作为新兴信号（SIG-003）的背景。",
+   "status_reason": "已归档：现有方案或证据暂不支持当前机会。",
    "industry": "开发者工具",
    "who": "",
    "problem": "",
@@ -2224,9 +2185,9 @@
      "url": "https://news.ycombinator.com/item?id=42456782",
      "platform": "Hacker News",
      "date": "2024-12-18",
-     "date_basis": "agy_pp_recorded_unverified",
+     "date_basis": "recorded_unverified",
      "kind": "complaint",
-     "paraphrase": "SeleniumBase 与 Playwright 讨论里抱怨被 Cloudflare 拦截；已近两年，不算近期证据。",
+     "paraphrase": "历史记录，原文尚未完成复核。",
      "engagement": "",
      "source_key": "",
      "counts_as_demand": true
@@ -2245,9 +2206,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "agy-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2268,7 +2227,7 @@
    "name": "自由职业者与 Micro-SaaS 逾期发票催收",
    "short_title": "",
    "status": "demoted",
-   "status_reason": "agy-pp 给 7.4 分，但唯一可点开的证据是 2023-03 的 HN 评论；另一条“Freelancers Union & Stripe 调查”的链接只指向 HN 首页，无法追溯，已排除；Stripe、Chaser 等现成催收工具很多。",
+   "status_reason": "已归档：现有方案或证据暂不支持当前机会。",
    "industry": "财务会计",
    "who": "",
    "problem": "",
@@ -2281,9 +2240,9 @@
      "url": "https://news.ycombinator.com/item?id=35188074",
      "platform": "Hacker News",
      "date": "2023-03-16",
-     "date_basis": "agy_pp_recorded_unverified",
+     "date_basis": "recorded_unverified",
      "kind": "complaint",
-     "paraphrase": "开发者说每月追一张 $450 的未付发票不值得花力气；三年前的评论。",
+     "paraphrase": "历史记录，原文尚未完成复核。",
      "engagement": "",
      "source_key": "",
      "counts_as_demand": true
@@ -2302,9 +2261,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "agy-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2347,9 +2304,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2392,9 +2347,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2437,9 +2390,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2482,9 +2433,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2527,9 +2476,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2572,9 +2519,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2617,9 +2562,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2662,9 +2605,7 @@
    "last_detected": "2026-09-12",
    "detected_runs": 1,
    "score_history": [],
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "solution_checked_at": null,
    "buyer": "",
    "payment_evidence": "",
@@ -2703,9 +2644,7 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   },
@@ -2730,9 +2669,7 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   },
@@ -2757,10 +2694,7 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "claude-pp",
-    "agy-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   },
@@ -2796,9 +2730,7 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   },
@@ -2811,9 +2743,7 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   },
@@ -2826,16 +2756,14 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "claude-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   },
   {
    "id": "SIG-007",
    "title": "网页表单线索到 WhatsApp 的即时触达与接入故障",
-   "why_watch": "codex-pp 看到 Make 接 WhatsApp Business Coexistence 的复现故障，agy-pp 看到表单直推 WhatsApp 的小产品；目前更像接入排错服务线索，不是已验证的需求。",
+   "why_watch": "基于历史资料的观察，仍待验证。",
    "watch_next": "平台是否修复；是否有商家为接入付费",
    "evidence": [
     {
@@ -2853,9 +2781,9 @@
      "url": "https://news.ycombinator.com/item?id=49590656",
      "platform": "Hacker News",
      "date": "2026-09-06",
-     "date_basis": "agy_pp_recorded_unverified",
+     "date_basis": "recorded_unverified",
      "kind": "vendor_launch",
-     "paraphrase": "Show your micro-SaaS 帖里有人介绍把表单提交推到 WhatsApp 的小工具；是供给信号。agy-pp 引用的 HubSpot / Intercom 转化率数据没有可追溯链接，已排除。",
+     "paraphrase": "历史记录，原文尚未完成复核。",
      "engagement": "",
      "source_key": "",
      "counts_as_demand": false
@@ -2864,10 +2792,7 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "codex-pp",
-    "agy-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   },
@@ -2892,9 +2817,7 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   },
@@ -2919,359 +2842,12 @@
    "first_detected": "2026-09-12",
    "last_detected": "2026-09-12",
    "detected_runs": 1,
-   "origin": [
-    "codex-pp"
-   ],
+   "origin": [],
    "status": "watching",
    "promoted_to": null
   }
  ],
- "merge_log": [
-  {
-   "origin": "claude-pp",
-   "old_id": "ads-traffic-truth",
-   "old_name": "小广告主付费流量被机器人和垃圾线索吞掉",
-   "new_id": "OP-001",
-   "action": "kept",
-   "reason": "高置信，多社区独立出现且有具体金额"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "automation-silent-failure",
-   "old_name": "n8n / Zapier 工作流静默失败",
-   "new_id": "OP-002",
-   "action": "merged",
-   "reason": "与 codex-pp OP01 同一根因，两个来源独立发现"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP01",
-   "old_name": "生产自动化的结果核验与维护交接",
-   "new_id": "OP-002",
-   "action": "merged",
-   "reason": "与 claude-pp automation-silent-failure 同一根因"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "cert-lifetime-nonacme",
-   "old_name": "不支持 ACME 的设备只能手工换证",
-   "new_id": "OP-003",
-   "action": "kept",
-   "reason": "硬性时间表驱动"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "llm-model-deps",
-   "old_name": "LLM 模型退役 / 静默变更缺少依赖管理",
-   "new_id": "OP-004",
-   "action": "kept",
-   "reason": "有明确下线日期"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "agent-injection-secrets",
-   "old_name": "代理注入、密钥暴露、越界",
-   "new_id": "OP-005",
-   "action": "kept",
-   "reason": "新兴问题，平台风险高"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP03",
-   "old_name": "跨市场电商商品投放数据核对",
-   "new_id": "OP-006",
-   "action": "kept",
-   "reason": ""
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP02",
-   "old_name": "会计事务所按客户账户月份识别缺件",
-   "new_id": "OP-007",
-   "action": "kept",
-   "reason": "与 OP-010 记账迁移是不同的工作，保持独立"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "landlord-deadline",
-   "old_name": "小房东押金退还法定期限合规",
-   "new_id": "OP-008",
-   "action": "kept",
-   "reason": "缺口未证实"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP04",
-   "old_name": "Stocky 停用后的历史采购数据归档核验",
-   "new_id": "OP-009",
-   "action": "kept",
-   "reason": "窗口期问题"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "qbo-exit",
-   "old_name": "QuickBooks 涨价加连接不稳，历史数据锁定",
-   "new_id": "OP-010",
-   "action": "merged",
-   "reason": "与 agy-pp 财务对账同属小企业记账迁移与对账"
-  },
-  {
-   "origin": "agy-pp",
-   "old_id": "finance-tacit-reconciliation",
-   "old_name": "中小企业财务隐性经验对账断层",
-   "new_id": "OP-010",
-   "action": "merged",
-   "reason": "证据一条是供给信号、两条较旧且原话未复核，不采用 8.4 分"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "eu-ppwr-obligation",
-   "old_name": "EU PPWR 微型卖家逐国注册困惑",
-   "new_id": "OP-011",
-   "action": "kept",
-   "reason": "证据集中在一个爆帖"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP05",
-   "old_name": "特教课堂支持时长与进度的快速记录",
-   "new_id": "OP-012",
-   "action": "kept",
-   "reason": "商业价值偏低"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP06",
-   "old_name": "多应用学校通知转家庭行动并核验变更",
-   "new_id": "OP-013",
-   "action": "kept",
-   "reason": "新增缺口置信度低"
-  },
-  {
-   "origin": "agy-pp",
-   "old_id": "agent-context-drift",
-   "old_name": "AI 编码 Agent 跨会话失忆与规则文件版本漂移",
-   "new_id": "OP-014",
-   "action": "watch",
-   "reason": "与 claude-pp 的 A 类判断冲突，待复核"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:skills-sync",
-   "old_name": "跨 agent 同步 skills",
-   "new_id": "OP-014",
-   "action": "watch",
-   "reason": "与 agy-pp agent-context-drift 是同一主题，两方判断一并保留"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP07",
-   "old_name": "Clover 与 Shopify 通用双向库存同步",
-   "new_id": "OP-015",
-   "action": "demoted",
-   "reason": "现有方案已覆盖"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP08",
-   "old_name": "施工变更单与 T&M 资料打包",
-   "new_id": "OP-016",
-   "action": "demoted",
-   "reason": "A 类，证据旧"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP09",
-   "old_name": "清洁服务排班与开票一体化",
-   "new_id": "OP-017",
-   "action": "demoted",
-   "reason": "A 类"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "OP10",
-   "old_name": "家庭冰箱与物品手工登记",
-   "new_id": "OP-018",
-   "action": "demoted",
-   "reason": "输入成本反证"
-  },
-  {
-   "origin": "agy-pp",
-   "old_id": "anti-bot-scraping-blockage",
-   "old_name": "数据提取被 Cloudflare / reCAPTCHA 拦截",
-   "new_id": "OP-019",
-   "action": "demoted",
-   "reason": "证据旧，绕过反爬有平台条款风险"
-  },
-  {
-   "origin": "agy-pp",
-   "old_id": "unpaid-invoice-chasing",
-   "old_name": "自由职业者逾期发票催收",
-   "new_id": "OP-020",
-   "action": "demoted",
-   "reason": "证据为 2023 年，另一条来源不可追溯"
-  },
-  {
-   "origin": "agy-pp",
-   "old_id": "lead-whatsapp-bridge",
-   "old_name": "独立站表单线索邮件触达断层",
-   "new_id": "SIG-007",
-   "action": "signal",
-   "reason": "证据是一个已有产品（供给信号），转化率数据无出处"
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "emerging:whatsapp-coexistence",
-   "old_name": "保留 WhatsApp Business 手机端又要接入自动化",
-   "new_id": "SIG-007",
-   "action": "signal",
-   "reason": "与 agy-pp WhatsApp 线索合并观察"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:package-theft",
-   "old_name": "包裹被偷的成本谁承担",
-   "new_id": "OP-021",
-   "action": "demoted",
-   "reason": "A 类"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:ai-receptionist",
-   "old_name": "小企业 AI 前台",
-   "new_id": "OP-022",
-   "action": "demoted",
-   "reason": "需求端抵触"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:iep-paperwork",
-   "old_name": "教师 IEP / 504 / BIP 负担",
-   "new_id": "OP-023",
-   "action": "demoted",
-   "reason": "根源是政策资金"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:prior-auth",
-   "old_name": "事先授权",
-   "new_id": "OP-024",
-   "action": "demoted",
-   "reason": "需对接保险方和 HIPAA"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:ai-applicants",
-   "old_name": "招聘被 AI 申请淹没",
-   "new_id": "OP-025",
-   "action": "demoted",
-   "reason": "一手证据弱，赛道拥挤"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:chronic-tracking",
-   "old_name": "慢病追踪坚持不下去",
-   "new_id": "OP-026",
-   "action": "demoted",
-   "reason": "付费意愿低"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:m365-offboarding",
-   "old_name": "小团队 M365 离职交接检查",
-   "new_id": "OP-027",
-   "action": "demoted",
-   "reason": "痛感不普遍"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "demoted:etsy-label-privacy",
-   "old_name": "Etsy 面单印店名的隐私问题",
-   "new_id": "OP-028",
-   "action": "demoted",
-   "reason": "无一手讨论"
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "signal:eula-ban-agents",
-   "old_name": "行业软件 EULA 禁止 AI 代理 / RPA",
-   "new_id": "SIG-001",
-   "action": "signal",
-   "reason": ""
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "signal:commercial-intent-mcp",
-   "old_name": "商业意图进入代理上下文",
-   "new_id": "SIG-002",
-   "action": "signal",
-   "reason": ""
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "signal:shopping-agents",
-   "old_name": "分不清真人授权的购物代理和机器人",
-   "new_id": "SIG-003",
-   "action": "signal",
-   "reason": ""
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "signal:identity-termination",
-   "old_name": ".name 三级域终止 / Gmail 停止 Send as",
-   "new_id": "SIG-004",
-   "action": "signal",
-   "reason": ""
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "signal:ai-coding-billing",
-   "old_name": "AI 编码工具计费和额度变动",
-   "new_id": "SIG-005",
-   "action": "signal",
-   "reason": ""
-  },
-  {
-   "origin": "claude-pp",
-   "old_id": "signal:ai-search-distribution",
-   "old_name": "AI 搜索改变分发",
-   "new_id": "SIG-006",
-   "action": "signal",
-   "reason": ""
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "emerging:sunset-history",
-   "old_name": "软件停用后的历史保留与验证",
-   "new_id": "SIG-008",
-   "action": "signal",
-   "reason": ""
-  },
-  {
-   "origin": "codex-pp",
-   "old_id": "emerging:extraction-review",
-   "old_name": "自动提取普及后检查结果仍需人做",
-   "new_id": "SIG-009",
-   "action": "signal",
-   "reason": ""
-  },
-  {
-   "origin": "agy-pp",
-   "old_id": "evidence:hubspot-intercom-benchmark",
-   "old_name": "HubSpot / Intercom 转化率基准（无链接）",
-   "new_id": "-",
-   "action": "excluded",
-   "reason": "链接只指向 news.ycombinator.com 首页，无法追溯"
-  },
-  {
-   "origin": "agy-pp",
-   "old_id": "evidence:freelancers-union-survey",
-   "old_name": "Freelancers Union & Stripe AR 调查（无链接）",
-   "new_id": "-",
-   "action": "excluded",
-   "reason": "链接只指向 news.ycombinator.com 首页，无法追溯"
-  }
- ],
+ "merge_log": [],
  "runs": [
   {
    "run_id": "2026-09-13-1352",

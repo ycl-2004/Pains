@@ -22,6 +22,10 @@ Validation stage and notes are local to this browser/origin under `pain-radar-re
 - New source counters report model-triaged demand, buying and counter signals entering analysis. Legacy reports show unknown values, not zero. They are not precision, unique buyers or conversion rates. Per-source ad/duplicate yield, reading time and dollar allocation remain unmeasured; shared model-call costs cannot honestly be split by source without more instrumentation.
 - Historical `budget_or_payment` labels may include losses under the previous rubric. The UI calls these amount statements, not confirmed purchase evidence. New prompts exclude losses alone from this kind. URL traceability is not semantic verification.
 
+## Retention
+
+The scheduled run performs bounded cleanup after saving each report. Raw fetches are kept for 14 days, run reports for 90 days, ledger snapshots for 180 days, and local model-call audit files for 14 days. Archived clusters remain available for 365 days after their last activity; stale signals are removed after 90 days; each cluster keeps the latest 52 score events. `seen.json` remains capped at 50,000 keys. These windows can be overridden with the corresponding `RADAR_*_RETENTION_DAYS` variables. A manual `radar export` only rebuilds the site and never deletes data.
+
 ## Evaluation and release checks
 
 See [commercial calibration](../evals/README.md): 20 provisional synthetic cases and an offline scorer. Model accuracy, clustering independence and conversion require human-reviewed real samples; unit test success does not establish those outcomes.

@@ -38,9 +38,9 @@ export function Ledger({ data }) {
     .sort(params.sort === 'recent' ? (a, b) => b.last_detected.localeCompare(a.last_detected) : params.sort === 'score' ? byOverall : byOpportunity)
   const selected = rows.find(c => c.id === params.selected) || rows[0]
   const fullLink = c => `#/cluster/${c.id}?return=${encodeURIComponent(ledgerHash(params))}`
-  return <div className="pt-8">
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-      <div><p className="header-context">机会库</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">机会库</h2></div>
+  return <div className="pt-2">
+    <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
+      <div><h2 className="text-2xl font-semibold tracking-tight">机会库</h2></div>
       <p className="max-w-xs text-xs text-muted">按行业、证据和状态查看机会。</p>
     </div>
     <div className="mb-4 flex flex-wrap gap-2">

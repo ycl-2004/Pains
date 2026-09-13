@@ -1,6 +1,6 @@
 import { ArrowLeft, CheckSquare } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { ClusterDetail, EvidenceList, OpportunitySummary, OriginList } from '../components/ClusterDetail'
+import { ClusterDetail, EvidenceList, OpportunitySummary } from '../components/ClusterDetail'
 import { SectionTitle, Tag } from '../components/Chrome'
 import { shortLabel } from '../lib/data'
 import { STATUS } from '../lib/labels'
@@ -36,9 +36,9 @@ export function ClusterPage({ data, id }) {
 export function Signals({ data }) {
   const signals = data.signals.filter((s) => s.status === 'watching').sort((a, b) => b.last_detected.localeCompare(a.last_detected))
   return (
-    <div className="pt-8">
+    <div className="pt-2">
       <SectionTitle>新兴信号</SectionTitle>
-      <ul className="mt-3 divide-y divide-line border-y border-line">
+      {signals.length ? <ul className="mt-3 divide-y divide-line border-y border-line">
         {signals.map((signal) => (
           <li key={signal.id} className="grid gap-x-6 gap-y-3 py-6 md:grid-cols-[4.5rem_1fr]">
             <span className="font-mono text-xs leading-6 text-muted">{signal.id}</span>
@@ -53,12 +53,12 @@ export function Signals({ data }) {
               )}
               {signal.evidence.length > 0 && <EvidenceList evidence={signal.evidence} />}
               <p className="num text-xs text-muted">
-                首次 {signal.first_detected} · 检出 {signal.detected_runs} 次 · 来源 <OriginList origin={signal.origin} />
+                首次 {signal.first_detected} · 检出 {signal.detected_runs} 次
               </p>
             </div>
           </li>
         ))}
-      </ul>
+      </ul> : <div className="empty-state mt-3"><p>暂无新兴信号</p><span>下一次抓取后，新的讨论会出现在这里。</span></div>}
     </div>
   )
 }
@@ -66,9 +66,9 @@ export function Signals({ data }) {
 export function Demoted({ data }) {
   const demoted = data.clusters.filter((cluster) => cluster.status === 'demoted')
   return (
-    <div className="pt-8">
+    <div className="pt-2">
       <SectionTitle>已归档</SectionTitle>
-      <ul className="mt-3 divide-y divide-line border-y border-line">
+      {demoted.length ? <ul className="mt-3 divide-y divide-line border-y border-line">
         {demoted.map((cluster) => (
           <li key={cluster.id} className="grid gap-x-6 gap-y-2 py-5 md:grid-cols-[4.5rem_1fr_3.5rem]">
             <span className="font-mono text-xs leading-6 text-muted">{cluster.id}</span>
@@ -78,14 +78,14 @@ export function Demoted({ data }) {
               <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted">
                 {cluster.industry && <Tag>{cluster.industry}</Tag>}
                 {cluster.solution_class && <Tag>{cluster.solution_class} · {shortLabel(data.rubric.classes[cluster.solution_class])}</Tag>}
-                <span>来源 <OriginList origin={cluster.origin} /></span>
+                <span>最后出现 {cluster.last_detected}</span>
               </div>
               {cluster.evidence.length > 0 && <EvidenceList evidence={cluster.evidence} compact />}
             </div>
             <span className="num font-mono text-sm leading-6 text-muted md:text-right">{cluster.scores?.overall?.toFixed(1) ?? '—'}</span>
           </li>
         ))}
-      </ul>
+      </ul> : <div className="empty-state mt-3"><p>暂无归档机会</p><span>被判定为暂不成立的机会会在这里保留一段时间。</span></div>}
     </div>
   )
 }

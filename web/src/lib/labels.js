@@ -16,8 +16,6 @@ export const STATUS = { active: '活跃', watch: '观察', demoted: '已降级' 
 
 export const LEVEL = { high: '高', medium: '中', low: '低' }
 
-export const ORIGIN = { pipeline: '自动管线' }
-
 export const MERGE_ACTION = {
   merged: '合并',
   kept: '保留',

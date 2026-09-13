@@ -90,6 +90,9 @@ main { scroll-margin-top: 70px; }
 .editorial-title { font-family: var(--font-sans); letter-spacing: -.025em; font-weight: 650; }
 .eyebrow { color: var(--evidence); font: 11px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 .evidence-strip { border-left: 2px solid var(--evidence); background: var(--evidence-soft); padding: 12px 16px; color: var(--evidence); font-size: 12px; }
+.empty-state { border-block: 1px solid var(--line); padding: 40px 16px; text-align: center; color: var(--muted); }
+.empty-state p { color: var(--ink); font-size: 14px; font-weight: 600; }
+.empty-state span { display: block; margin-top: 6px; font-size: 12px; }
 .desk { display: grid; grid-template-columns: minmax(320px, 380px) minmax(0, 1fr); border-top: 1px solid var(--line); }
 .desk-list { border-right: 1px solid var(--line); }
 .desk-detail { min-width: 0; padding: 28px 0 24px 32px; scroll-margin-top: 70px; animation: dossier-in 200ms ease-out; }
@@ -104,7 +107,6 @@ main { scroll-margin-top: 70px; }
 .filter-link:hover { border-color: var(--evidence); color: var(--evidence); }
 details > summary { padding: 12px 0; font-size: 13px; color: var(--muted); }
 @keyframes dossier-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-@media (min-width: 1024px) { .desk-list { max-height: calc(100vh - 140px); overflow-y: auto; position: sticky; top: 70px; align-self: start; } }
 @media (max-width: 767px) {
   .desk { display: block; }
   .desk-list { border: 0; padding: 0; }
@@ -114,7 +116,7 @@ details > summary { padding: 12px 0; font-size: 13px; color: var(--muted); }
 /* App shell: navigation stays quiet while the research work takes the space. */
 .app-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 30; display: flex; width: 224px; flex-direction: column; border-right: 1px solid var(--line); background: var(--surface); padding: 24px 14px 18px; }
 .app-content { min-width: 0; min-height: 100vh; padding-left: 224px; }
-.brand-lockup { display: flex; align-items: center; gap: 10px; padding: 2px 10px 26px; }
+.brand-lockup { display: flex; align-items: center; gap: 10px; padding: 2px 10px 18px; }
 .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--accent); border-radius: 9px; color: var(--accent); }
 .brand-lockup strong { display: block; font-size: 17px; letter-spacing: -.04em; }
 .brand-lockup small, .sidebar-identity small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; }
@@ -142,7 +144,7 @@ details > summary { padding: 12px 0; font-size: 13px; color: var(--muted); }
 .mobile-tab { display: inline-flex; flex: 1 0 auto; align-items: center; justify-content: center; gap: 6px; min-height: 48px; padding: 0 14px; color: var(--muted); font-size: 12px; }
 .mobile-tab[aria-current="page"] { color: var(--accent); box-shadow: inset 0 -2px var(--accent); font-weight: 600; }
 .mobile-tab small { font-size: 10px; }
-.workspace-main { width: 100%; max-width: 1440px; margin: 0 auto; padding: 28px 36px 80px; }
+.workspace-main { width: 100%; max-width: 1440px; margin: 0 auto; padding: 20px 36px 64px; }
 .workspace-footer { border-top: 1px solid var(--line); padding: 20px 36px 28px; color: var(--muted); font-size: 11px; }
 .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
 .section-heading h2 { font-size: 16px; font-weight: 650; letter-spacing: -.01em; }
@@ -157,7 +159,7 @@ details > summary { padding: 12px 0; font-size: 13px; color: var(--muted); }
 .metric-label { color: var(--muted); font-size: 11px; }
 .metric-value { margin-top: 3px; font-size: 22px; font-weight: 650; letter-spacing: -.03em; }
 .metric-note { color: var(--muted); font-size: 11px; }
-.dashboard-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; }
+.dashboard-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
 .panel { border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
 .panel-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); padding: 15px 16px; }
 .panel-header h3 { font-size: 14px; font-weight: 650; }

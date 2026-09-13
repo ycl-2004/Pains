@@ -20,6 +20,7 @@ from radar.sampling import select_items
 from radar.evidence import opportunity_rank, qualification
 from radar.privacy import redact
 from radar.revisit import revisit
+from radar.retention import prune_ledger, prune_reviewed, prune_runtime_data
 
 SEEN_LIMIT = 50_000
 
@@ -167,6 +168,7 @@ def cmd_run(args) -> int:
     temporary = path.with_suffix(".tmp")
     temporary.write_text(json.dumps(previous, ensure_ascii=False))
     temporary.replace(path)
+    prune_reviewed(path, now)
     print(f"{report.run_id}: 初筛 {report.triaged} 条，保留 {report.kept} 条，更新 {len(report.changes)} 个簇，"
           f"新信号 {len(report.new_signals)} 个，花费约 ${budget.spent:.2f}")
     for note in report.notes:
@@ -294,10 +296,12 @@ def run_solution_checks(llm: LLM, ledger: Ledger, report: RunReport, today: str)
 
 def save_run(report: RunReport, ledger: Ledger, seen_now: list[str]) -> None:
     config.RUNS_DIR.mkdir(parents=True, exist_ok=True)
+    prune_ledger(ledger)
     (config.RUNS_DIR / f"{report.run_id}.json").write_text(report.model_dump_json(indent=2), encoding="utf-8")
     ledger_store.save(ledger, config.LEDGER_PATH)
     ledger_store.snapshot(ledger, report.run_id, config.LEDGER_HISTORY_DIR)
     save_seen(seen_now)
+    prune_runtime_data()
     export_site(ledger, config.RUNS_DIR, config.WEB_DATA_DIR)
 
 

@@ -1,6 +1,6 @@
 import { ExternalLink } from 'lucide-react'
 import { shortLabel } from '../lib/data'
-import { KIND, LEVEL, ORIGIN, STATUS } from '../lib/labels'
+import { KIND, LEVEL, STATUS } from '../lib/labels'
 import { Tag } from './Chrome'
 import { evidenceSummary } from '../lib/research'
 import { ValidationNotebook } from './ValidationNotebook'
@@ -27,10 +27,6 @@ function BulletList({ items, ordered = false }) {
       ))}
     </List>
   )
-}
-
-export function OriginList({ origin }) {
-  return (origin ?? []).map((name) => ORIGIN[name] ?? name).join('、')
 }
 
 export function ScoreGrid({ scores, rubric }) {
@@ -136,7 +132,7 @@ export function ClusterDetail({ cluster, rubric }) {
         <Field label="根因">{cluster.root_cause}</Field>
         <Field label="时机判断">{cluster.why_now}</Field>
         <Field label="下次观察">{cluster.watch_next}</Field>
-        <p className="text-xs text-muted">痛点信心 {LEVEL[cluster.pain_confidence]} / 缺口信心 {LEVEL[cluster.gap_confidence]} · 出现 {cluster.detected_runs} 次 · 来源 <OriginList origin={cluster.origin} /></p>
+        <p className="text-xs text-muted">痛点信心 {LEVEL[cluster.pain_confidence]} / 缺口信心 {LEVEL[cluster.gap_confidence]} · 出现 {cluster.detected_runs} 次</p>
         <ScoreGrid scores={cluster.scores} rubric={rubric} />
         <ul className="space-y-2 text-xs text-muted">{cluster.score_history?.map((e, i) => <li key={i}>{e.date} · {e.overall} / {e.reason}</li>)}</ul>
       </div>
