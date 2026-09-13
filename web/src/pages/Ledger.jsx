@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { ClusterDetail } from '../components/ClusterDetail'
+import { ClusterDetail, OpportunitySummary } from '../components/ClusterDetail'
 import { Tag } from '../components/Chrome'
+import { Filter } from 'lucide-react'
 import { byOpportunity, byOverall, hasBuyingEvidence } from '../lib/data'
 import { displayTitle, evidenceSummary, ledgerHash, readResearch } from '../lib/research'
 
@@ -39,28 +40,19 @@ export function Ledger({ data }) {
   const fullLink = c => `#/cluster/${c.id}?return=${encodeURIComponent(ledgerHash(params))}`
   return <div className="pt-8">
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-      <div><p className="eyebrow">Opportunity index</p><h2 className="editorial-title mt-2 text-3xl">找问题，也找不做的理由。</h2></div>
-      <p className="max-w-xs text-xs text-muted">先读证据，再决定是否值得联系买方。分数不代表市场规模或成功概率。</p>
+      <div><p className="header-context">研究工作区</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">机会库</h2></div>
+      <p className="max-w-xs text-xs text-muted">先读证据，再决定是否值得联系买方。讨论数量不等于独立买家数。</p>
     </div>
     <div className="mb-4 flex flex-wrap gap-2">
       <label className="min-w-0 basis-full sm:flex-1 sm:basis-auto"><span className="sr-only">搜索人群、问题、行业</span><input className="research-input w-full" type="search" value={params.q || ''} onChange={e => change('q', e.target.value, true)} placeholder="搜索人群、问题、行业…" /></label>
-      <select className="research-input" aria-label="证据视角" value={params.lens || ''} onChange={e => change('lens', e.target.value)}>
-        <option value="">全部机会</option><option value="buying">有购买证据</option><option value="changed">本期有变化</option><option value="saved">我的验证清单</option>
-      </select>
-      <select className="research-input" aria-label="行业适配" value={params.industry || ''} onChange={e => change('industry', e.target.value)}>
-        <option value="">我熟悉的行业：不限</option>{industries.map(i => <option key={i}>{i}</option>)}
-      </select>
-      <select className="research-input" aria-label="排序" value={params.sort || ''} onChange={e => change('sort', e.target.value)}>
-        <option value="">购买证据优先</option><option value="recent">最近检出</option><option value="score">综合分</option>
-      </select>
-    </div>
-    <details className="mb-4 border-b border-line"><summary>更多筛选 · 适合我 ≠ 机会质量</summary>
-      <div className="mb-4 flex flex-wrap gap-3">
+      <details className="filter-popover"><summary><Filter className="size-3.5" aria-hidden="true" />筛选</summary><div className="filter-popover-body">
+        <select className="research-input" aria-label="证据视角" value={params.lens || ''} onChange={e => change('lens', e.target.value)}><option value="">全部机会</option><option value="buying">有购买来源</option><option value="changed">本期有变化</option><option value="saved">我的验证清单</option></select>
+        <select className="research-input" aria-label="行业适配" value={params.industry || ''} onChange={e => change('industry', e.target.value)}><option value="">行业：不限</option>{industries.map(i => <option key={i}>{i}</option>)}</select>
+        <select className="research-input" aria-label="排序" value={params.sort || ''} onChange={e => change('sort', e.target.value)}><option value="">购买来源优先</option><option value="recent">最近检出</option><option value="score">综合分</option></select>
         <select className="research-input" aria-label="状态" value={params.status || ''} onChange={e => change('status', e.target.value)}><option value="">活跃 + 观察</option><option value="active">活跃</option><option value="watch">观察</option></select>
-        <select className="research-input max-w-full" aria-label="现有方案分类" value={params.class || ''} onChange={e => change('class', e.target.value)}><option value="">全部方案分类</option>{Object.entries(data.rubric.classes).map(([key, label]) => <option key={key} value={key}>{key} · {label}</option>)}</select>
-      </div>
-      <p className="mb-4 text-xs text-muted">行业筛选只表达你的熟悉程度，不会修改机会评分。时间、获客渠道与交付能力请写进验证记录，不由模型替你假定。</p>
-    </details>
+        <select className="research-input max-w-full" aria-label="现有方案分类" value={params.class || ''} onChange={e => change('class', e.target.value)}><option value="">方案分类：全部</option>{Object.entries(data.rubric.classes).map(([key, label]) => <option key={key} value={key}>{key} · {label}</option>)}</select>
+      </div></details>
+    </div>
     <p className="mb-3 text-xs text-muted" role="status">{rows.length} 个研究对象 · 来源讨论数不等于独立买家数</p>
     {rows.length ? <div className="desk">
       <div className="desk-list"><ul>{rows.map(c => {
@@ -76,8 +68,9 @@ export function Ledger({ data }) {
         </a></li>
       })}</ul></div>
       <article className="desk-detail" key={selected.id} aria-label="选中机会详情">
-        <div className="mb-5 flex items-center justify-between gap-2"><span className="eyebrow">Dossier / {selected.id}</span><a className="text-xs text-accent underline" href={fullLink(selected)}>独立打开 ↗</a></div>
-        <h2 className="editorial-title mb-6 text-2xl leading-snug">{displayTitle(selected)}</h2>
+        <div className="mb-5 flex items-center justify-between gap-2"><span className="eyebrow">机会详情 / {selected.id}</span><a className="text-xs text-accent underline" href={fullLink(selected)}>独立打开 ↗</a></div>
+        <h2 className="mb-4 text-xl leading-snug font-semibold tracking-tight">{displayTitle(selected)}</h2>
+        <OpportunitySummary cluster={selected} />
         <ClusterDetail cluster={selected} rubric={data.rubric} />
       </article>
     </div> : <div className="py-16 text-center"><h3>没有符合条件的机会</h3><p className="mt-2 text-sm text-muted">证据不足时，空白比虚假的推荐更有用。</p><a className="filter-link mt-5 inline-block" href="#/ledger">清除筛选</a></div>}

@@ -1,144 +1,58 @@
-import { ArrowRight } from 'lucide-react'
-import { SectionTitle } from '../components/Chrome'
-import { formatDateTime, topOpportunities } from '../lib/data'
+import { ArrowUpRight, CheckCircle2, CircleAlert, Clock3, Database, Filter } from 'lucide-react'
+import { SectionTitle, Tag } from '../components/Chrome'
+import { formatDateTime, hasBuyingEvidence, topOpportunities } from '../lib/data'
 import { displayTitle, evidenceSummary } from '../lib/research'
 
-function RunStatus({ run, data }) {
-  if (!run) {
-    return (
-      <div className="space-y-2 text-sm leading-relaxed">
-        <p>
-          还没有自动运行记录。当前展示的是<strong className="font-semibold">第 0 期基线</strong>：由 claude-pp、codex-pp、agy-pp 三份 2026-09-12 的独立研究去重合并而来，共{' '}
-          <span className="num">{data.merge_log.length}</span> 条合并记录，见“方法与局限”。
-        </p>
-        <p className="text-muted">
-          本地运行 <code className="rounded bg-surface px-1 py-0.5 font-mono text-xs">uv run python -m radar run</code> 即可抓取最新讨论并更新台账。
-        </p>
-      </div>
-    )
-  }
-  const cost = run.cost_usd?.toFixed(2)
-  return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
-        <span className="font-mono">{run.run_id}</span>
-        <span>{({ success: '运行完成', partial: '部分完成，存在未验证环节', failed: '运行失败' })[run.status ?? 'success']}</span>
-        <span className="num">{formatDateTime(run.finished_at)}</span>
-        <span className="num">初筛 {run.triaged} · 保留 {run.kept} · 更新 {run.changes.length} 个簇 · 新信号 {run.new_signals.length}</span>
-        {cost && <span className="num">LLM 花费约 ${cost}</span>}
-      </div>
-      {run.summary && <p className="max-w-3xl text-sm leading-relaxed">{run.summary}</p>}
-      <p className="text-xs text-muted">
-        {run.sources.map((source) => `${source.source} ${source.error ? '失败' : `${source.prefiltered}/${source.fetched}`}`).join(' · ')}
-      </p>
-      <p className="text-xs text-muted">
-        {run.sources.map((source) => `${source.source}：初筛选入 ${source.selected ?? '—'} / 分析 ${source.analyzed ?? '—'}`).join(' · ')}
-      </p>
-      <div className="overflow-x-auto"><table className="w-full text-left text-xs"><caption className="pb-2 text-left text-muted">来源质量观察 · 模型初筛信号，不是已验证需求；— 表示旧运行未记录</caption><thead><tr className="border-b border-line"><th className="py-2">来源</th><th>进入分析</th><th>需求信号</th><th>求购/预算</th><th>反证</th></tr></thead><tbody>{run.sources.map(s => <tr key={s.source} className="border-b border-line"><td className="py-2">{s.source}</td><td>{s.analyzed ?? '—'}</td><td>{s.demand_signals ?? '—'}</td><td>{s.buying_signals ?? '—'}</td><td>{s.counter_signals ?? '—'}</td></tr>)}</tbody></table></div>
-      {run.sources.some((source) => source.warnings?.length) && <p className="text-xs text-muted">采样说明：{run.sources.flatMap((source) => (source.warnings ?? []).map((warning) => `${source.source} ${warning}`)).join('；')}</p>}
-      {run.changes.length === 0 && <p className="text-sm text-muted">本期没有新增或更新的痛点簇，以下为历史候选；不代表本期重新证实了需求。</p>}
-      {run.notes.length > 0 && (
-        <ul className="list-disc space-y-0.5 pl-5 text-xs text-muted">
-          {run.notes.map((note) => (
-            <li key={note}>{note}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
+function Metric({ label, value, note, icon: Icon, tone = 'plain' }) {
+  return <div className="metric-cell">
+    <div className="flex items-center justify-between gap-3"><span className="metric-label">{label}</span>{Icon && <Icon className={`size-4 ${tone === 'accent' ? 'text-accent' : 'text-muted'}`} aria-hidden="true" />}</div>
+    <div className={`metric-value ${tone === 'accent' ? 'text-accent' : ''}`}>{value}</div>
+    <div className="metric-note">{note}</div>
+  </div>
 }
 
-function TopItem({ rank, cluster }) {
+function RunStatus({ run, data }) {
+  if (!run) return <p className="py-4 text-sm text-muted">还没有自动运行记录。当前展示的是基线数据；运行 <code className="rounded bg-surface-alt px-1.5 py-0.5 font-mono text-xs">uv run python -m radar run</code> 可更新研究。</p>
+  const statusText = { success: '运行完成', partial: '部分完成，存在未验证环节', failed: '运行失败' }
+  return <div className="space-y-3 py-3 text-xs text-muted">
+    <div className="flex flex-wrap gap-x-5 gap-y-1"><span className="font-mono">{run.run_id}</span><span>{statusText[run.status ?? 'success']}</span><span className="num">{formatDateTime(run.finished_at)}</span><span>初筛 {run.triaged} · 保留 {run.kept} · 更新 {run.changes.length} 个簇</span>{run.cost_usd != null && <span>LLM 花费约 ${run.cost_usd.toFixed(2)}</span>}</div>
+    {run.summary && <p className="max-w-3xl text-sm leading-relaxed text-ink">{run.summary}</p>}
+    {run.sources.some(source => source.warnings?.length) && <p>采样说明：{run.sources.flatMap(source => (source.warnings ?? []).map(warning => `${source.source} ${warning}`)).join('；')}</p>}
+    {run.notes?.length > 0 && <ul className="list-disc space-y-1 pl-5">{run.notes.map(note => <li key={note}>{note}</li>)}</ul>}
+    {run.changes.length === 0 && <p>本期没有新增或更新的痛点簇；历史候选不代表本期重新证实需求。</p>}
+  </div>
+}
+
+function OpportunityRow({ cluster }) {
   const summary = evidenceSummary(cluster)
-  return <li className="grid gap-4 py-7 sm:grid-cols-[3rem_1fr]">
-    <span className="editorial-title text-3xl text-accent">{String(rank).padStart(2, '0')}</span>
-    <div>
-      <p className="eyebrow mb-2">{cluster.industry || 'Cross-industry'} / {cluster.id}</p>
-      <h3><a href={`#/cluster/${cluster.id}`} className="editorial-title text-2xl leading-snug hover:text-accent">{displayTitle(cluster)}</a></h3>
-      <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">{cluster.problem}</p>
-      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs">
-        <span style={{ color: 'var(--evidence)' }}>{summary.threads} 条需求讨论 · {summary.communities} 个来源社区</span>
-        <span className="text-muted">{cluster.payment_evidence ? '购买信号待核对' : '预算尚未证实'}</span>
-        <span className="text-muted">核查 {cluster.solution_checked_at || '未完成'}</span>
-      </div>
-      <a href={`#/cluster/${cluster.id}`} className="mt-5 inline-flex items-center gap-2 text-sm text-accent">读证据，做判断 <ArrowRight className="size-4" aria-hidden="true" /></a>
-    </div>
-  </li>
+  return <div className="opportunity-row">
+    <div className="min-w-0"><div className="mb-1 flex flex-wrap items-center gap-2"><a href={`#/cluster/${cluster.id}`} className="opportunity-title hover:text-accent">{displayTitle(cluster)}</a>{hasBuyingEvidence(cluster) ? <Tag tone="evidence">购买来源待核实</Tag> : <Tag>预算未证实</Tag>}</div><p className="opportunity-problem">{cluster.problem}</p></div>
+    <div className="opportunity-meta"><strong>目标人群</strong><span className="line-clamp-2">{cluster.who || '待确认'}</span></div>
+    <div className="opportunity-meta"><strong>证据强度</strong><span className="text-evidence">{summary.threads} 条讨论 · {summary.communities} 个社区</span></div>
+    <a href={`#/cluster/${cluster.id}`} className="opportunity-action">查看 <ArrowUpRight className="inline size-3" aria-hidden="true" /></a>
+  </div>
+}
+
+function SourceHealth({ run }) {
+  const sources = run?.sources ?? []
+  return <section className="panel"><div className="panel-header"><h3>来源状态</h3><p>{sources.length ? `${sources.filter(source => !source.error && !source.degraded).length} / ${sources.length} 正常` : '暂无运行'}</p></div><div className="source-health-list">
+    {sources.length ? sources.map(source => <div className="source-health-row" key={source.source}><span className="flex items-center gap-2"><span className={`status-dot ${source.error || source.degraded ? 'is-warn' : ''}`} />{source.source}</span><span>{source.error ? '失败' : `${source.fetched} 条`}</span></div>) : <p className="py-3 text-xs text-muted">运行一次后显示抓取数量和健康状态。</p>}
+  </div></section>
 }
 
 export function Latest({ data }) {
   const run = data.runs[0]
-  const top = topOpportunities(data)
-  const byId = new Map(data.clusters.map((cluster) => [cluster.id, cluster]))
-  const newSignals = data.signals.filter((signal) => run?.new_signals.includes(signal.id))
-
-  return (
-    <div className="space-y-12 pt-8">
-      <section className="grid gap-6 border-b border-line pb-8 md:grid-cols-[1fr_18rem]">
-        <div><p className="eyebrow">Field notes / 商业机会研究</p>
-          <h2 className="editorial-title mt-3 text-4xl leading-tight sm:text-5xl">下一款产品，<br />从真实的<span className="text-accent">麻烦</span>开始。</h2>
-          <p className="mt-5 max-w-xl text-sm text-muted">谁反复遇到问题？现在花了什么代价？为什么现有工具不够？先找到证据，再写第一行代码。</p>
-        </div>
-        <aside className="flex flex-col justify-end gap-3 border-l-2 border-line pl-5">
-          <p className="eyebrow">本期阅读提示</p>
-          <p className="text-sm">{run?.changes.length ? `${run.changes.length} 个研究对象发生变化。` : '本期没有新增或更新的痛点簇。'} 历史候选不代表本期重新证实了需求。</p>
-          <a className="action self-start" href="#/ledger">打开机会工作台 ↗</a>
-        </aside>
-      </section>
-
-      <div className="flex flex-wrap gap-2" aria-label="研究入口">
-        <a className="filter-link" href="#/ledger?lens=buying">有购买证据</a>
-        <a className="filter-link" href="#/ledger?lens=changed">本期有变化</a>
-        <a className="filter-link" href="#/ledger?lens=saved">我的验证清单</a>
-      </div>
-
-      <section>
-          <SectionTitle note="有引用的购买证据优先；仍需验证预算">优先验证候选</SectionTitle>
-        <ol className="mt-3 divide-y divide-line border-y border-line">
-          {top.map((cluster, index) => (
-            <TopItem key={cluster.id} rank={index + 1} cluster={cluster} rubric={data.rubric} />
-          ))}
-        </ol>
-        {top.length === 0 && <p className="py-6 text-sm text-muted">暂无证据和核查状态达标的候选。可到痛点台账查看观察项。</p>}
-      </section>
-
-      <details className="border-y border-line"><summary>数据健康与运行记录 · {run?.status === 'failed' ? '运行失败' : run?.status === 'partial' ? '部分完成' : run ? '最近运行完成' : '基线数据'}</summary><div className="pb-5"><RunStatus run={run} data={data} /></div></details>
-
-      {run?.changes.length > 0 && (
-        <section>
-          <SectionTitle>本期变化</SectionTitle>
-          <ul className="mt-3 divide-y divide-line border-y border-line">
-            {run.changes.map((change) => (
-              <li key={change.cluster_id} className="grid gap-1 py-3 text-sm sm:grid-cols-[4.5rem_1fr_6rem]">
-                <span className="font-mono text-xs leading-6 text-muted">{change.cluster_id}</span>
-                <div>
-                  <a href={`#/cluster/${change.cluster_id}`} className="font-medium hover:text-accent">
-                    {byId.get(change.cluster_id)?.name}
-                  </a>
-                  <p className="text-muted">{change.reason}</p>
-                </div>
-                <span className="num font-mono sm:text-right">
-                  {change.action === 'created' ? `新建 ${change.overall_after}` : `${change.overall_before ?? '—'} → ${change.overall_after}`}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {newSignals.length > 0 && (
-        <section>
-          <SectionTitle>本期新信号</SectionTitle>
-          <ul className="mt-3 space-y-2 text-sm">
-            {newSignals.map((signal) => (
-              <li key={signal.id}>
-                <a href="#/signals" className="font-medium hover:text-accent">{signal.title}</a>
-                <span className="text-muted"> — {signal.why_watch}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </div>
-  )
+  const opportunities = topOpportunities(data)
+  const tracked = data.clusters.filter(cluster => cluster.status !== 'demoted').length
+  const buying = data.clusters.filter(hasBuyingEvidence).length
+  const newSignals = data.signals.filter(signal => run?.new_signals?.includes(signal.id))
+  return <div className="page-stack">
+    <div className="page-intro"><div><p className="header-context">{run?.finished_at ? <time className="num">{formatDateTime(run.finished_at).split(' ')[0]}</time> : '基线数据'}</p><h2>今天的研究</h2><p className="mt-1">从公开讨论里筛出值得联系买方、验证预算和成本的产品机会。</p></div><p className="max-w-sm">优先读“需要你判断”的条目。综合分只是内部判断，不代表市场规模或成交概率。</p></div>
+    <div className="metrics-strip" aria-label="研究摘要"><Metric label="新信号" value={run?.new_signals?.length ?? 0} note="最近一期" icon={WavesIcon} /><Metric label="需要你判断" value={opportunities.length} note="证据与核查达标" icon={CircleAlert} tone="accent" /><Metric label="购买来源" value={buying} note="需打开原文核实" icon={CheckCircle2} /><Metric label="持续追踪" value={tracked} note="活跃 + 观察" icon={Clock3} /></div>
+    <section className="panel"><div className="panel-header"><div><h3>需要你判断</h3><p className="mt-1">先验证付款方和预算，再决定是否开发</p></div><a href="#/ledger" className="header-link">打开机会库 <ArrowUpRight className="size-3" aria-hidden="true" /></a></div><div className="opportunity-table">{opportunities.length ? opportunities.slice(0, 5).map(cluster => <OpportunityRow key={cluster.id} cluster={cluster} />) : <div className="p-6 text-sm text-muted">暂无达到门槛的候选。证据不足时，空白比虚假的推荐更有用。</div>}</div></section>
+    <div className="dashboard-grid"><div className="grid gap-6"><section className="panel"><div className="panel-header"><div><h3>新兴信号</h3><p className="mt-1">单条证据弱，但值得继续盯</p></div><a href="#/signals" className="header-link">查看全部 <ArrowUpRight className="size-3" aria-hidden="true" /></a></div>{newSignals.length ? <ul className="side-list">{newSignals.slice(0, 4).map(signal => <li key={signal.id}><a href="#/signals" className="hover:text-accent">{signal.title}</a><p>{signal.why_watch}</p></li>)}</ul> : <p className="px-4 py-5 text-sm text-muted">本期没有新信号。历史观察项不会冒充今天的新发现。</p>}</section></div><div className="grid content-start gap-6"><SourceHealth run={run} /><section className="panel"><div className="panel-header"><h3>研究入口</h3><Filter className="size-4 text-muted" aria-hidden="true" /></div><div className="flex flex-wrap gap-2 p-4"><a className="filter-link" href="#/ledger?lens=buying">有购买来源</a><a className="filter-link" href="#/ledger?lens=changed">本期有变化</a><a className="filter-link" href="#/ledger?lens=saved">我的验证清单</a></div></section></div></div>
+    <details className="run-details"><summary>数据健康与运行记录</summary><RunStatus run={run} data={data} /></details>
+  </div>
 }
+
+function WavesIcon(props) { return <Database {...props} /> }

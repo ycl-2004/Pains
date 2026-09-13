@@ -55,7 +55,7 @@ export function EvidenceList({ evidence, compact = false }) {
       {evidence.map((item) => (
         <li key={item.url} className="py-2.5">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
-            <Tag tone={item.counts_as_demand ? 'accent' : 'plain'} title={item.counts_as_demand ? '计入需求证据' : '不计入需求证据'}>
+            <Tag tone={item.counts_as_demand ? 'evidence' : 'plain'} title={item.counts_as_demand ? '计入需求证据' : '不计入需求证据'}>
               {item.kind === 'budget_or_payment' ? '金额陈述 · 需核实' : KIND[item.kind] ?? item.kind}
             </Tag>
             <span>{item.platform}</span>
@@ -71,6 +71,17 @@ export function EvidenceList({ evidence, compact = false }) {
       ))}
     </ul>
   )
+}
+
+export function OpportunitySummary({ cluster }) {
+  const summary = evidenceSummary(cluster)
+  const buyerSignal = cluster.payment_evidence && cluster.buying_evidence_urls?.length ? '有引用 · 待核实' : '尚未确认'
+  return <div className="opportunity-summary" aria-label="机会摘要">
+    <div><span>目标人群</span><strong>{cluster.who || '待确认'}</strong></div>
+    <div><span>证据强度</span><strong className="text-evidence">{summary.threads} 条讨论 · {summary.communities} 个社区</strong></div>
+    <div><span>买方信号</span><strong>{buyerSignal}</strong></div>
+    <div><span>最近变化</span><strong className="num">{cluster.last_detected || '—'}</strong></div>
+  </div>
 }
 
 export function ClusterDetail({ cluster, rubric }) {

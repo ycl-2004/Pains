@@ -1,9 +1,10 @@
-import { ArrowLeft } from 'lucide-react'
-import { ClusterDetail, EvidenceList, OriginList } from '../components/ClusterDetail'
+import { ArrowLeft, CheckSquare } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ClusterDetail, EvidenceList, OpportunitySummary, OriginList } from '../components/ClusterDetail'
 import { SectionTitle, Tag } from '../components/Chrome'
 import { shortLabel } from '../lib/data'
 import { LEVEL, MERGE_ACTION, STATUS } from '../lib/labels'
-import { displayTitle } from '../lib/research'
+import { displayTitle, readResearch, STAGES } from '../lib/research'
 
 export function ClusterPage({ data, id }) {
   const cluster = data.clusters.find((item) => item.id === id)
@@ -22,6 +23,7 @@ export function ClusterPage({ data, id }) {
             {cluster.industry && <Tag>{cluster.industry}</Tag>}
           </div>
           <h2 className="editorial-title mt-2 mb-8 max-w-3xl text-3xl leading-snug">{displayTitle(cluster)}</h2>
+          <OpportunitySummary cluster={cluster} />
           <ClusterDetail cluster={cluster} rubric={data.rubric} />
         </article>
       ) : (
@@ -86,6 +88,19 @@ export function Demoted({ data }) {
       </ul>
     </div>
   )
+}
+
+export function Validation({ data }) {
+  const [records, setRecords] = useState({})
+  useEffect(() => {
+    try { setRecords(readResearch()) } catch { setRecords({}) }
+  }, [])
+  const rows = Object.entries(records).map(([id, record]) => ({ cluster: data.clusters.find(cluster => cluster.id === id), id, record })).filter(row => row.cluster)
+  return <div className="page-stack">
+    <div className="page-intro"><div><p className="header-context">研究工作区</p><h2>验证清单</h2><p className="mt-1">把公开证据变成自己的访谈、预算和试点记录。这里的判断不会改变公共台账。</p></div></div>
+    <section className="panel"><div className="panel-header"><div><h3>我的验证记录</h3><p className="mt-1">仅保存在当前浏览器，可在机会详情中编辑</p></div><a className="header-link" href="#/ledger">添加机会 <span aria-hidden="true">↗</span></a></div>{rows.length ? <ul className="side-list">{rows.map(({ cluster, id, record }) => <li key={id}><div className="flex flex-wrap items-center justify-between gap-3"><a href={`#/cluster/${id}`} className="text-sm hover:text-accent">{displayTitle(cluster)}</a><Tag tone={record.stage === 'pilot' ? 'success' : record.stage === 'rejected' ? 'plain' : 'accent'}>{STAGES[record.stage]}</Tag></div><p>{record.note || '还没有文字记录。'}</p><p className="mt-2 num text-[10px]">{record.updated ? `更新于 ${record.updated.slice(0, 10)}` : '尚未更新'}</p></li>)}</ul> : <div className="p-8 text-center"><CheckSquare className="mx-auto size-7 text-muted" aria-hidden="true" /><h3 className="mt-3 text-sm font-semibold">还没有验证记录</h3><p className="mt-1 text-xs text-muted">打开一个机会，在详情页记录买方、成本和试点结果。</p><a href="#/ledger" className="action mt-4">浏览机会库</a></div>}</section>
+    <p className="text-xs text-muted">记录存储在浏览器的 pain-radar-research-v1 中；清除浏览器数据前请导出备份。</p>
+  </div>
 }
 
 const PIPELINE = [

@@ -2,9 +2,9 @@
 
 ## Visual decisions
 
-The app uses a portable subset of `YC_Brand_Style/tokens.css`, not its demo JavaScript. Paper `#FFFDF8`, wine `#B23A48` for judgment/actions, denim `#346294` for evidence, ink `#1A1A2E`. Wine is not an error color. Dark mode uses lighter semantic counterparts. System serif fallbacks give headings an editorial voice without remote font dependencies; controls remain sans-serif.
+The app uses a portable subset of `YC_Brand_Style/tokens.css`, not its demo JavaScript. The neutral work surface is paired with wine `#8E2C3A` for judgment/actions and denim `#346294` for evidence, with YC paper tones retained in the source tokens. Wine is not an error color. Dark mode uses lighter semantic counterparts. The app is sans-first; mono is reserved for IDs and dates so the interface reads like a working tool, not a generated editorial page.
 
-The brief leads with opportunities, not run logs. The workbench is 40/60 list–dossier at desktop widths, and list-to-detail navigation below 768px. Full titles and source paraphrases remain available. Fourteen baseline `short_title` additions are editorial abbreviations only; no score, evidence, dates or historical judgments were changed. Future analysis can supply a maximum-32-character short title.
+The fixed desktop sidebar groups Today, Opportunities, Signals, Validation and Archive; mobile uses a compact horizontal navigation. Today leads with a light summary strip, a “needs your judgment” table, signals and source health. The workbench is a dense ~380px list plus detail at desktop widths, and list-to-detail navigation below 768px. Full titles and source paraphrases remain available. Fourteen baseline `short_title` additions are display abbreviations only; no score, evidence, dates or historical judgments were changed. Future analysis can supply a maximum-32-character short title.
 
 Motion is a 200ms opacity/translation entrance when changing dossiers. Native details replace the broken conditional-mount accordion. Reduced-motion, keyboard focus, skip-to-content and small-screen overflow are checked.
 

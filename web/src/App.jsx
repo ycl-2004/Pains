@@ -1,11 +1,11 @@
-import { Footer, Header, Tabs } from './components/Chrome'
+import { Footer, Header, Sidebar, Tabs } from './components/Chrome'
 import { useRadarData } from './lib/data'
 import { useHashRoute } from './lib/useHashRoute'
 import { Latest } from './pages/Latest'
 import { Ledger } from './pages/Ledger'
-import { ClusterPage, Demoted, Method, Signals } from './pages/Other'
+import { ClusterPage, Demoted, Method, Signals, Validation } from './pages/Other'
 
-const PAGES = { latest: Latest, ledger: Ledger, signals: Signals, demoted: Demoted, method: Method }
+const PAGES = { latest: Latest, ledger: Ledger, signals: Signals, validation: Validation, demoted: Demoted, method: Method }
 
 export default function App() {
   const { data, error } = useRadarData()
@@ -27,14 +27,17 @@ export default function App() {
   const Page = PAGES[section] ?? Latest
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="app-shell min-h-screen">
       <a className="skip-link" href="#main-content" onClick={event => { event.preventDefault(); document.getElementById('main-content')?.focus() }}>跳到内容</a>
-      <Header data={data} />
-      <Tabs current={section} counts={counts} />
-      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1240px] flex-1 px-4 pb-24 sm:px-8">
-        {section === 'cluster' ? <ClusterPage data={data} id={param} /> : <Page data={data} />}
-      </main>
-      <Footer />
+      <Sidebar data={data} current={section} counts={counts} />
+      <div className="app-content">
+        <Header data={data} section={section} />
+        <Tabs current={section} counts={counts} />
+        <main id="main-content" tabIndex={-1} className="workspace-main">
+          {section === 'cluster' ? <ClusterPage data={data} id={param} /> : <Page data={data} />}
+        </main>
+        <Footer />
+      </div>
     </div>
   )
 }
