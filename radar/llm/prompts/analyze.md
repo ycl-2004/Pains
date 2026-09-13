@@ -23,6 +23,8 @@
 
 输出要求：
 - 所有文字字段用简体中文，产品名和技术名保持原文。
+- short_title 用不超过 32 个字概括核心任务与阻力，不写趋势、评分或未经证实的商业结论；name 保留完整研究标题。
+- refresh_scope=replies_only 时仅把回复视为本次新核对内容，body 可能是旧转述，不得宣称完整原帖已复查。
 - 对已有簇：没有新内容的文本字段填空字符串，列表填空列表，系统会保留原值；`scores` 必须完整给出（沿用或调整）。
 - 新建簇：所有文本字段都要填写，`next_validation` 写 1–3 个一周内能做完的具体验证动作。
 - `new_evidence` 每条必须来自 `<signals>` 里的 url；`date` 用原帖日期（YYYY-MM-DD），`date_basis` 填 "post_date"，`engagement` 写成“N 分 / N 评论”。

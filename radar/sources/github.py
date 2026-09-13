@@ -63,7 +63,7 @@ class GitHubIssues(SourceAdapter):
     def attach_thread(self, item):
         repo, number = item.external_id.split("#")
         current = self._parse(repo, self.get_json(f"{API}/repos/{repo}/issues/{number}", headers=self._headers()))
-        return super().attach_thread(current)
+        return super().attach_thread(current).model_copy(update={"refresh_scope": "original_and_replies"})
 
     def _headers(self) -> dict[str, str]:
         headers = {"Accept": "application/vnd.github+json"}

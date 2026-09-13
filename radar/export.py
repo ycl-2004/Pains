@@ -7,6 +7,7 @@ from pathlib import Path
 from radar.models import Ledger, RunReport
 from radar.registry import SOURCES
 from radar.scoring import DIMENSIONS, LEVELS, SOLUTION_CLASSES
+from radar.evidence import qualification
 
 MAX_RUNS_EXPORTED = 30
 
@@ -23,7 +24,7 @@ def export_site(ledger: Ledger, runs_dir: Path, out_dir: Path) -> Path:
         "rubric": {"dimensions": DIMENSIONS, "classes": SOLUTION_CLASSES, "levels": LEVELS},
         "sources": [{"name": s.name, "label": s.label, "description": s.description,
                      "business_source": s.business_source, "coverage": s.coverage_note} for s in SOURCES],
-        "clusters": [cluster.model_dump(mode="json") for cluster in ledger.clusters],
+        "clusters": [{**cluster.model_dump(mode="json"), "qualification": qualification(cluster)} for cluster in ledger.clusters],
         "signals": [signal.model_dump(mode="json") for signal in ledger.signals],
         "merge_log": [record.model_dump(mode="json") for record in ledger.merge_log],
         "runs": [

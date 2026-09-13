@@ -115,6 +115,7 @@ def signals_payload(signals: list[tuple[RawItem, TriageVerdict]]) -> str:
                 "engagement": f"{item.score} 分 / {item.comments} 评论",
                 "top_replies": item.thread[:5],
                 "resolved": item.resolved,
+                "refresh_scope": item.refresh_scope,
                 "updated_at": item.updated_at.isoformat() if item.updated_at else None,
                 "triage": verdict.model_dump(include={"who", "pain", "loss", "workaround", "kind"}),
             }

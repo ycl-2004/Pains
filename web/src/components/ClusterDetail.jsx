@@ -2,6 +2,8 @@ import { ExternalLink } from 'lucide-react'
 import { shortLabel } from '../lib/data'
 import { KIND, LEVEL, ORIGIN, STATUS } from '../lib/labels'
 import { Tag } from './Chrome'
+import { evidenceSummary } from '../lib/research'
+import { ValidationNotebook } from './ValidationNotebook'
 
 function Field({ label, children, hint }) {
   if (children == null || children === '' || (Array.isArray(children) && children.length === 0)) return null
@@ -54,7 +56,7 @@ export function EvidenceList({ evidence, compact = false }) {
         <li key={item.url} className="py-2.5">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
             <Tag tone={item.counts_as_demand ? 'accent' : 'plain'} title={item.counts_as_demand ? '计入需求证据' : '不计入需求证据'}>
-              {KIND[item.kind] ?? item.kind}
+              {item.kind === 'budget_or_payment' ? '金额陈述 · 需核实' : KIND[item.kind] ?? item.kind}
             </Tag>
             <span>{item.platform}</span>
             {item.date && <span className="num">{item.date}</span>}
@@ -72,89 +74,65 @@ export function EvidenceList({ evidence, compact = false }) {
 }
 
 export function ClusterDetail({ cluster, rubric }) {
-  const classText = cluster.solution_class ? rubric.classes[cluster.solution_class] : null
-  return (
-    <div className="space-y-8">
-      {cluster.status_reason && (
-        <p className="border-l-2 border-accent pl-3 text-sm leading-relaxed">
-          <span className="text-muted">{STATUS[cluster.status]}说明：</span>
-          {cluster.status_reason}
-        </p>
-      )}
-
-      <div className="grid gap-8 md:grid-cols-[1fr_16rem]">
-        <div className="space-y-5">
-          <Field label="谁在痛">{cluster.who}</Field>
-          <Field label="谁批准花钱">{cluster.buyer || '尚未确认付款方'}</Field>
-          <Field label="购买或预算证据">{cluster.payment_evidence || '未记录明确购买或预算证据；损失金额不等于愿意付费。'}</Field>
-          {cluster.buying_evidence_urls?.length > 0 && <Field label="购买证据原文">
-            <ul className="space-y-1">
-              {cluster.buying_evidence_urls.map((url, index) => <li key={url}><a href={url} target="_blank" rel="noopener noreferrer" className="text-accent underline underline-offset-4">购买或预算来源 {index + 1}</a></li>)}
-            </ul>
-          </Field>}
-          <Field label="当前成本">{cluster.current_cost || '待核实手工耗时、现有工具支出和切换成本'}</Field>
-          <Field label="问题">{cluster.problem}</Field>
-          <Field label="他们现在怎么凑合">{cluster.workaround}</Field>
-          <Field label="现有方案">
-            <BulletList items={cluster.existing_solutions} />
-          </Field>
-          <Field label="为什么还不够">{cluster.why_insufficient}</Field>
-          <Field label="根因" hint="推断">{cluster.root_cause}</Field>
-          <Field label="为什么是现在">{cluster.why_now}</Field>
-          <Field label="机会假设" hint="推断">{cluster.opportunity_hypothesis}</Field>
-        </div>
-
-        <aside className="space-y-5">
-          <ScoreGrid scores={cluster.scores} rubric={rubric} />
-          <dl className="space-y-1.5 text-xs">
-            {[
-              ['现有方案分类', classText && `${cluster.solution_class} · ${shortLabel(classText)}`],
-              ['痛点置信度', LEVEL[cluster.pain_confidence]],
-              ['缺口置信度', LEVEL[cluster.gap_confidence]],
-              ['检出次数', cluster.detected_runs],
-              ['首次 / 最近', `${cluster.first_detected} / ${cluster.last_detected}`],
-              ['方案核查', cluster.solution_checked_at],
-              ['来源', <OriginList key="origin" origin={cluster.origin} />],
-            ]
-              .filter(([, value]) => value != null && value !== '')
-              .map(([label, value]) => (
-                <div key={label} className="flex justify-between gap-3">
-                  <dt className="text-muted">{label}</dt>
-                  <dd className="num text-right">{value}</dd>
-                </div>
-              ))}
-          </dl>
-          <Field label="下次看什么">{cluster.watch_next}</Field>
-        </aside>
-      </div>
-
-      <div className="grid gap-8 md:grid-cols-2">
-        <Field label="反方论证：为什么可能不是机会">
-          <BulletList items={cluster.contrarian} />
-        </Field>
-        <Field label="下一步验证">
-          <BulletList items={cluster.next_validation} ordered />
-        </Field>
-      </div>
-
-      {cluster.score_history?.length > 0 && (
-        <Field label="分数变化">
-          <ol className="space-y-1.5">
-            {cluster.score_history.map((event) => (
-              <li key={event.run_id} className="flex gap-3 text-sm">
-                <span className="num w-24 shrink-0 font-mono text-xs leading-6 text-muted">{event.date}</span>
-                <span className="num w-8 shrink-0 font-mono leading-6">{event.overall}</span>
-                <span className="text-muted">{event.reason}</span>
-              </li>
-            ))}
-          </ol>
-        </Field>
-      )}
-
-      <div>
-        <h4 className="mb-2 text-xs font-medium text-muted">证据（{cluster.evidence?.length ?? 0} 条，高亮的计入需求）</h4>
-        <EvidenceList evidence={cluster.evidence} />
-      </div>
+  const summary = evidenceSummary(cluster)
+  const demand = (cluster.evidence || []).filter(e => e.counts_as_demand)
+  const strongest = [...demand].sort((a, b) => Number(cluster.buying_evidence_urls?.includes(b.url)) - Number(cluster.buying_evidence_urls?.includes(a.url))).slice(0, 3)
+  const unknown = [!cluster.buyer && '付款决策人', !cluster.payment_evidence && '明确预算', !cluster.current_cost && '当前成本'].filter(Boolean)
+  return <div className="space-y-6">
+    <div>
+      <p className="text-base leading-relaxed">{cluster.problem}</p>
+      <p className="mt-3 text-sm text-muted">使用者 · {cluster.who}</p>
+      {cluster.status_reason && <p className="mt-3 text-xs text-muted">{STATUS[cluster.status]} · {cluster.status_reason}</p>}
     </div>
-  )
+    <div className="evidence-strip">
+      <p>{summary.threads} 条需求讨论 · {summary.communities} 个来源社区</p>
+      <p className="mt-1">{summary.span}</p>
+      <p className="mt-1">方案核查：{cluster.solution_checked_at || '尚未核查'} · 讨论数不等于独立买家数</p>
+      {cluster.qualification && <p className="mt-1">{cluster.qualification.eligible && Date.parse(cluster.qualification.expires_at) > Date.now() ? '候选资料门槛达标，需求仍待验证' : cluster.qualification.reasons?.join('；') || '方案核查已过期，等待复查'}</p>}
+    </div>
+    <section className="dossier-section">
+      <h3>01 / 买方证据</h3>
+      {unknown.length > 0 && <p className="mb-4 rounded-lg bg-surface p-3 text-sm text-muted">待确认：{unknown.join('、')}。有损失不等于愿意付费。</p>}
+      <div className="mb-4 space-y-3">
+        <Field label="付款方">{cluster.buyer}</Field>
+        <Field label="购买信号 · 模型转述，需核对原文">{cluster.payment_evidence}</Field>
+        <Field label="当前成本">{cluster.current_cost}</Field>
+        {cluster.buying_evidence_urls?.length > 0 && <ul className="text-xs text-accent">{cluster.buying_evidence_urls.map((url, i) => <li key={url}><a href={url} target="_blank" rel="noopener noreferrer" className="underline">购买来源 {i + 1} ↗</a></li>)}</ul>}
+      </div>
+      <EvidenceList evidence={strongest} />
+      <p className="mt-2 text-xs text-muted">优先展示已关联的购买来源。历史“金额”标签可能只是损失，并不证实预算。文字为转述，不是直接引语。</p>
+    </section>
+    <section className="dossier-section">
+      <h3>02 / 缺口在哪里</h3>
+      <div className="space-y-4">
+        <Field label="现有 workaround">{cluster.workaround}</Field>
+        <Field label="已有替代方案"><BulletList items={cluster.existing_solutions} /></Field>
+        <Field label="仍未解决">{cluster.why_insufficient}</Field>
+        <Field label="机会假设" hint="推断">{cluster.opportunity_hypothesis}</Field>
+      </div>
+    </section>
+    <section className="dossier-section">
+      <h3>03 / 为什么可能不值得做</h3>
+      <div className="text-sm leading-relaxed"><BulletList items={cluster.contrarian} /></div>
+      {!(cluster.contrarian?.length) && <p className="text-sm text-muted">尚未记录反方论证，不能视为没有风险。</p>}
+    </section>
+    <section className="dossier-section">
+      <h3>04 / 下一次验证</h3>
+      <div className="text-sm leading-relaxed"><BulletList items={cluster.next_validation} ordered /></div>
+      <p className="mt-3 text-xs text-muted">先核实谁付款、是否反复发生、能否触达客户，再决定是否开发。</p>
+    </section>
+    <ValidationNotebook key={cluster.id} id={cluster.id} />
+    <details className="dossier-section"><summary>全部来源 · {cluster.evidence?.length || 0} 条（含反证与方案引用）</summary><EvidenceList evidence={cluster.evidence} /></details>
+    <details className="dossier-section"><summary>研究底稿、分数与历史</summary>
+      <div className="space-y-5 py-3">
+        <Field label="原始完整标题">{cluster.name}</Field>
+        <Field label="根因" hint="推断">{cluster.root_cause}</Field>
+        <Field label="时机判断">{cluster.why_now}</Field>
+        <Field label="下次观察">{cluster.watch_next}</Field>
+        <p className="text-xs text-muted">痛点置信 {LEVEL[cluster.pain_confidence]} / 缺口置信 {LEVEL[cluster.gap_confidence]} · 检出 {cluster.detected_runs} 次 · 来源 <OriginList origin={cluster.origin} /></p>
+        <ScoreGrid scores={cluster.scores} rubric={rubric} />
+        <ul className="space-y-2 text-xs text-muted">{cluster.score_history?.map((e, i) => <li key={i}>{e.date} · {e.overall} / {e.reason}</li>)}</ul>
+      </div>
+    </details>
+  </div>
 }

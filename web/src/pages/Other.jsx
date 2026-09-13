@@ -3,12 +3,14 @@ import { ClusterDetail, EvidenceList, OriginList } from '../components/ClusterDe
 import { SectionTitle, Tag } from '../components/Chrome'
 import { shortLabel } from '../lib/data'
 import { LEVEL, MERGE_ACTION, STATUS } from '../lib/labels'
+import { displayTitle } from '../lib/research'
 
 export function ClusterPage({ data, id }) {
   const cluster = data.clusters.find((item) => item.id === id)
+  const back = new URLSearchParams(window.location.hash.split('?')[1]).get('return')
   return (
-    <div className="pt-6">
-      <a href="#/ledger" className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink">
+    <div className="mx-auto max-w-3xl pt-6">
+      <a href={back?.startsWith('#/ledger') ? back : '#/ledger'} className="inline-flex items-center gap-1 text-sm text-muted hover:text-ink">
         <ArrowLeft className="size-3.5" aria-hidden="true" />
         痛点台账
       </a>
@@ -19,7 +21,7 @@ export function ClusterPage({ data, id }) {
             <Tag tone={cluster.status === 'active' ? 'plain' : 'accent'}>{STATUS[cluster.status]}</Tag>
             {cluster.industry && <Tag>{cluster.industry}</Tag>}
           </div>
-          <h2 className="mt-2 mb-8 max-w-3xl text-2xl leading-snug font-semibold tracking-tight">{cluster.name}</h2>
+          <h2 className="editorial-title mt-2 mb-8 max-w-3xl text-3xl leading-snug">{displayTitle(cluster)}</h2>
           <ClusterDetail cluster={cluster} rubric={data.rubric} />
         </article>
       ) : (
@@ -87,7 +89,7 @@ export function Demoted({ data }) {
 }
 
 const PIPELINE = [
-  ['抓取', '公开接口有限采样；业务社区优先，GitHub 包含近期更新的旧 issue。另有每周旧帖复查队列。'],
+  ['抓取', '公开接口有限采样；业务社区优先。每次最多复查 5 条旧证据，每条成功复查至少间隔 7 天，失败退避重试。GitHub / HN 可刷新原文与回复，WordPress 仅刷新回复。'],
   ['规则预筛', '用痛点关键词（中英文）和互动量粗筛，目的是不漏，不负责判断。'],
   ['初筛', '业务来源加权轮询，优先具体成本与买方信号；已解决内容保留为反证，信息不足时补评论。'],
   ['补评论', '给互动最高的条目拉高赞回复，变通做法和付费信号大多在回复里。'],

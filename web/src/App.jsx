@@ -28,9 +28,10 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <a className="skip-link" href="#main-content" onClick={event => { event.preventDefault(); document.getElementById('main-content')?.focus() }}>跳到内容</a>
       <Header data={data} />
       <Tabs current={section} counts={counts} />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 sm:px-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1240px] flex-1 px-4 pb-24 sm:px-8">
         {section === 'cluster' ? <ClusterPage data={data} id={param} /> : <Page data={data} />}
       </main>
       <Footer />

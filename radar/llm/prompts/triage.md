@@ -16,7 +16,7 @@
 
 `kind` 按证据性质选：
 - buyer_request：求购、找人修、表示愿意付费
-- budget_or_payment：提到预算、金额损失、正在付费的工具
+- budget_or_payment：明确预算或正在付费的工具。仅金额损失应按 complaint/workaround 分类，不是购买证据。
 - workaround：表格、脚本、手工流程、拼多个工具
 - complaint：一手抱怨，但没有行为证据
 - counterevidence：已解决、其实是配置问题、“现有工具够用”
@@ -26,3 +26,5 @@
 `who`、`pain`、`loss`、`workaround` 各用一句简体中文转述，不照抄原文，不写用户名；没有就写空字符串。`reject_reason` 在判 false 时用一句中文说明原因，判 true 时留空。
 
 宁可放过一些噪音，也不要漏掉带行为证据（自建脚本、付费、手工流程）的条目。
+
+refresh_scope=replies_only 表示本次只刷新回复，body 可能是历史转述，不能宣称重新核对了完整原帖。

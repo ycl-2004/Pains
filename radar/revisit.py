@@ -2,7 +2,7 @@
 
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from urllib.parse import urlsplit, parse_qs
 
 from radar import config
@@ -36,21 +36,29 @@ def item_for(evidence):
 def revisit(ledger, now, limit=5):
     path = config.DATA_DIR / "reviewed.json"
     reviewed = json.loads(path.read_text()) if path.exists() else {}
+    reviewed = {key: ({"last_success": value, "last_attempt": value,
+                       "next_retry": (datetime.fromisoformat(value) + timedelta(days=config.REVISIT_DAYS)).isoformat()}
+                      if isinstance(value, str) else value) for key, value in reviewed.items()}
     candidates = {}
     for cluster in ledger.clusters:
         if cluster.status == "demoted":
             continue
         for evidence in cluster.evidence:
             if evidence.counts_as_demand and (item := item_for(evidence)):
-                last = reviewed.get(item.key)
-                if not last or (now - datetime.fromisoformat(last)).days >= config.REVISIT_DAYS:
+                retry = reviewed.get(item.key, {}).get("next_retry")
+                if not retry or now >= datetime.fromisoformat(retry):
                     candidates[item.key] = item
     items, notes = [], []
-    for item in sorted(candidates.values(), key=lambda i: reviewed.get(i.key, ""))[:limit]:
+    for item in sorted(candidates.values(), key=lambda i: reviewed.get(i.key, {}).get("last_attempt", ""))[:limit]:
+        state = reviewed.setdefault(item.key, {})
+        state["last_attempt"] = now.isoformat()
         try:
             refreshed = get_source(item.source).attach_thread(item)
             items.append(refreshed)
-            reviewed[item.key] = now.isoformat()
+            state.update(failures=0, outcome="fetched", next_retry=(now + timedelta(days=1)).isoformat())
         except Exception as error:
+            failures = state.get("failures", 0) + 1
+            state.update(failures=failures, outcome="fetch_failed",
+                         next_retry=(now + timedelta(days=min(2 ** min(failures - 1, 3), 7))).isoformat())
             notes.append(f"旧帖复查失败 {item.key}: {type(error).__name__}")
     return items, notes, reviewed

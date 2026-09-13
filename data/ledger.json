@@ -6,6 +6,7 @@
     {
       "id": "OP-001",
       "name": "小广告主的付费流量被机器人和垃圾线索吞掉，默认设置和自动出价在放大它",
+      "short_title": "小广告主难以识别机器人流量与垃圾线索",
       "status": "active",
       "status_reason": "",
       "industry": "广告营销",
@@ -144,6 +145,7 @@
     {
       "id": "OP-002",
       "name": "自动化工作流“显示成功但结果是错的”：静默失败、重复写入、空值覆盖，且维护依赖一个人",
+      "short_title": "自动化工作流成功提示背后的静默失败",
       "status": "active",
       "status_reason": "",
       "industry": "自动化运营",
@@ -297,6 +299,7 @@
     {
       "id": "OP-003",
       "name": "TLS 证书有效期缩短，让不支持 ACME 的设备变成每年多次手工换证",
+      "short_title": "不支持 ACME 的设备仍需手工换证",
       "status": "active",
       "status_reason": "",
       "industry": "IT 运维",
@@ -419,6 +422,7 @@
     {
       "id": "OP-004",
       "name": "LLM 应用缺少模型依赖管理：弃用通知在邮件里，模型 ID 在代码里",
+      "short_title": "LLM 模型弃用与代码依赖难以同步",
       "status": "active",
       "status_reason": "",
       "industry": "AI 开发工具",
@@ -540,6 +544,7 @@
     {
       "id": "OP-005",
       "name": "AI 代理把工具输出和第三方内容当指令执行：MCP 注入、密钥暴露、越界操作",
+      "short_title": "AI 代理误把第三方内容当成执行指令",
       "status": "active",
       "status_reason": "",
       "industry": "AI 开发工具",
@@ -661,6 +666,7 @@
     {
       "id": "OP-006",
       "name": "电商商品在某些国家的投放目录消失，商家难以定位数据断在哪",
+      "short_title": "电商投放目录缺失，数据断点难定位",
       "status": "active",
       "status_reason": "",
       "industry": "电商",
@@ -759,6 +765,7 @@
     {
       "id": "OP-007",
       "name": "会计事务所无法快速判断哪个客户、哪个账户、哪个月还缺哪份资料",
+      "short_title": "会计事务所难追踪客户缺失资料",
       "status": "active",
       "status_reason": "",
       "industry": "财务会计",
@@ -877,6 +884,7 @@
     {
       "id": "OP-008",
       "name": "小房东的法定期限合规（押金退还）：起算点由事件决定，错过就是 2–3 倍罚金",
+      "short_title": "小房东难追踪押金退还期限",
       "status": "active",
       "status_reason": "",
       "industry": "房产租赁",
@@ -967,6 +975,7 @@
     {
       "id": "OP-009",
       "name": "Stocky 停用后，历史采购记录与新系统之间出现资料整理断层",
+      "short_title": "Stocky 停用后的历史采购资料迁移",
       "status": "active",
       "status_reason": "",
       "industry": "电商",
@@ -1065,6 +1074,7 @@
     {
       "id": "OP-010",
       "name": "小企业想离开 QuickBooks，被历史数据、会计师生态和多渠道对账锁住",
+      "short_title": "小企业难以迁出 QuickBooks",
       "status": "active",
       "status_reason": "",
       "industry": "财务会计",
@@ -1195,6 +1205,7 @@
     {
       "id": "OP-011",
       "name": "EU PPWR 包装法下，微型卖家卡在“要不要逐国注册”的困惑里",
+      "short_title": "微型卖家不清楚包装合规注册范围",
       "status": "active",
       "status_reason": "",
       "industry": "合规",
@@ -1273,6 +1284,7 @@
     {
       "id": "OP-012",
       "name": "特教教师记录每个学生的支持时间和目标进度，打断课堂工作",
+      "short_title": "特教支持记录打断课堂教学",
       "status": "active",
       "status_reason": "",
       "industry": "教育",
@@ -1361,6 +1373,7 @@
     {
       "id": "OP-013",
       "name": "家长在多个学校应用之间找通知，仍要手工转成日历和待办",
+      "short_title": "家长跨学校应用整理通知与待办",
       "status": "active",
       "status_reason": "",
       "industry": "家庭",
@@ -1479,6 +1492,7 @@
     {
       "id": "OP-014",
       "name": "AI 编码代理跨会话失忆，团队规则文件（CLAUDE.md / skills）版本漂移",
+      "short_title": "AI 编码代理跨会话的团队规则漂移",
       "status": "watch",
       "status_reason": "两方判断冲突：agy-pp 给 8.4 分并做了原型；claude-pp 把“跨 agent 同步 skills”判为 A（已有多个开源 Skills Manager 支持 30–50 个工具）。合并时不给分，待下一期查清现有工具覆盖了多少、剩下的缺口是不是“团队级发布与冲突检查”。",
       "industry": "AI 开发工具",

@@ -17,7 +17,7 @@ from radar.registry import SOURCES, get_source
 from radar.scoring import is_significant_change
 from radar.sources.base import SourceAdapter
 from radar.sampling import select_items
-from radar.evidence import eligible, opportunity_rank
+from radar.evidence import opportunity_rank, qualification
 from radar.privacy import redact
 from radar.revisit import revisit
 
@@ -122,6 +122,10 @@ def cmd_run(args) -> int:
             seen_now += [i.revision_key for i in rejudged if i.key not in replacements]
         for stat in report.sources:
             stat.analyzed = sum(i.source == stat.source for i, _ in signals)
+            verdicts = [v for i, v in signals if i.source == stat.source]
+            stat.demand_signals = sum(v.is_pain_point and v.codable and v.kind in {"buyer_request", "budget_or_payment", "workaround", "complaint"} for v in verdicts)
+            stat.buying_signals = sum(v.kind in {"buyer_request", "budget_or_payment"} for v in verdicts)
+            stat.counter_signals = sum(v.kind == "counterevidence" for v in verdicts)
         if signals:
             result = run_analysis(llm, ledger, signals)
             report.changes, report.new_signals, report.top_opportunities = ledger_store.apply_analysis(
@@ -137,8 +141,7 @@ def cmd_run(args) -> int:
         else:
             report.notes.append("本期主动跳过现有方案核查；候选不视为重新验证")
         report.top_opportunities = [c.id for c in sorted(ledger.clusters, key=opportunity_rank)
-                                    if c.status == "active" and eligible(c) and c.solution_checked_at
-                                    and 0 <= (now.date() - datetime.fromisoformat(c.solution_checked_at).date()).days <= config.SOLUTION_RECHECK_DAYS][:3]
+                                    if qualification(c, now)["eligible"]][:3]
     except (BudgetExceeded, StageFailed, ValueError) as error:
         if isinstance(error, ValueError):
             llm.discard_last_cache()
@@ -156,7 +159,11 @@ def cmd_run(args) -> int:
     consumed = set(seen_now)
     path = config.DATA_DIR / "reviewed.json"
     previous = json.loads(path.read_text()) if path.exists() else {}
-    previous.update({i.key: reviewed[i.key] for i in revisited if i.revision_key in consumed})
+    previous.update(reviewed)  # Persist failed attempts too: dead URLs must not monopolize the queue.
+    for item in revisited:
+        if item.revision_key in consumed:
+            previous[item.key].update(last_success=now.isoformat(), outcome="analyzed",
+                                      next_retry=(now + timedelta(days=config.REVISIT_DAYS)).isoformat())
     temporary = path.with_suffix(".tmp")
     temporary.write_text(json.dumps(previous, ensure_ascii=False))
     temporary.replace(path)

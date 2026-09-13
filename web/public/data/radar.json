@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-13T14:35:47.866308+00:00",
+ "generated_at": "2026-09-13T15:12:34.621600+00:00",
  "last_run_id": "2026-09-13-1352",
  "rubric": {
   "dimensions": {
@@ -79,6 +79,7 @@
   {
    "id": "OP-001",
    "name": "小广告主的付费流量被机器人和垃圾线索吞掉，默认设置和自动出价在放大它",
+   "short_title": "小广告主难以识别机器人流量与垃圾线索",
    "status": "active",
    "status_reason": "",
    "industry": "广告营销",
@@ -223,11 +224,17 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": true,
+    "reasons": [],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-002",
    "name": "自动化工作流“显示成功但结果是错的”：静默失败、重复写入、空值覆盖，且维护依赖一个人",
+   "short_title": "自动化工作流成功提示背后的静默失败",
    "status": "active",
    "status_reason": "",
    "industry": "自动化运营",
@@ -389,11 +396,17 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": true,
+    "reasons": [],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-003",
    "name": "TLS 证书有效期缩短，让不支持 ACME 的设备变成每年多次手工换证",
+   "short_title": "不支持 ACME 的设备仍需手工换证",
    "status": "active",
    "status_reason": "",
    "industry": "IT 运维",
@@ -521,11 +534,17 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": true,
+    "reasons": [],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-004",
    "name": "LLM 应用缺少模型依赖管理：弃用通知在邮件里，模型 ID 在代码里",
+   "short_title": "LLM 模型弃用与代码依赖难以同步",
    "status": "active",
    "status_reason": "",
    "industry": "AI 开发工具",
@@ -652,11 +671,17 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": true,
+    "reasons": [],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-005",
    "name": "AI 代理把工具输出和第三方内容当指令执行：MCP 注入、密钥暴露、越界操作",
+   "short_title": "AI 代理误把第三方内容当成执行指令",
    "status": "active",
    "status_reason": "",
    "industry": "AI 开发工具",
@@ -783,11 +808,19 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "需求讨论、行为证据、方案缺口或综合分未达门槛"
+    ],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-006",
    "name": "电商商品在某些国家的投放目录消失，商家难以定位数据断在哪",
+   "short_title": "电商投放目录缺失，数据断点难定位",
    "status": "active",
    "status_reason": "",
    "industry": "电商",
@@ -889,11 +922,17 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": true,
+    "reasons": [],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-007",
    "name": "会计事务所无法快速判断哪个客户、哪个账户、哪个月还缺哪份资料",
+   "short_title": "会计事务所难追踪客户缺失资料",
    "status": "active",
    "status_reason": "",
    "industry": "财务会计",
@@ -1017,11 +1056,17 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": true,
+    "reasons": [],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-008",
    "name": "小房东的法定期限合规（押金退还）：起算点由事件决定，错过就是 2–3 倍罚金",
+   "short_title": "小房东难追踪押金退还期限",
    "status": "active",
    "status_reason": "",
    "industry": "房产租赁",
@@ -1114,11 +1159,19 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "需求讨论、行为证据、方案缺口或综合分未达门槛"
+    ],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-009",
    "name": "Stocky 停用后，历史采购记录与新系统之间出现资料整理断层",
+   "short_title": "Stocky 停用后的历史采购资料迁移",
    "status": "active",
    "status_reason": "",
    "industry": "电商",
@@ -1220,11 +1273,19 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "需求讨论、行为证据、方案缺口或综合分未达门槛"
+    ],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-010",
    "name": "小企业想离开 QuickBooks，被历史数据、会计师生态和多渠道对账锁住",
+   "short_title": "小企业难以迁出 QuickBooks",
    "status": "active",
    "status_reason": "",
    "industry": "财务会计",
@@ -1361,11 +1422,17 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": true,
+    "reasons": [],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-011",
    "name": "EU PPWR 包装法下，微型卖家卡在“要不要逐国注册”的困惑里",
+   "short_title": "微型卖家不清楚包装合规注册范围",
    "status": "active",
    "status_reason": "",
    "industry": "合规",
@@ -1445,11 +1512,19 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "需求讨论、行为证据、方案缺口或综合分未达门槛"
+    ],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-012",
    "name": "特教教师记录每个学生的支持时间和目标进度，打断课堂工作",
+   "short_title": "特教支持记录打断课堂教学",
    "status": "active",
    "status_reason": "",
    "industry": "教育",
@@ -1540,11 +1615,19 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "需求讨论、行为证据、方案缺口或综合分未达门槛"
+    ],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-013",
    "name": "家长在多个学校应用之间找通知，仍要手工转成日历和待办",
+   "short_title": "家长跨学校应用整理通知与待办",
    "status": "active",
    "status_reason": "",
    "industry": "家庭",
@@ -1668,11 +1751,19 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "需求讨论、行为证据、方案缺口或综合分未达门槛"
+    ],
+    "expires_at": "2026-09-20T00:00:00+00:00"
+   }
   },
   {
    "id": "OP-014",
    "name": "AI 编码代理跨会话失忆，团队规则文件（CLAUDE.md / skills）版本漂移",
+   "short_title": "AI 编码代理跨会话的团队规则漂移",
    "status": "watch",
    "status_reason": "两方判断冲突：agy-pp 给 8.4 分并做了原型；claude-pp 把“跨 agent 同步 skills”判为 A（已有多个开源 Skills Manager 支持 30–50 个工具）。合并时不给分，待下一期查清现有工具覆盖了多少、剩下的缺口是不是“团队级发布与冲突检查”。",
    "industry": "AI 开发工具",
@@ -1746,11 +1837,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-015",
    "name": "Clover 与 Shopify 通用双向库存同步",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "有实际断连投诉，但 SKU IQ 已直接覆盖该连接，尚未证明换工具后仍失败。",
    "industry": "电商",
@@ -1820,11 +1921,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-016",
    "name": "施工变更单、照片和签字打包",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "手工绕行明确，但主证据是 2025 年旧帖；Clearstory 免费 Basic 已含数字 T&M、变更请求和协作日志。",
    "industry": "施工",
@@ -1894,11 +2005,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-017",
    "name": "清洁公司排班与开票",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "两位经营者嫌表格或大工具太重，但 ZenMaid 已覆盖循环预约和开票，尚无近期重复的不足证据。",
    "industry": "本地服务",
@@ -1990,11 +2111,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-018",
    "name": "家庭冰箱与物品手工登记",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "V2EX 用户明确指出录入、更新和找记录可能比直接看冰箱更麻烦，输入成本可能吃掉全部收益。",
    "industry": "家庭",
@@ -2053,11 +2184,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-019",
    "name": "数据抓取与自动化脚本被 Cloudflare / reCAPTCHA 拦截",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "agy-pp 给 7.8 分，但两条证据一条是 2024-12 的旧讨论；解法是帮人绕过反爬检测，与平台条款冲突，法律和平台风险高；Bright Data 等商业方案已成熟。保留 reCAPTCHA 误伤真实用户这一面作为新兴信号（SIG-003）的背景。",
    "industry": "开发者工具",
@@ -2111,11 +2252,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-020",
    "name": "自由职业者与 Micro-SaaS 逾期发票催收",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "agy-pp 给 7.4 分，但唯一可点开的证据是 2023-03 的 HN 评论；另一条“Freelancers Union & Stripe 调查”的链接只指向 HN 首页，无法追溯，已排除；Stripe、Chaser 等现成催收工具很多。",
    "industry": "财务会计",
@@ -2158,11 +2309,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-021",
    "name": "包裹被偷的成本谁承担",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "r/smallbusiness 09-11（132 赞 / 97 评论）；楼主自己提到保护类 App 已存在，评论里有签收、照片、自保基金等成熟做法，判为 A。",
    "industry": "电商",
@@ -2193,11 +2354,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-022",
    "name": "小企业 AI 前台",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "r/Entrepreneur 09-10（23 赞 / 141 评论）；高赞评论是顾客抵触 AI，问题在需求端，不在技术缺口。",
    "industry": "本地服务",
@@ -2228,11 +2399,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-023",
    "name": "教师 IEP / 504 / BIP 文书负担",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "r/Teachers 09-06（571 赞 / 210 评论）；痛点真实，但根源是政策、资金和班额，软件改变有限，采购门槛高。与 OP-012 相关。",
    "industry": "教育",
@@ -2263,11 +2444,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-024",
    "name": "医疗事先授权（prior auth）",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "AMA 调查：每周约 40 例、13 小时；高痛，但需要对接保险方和 HIPAA，不适合轻量编码，本轮也没有一手讨论。",
    "industry": "医疗",
@@ -2298,11 +2489,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-025",
    "name": "招聘被 AI 申请淹没",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "以行业调查为主，Reddit 一手证据弱，AI 筛选工具已经拥挤。",
    "industry": "招聘",
@@ -2333,11 +2534,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-026",
    "name": "慢病追踪坚持不下去",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "HN 08-15（52 分 / 90 评论）；付费意愿低，已有大量同类尝试。",
    "industry": "健康",
@@ -2368,11 +2579,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-027",
    "name": "小团队 M365 离职交接检查",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "r/sysadmin 09-11（102 赞 / 173 评论）；高赞回复是“关账号就完事”，痛感不普遍。",
    "industry": "IT 运维",
@@ -2403,11 +2624,21 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   },
   {
    "id": "OP-028",
    "name": "Etsy 面单印店名的隐私问题",
+   "short_title": "",
    "status": "demoted",
    "status_reason": "只有行业新闻，没有一手讨论，可编码空间小。",
    "industry": "电商",
@@ -2438,7 +2669,16 @@
    "buyer": "",
    "payment_evidence": "",
    "current_cost": "",
-   "buying_evidence_urls": []
+   "buying_evidence_urls": [],
+   "qualification": {
+    "eligible": false,
+    "reasons": [
+     "不是活跃状态",
+     "需求讨论、行为证据、方案缺口或综合分未达门槛",
+     "尚未核查现有方案"
+    ],
+    "expires_at": null
+   }
   }
  ],
  "signals": [
@@ -3046,6 +3286,9 @@
      "prefiltered": 101,
      "selected": null,
      "analyzed": null,
+     "demand_signals": null,
+     "buying_signals": null,
+     "counter_signals": null,
      "warnings": [],
      "degraded": false,
      "error": null
@@ -3057,6 +3300,9 @@
      "prefiltered": 65,
      "selected": null,
      "analyzed": null,
+     "demand_signals": null,
+     "buying_signals": null,
+     "counter_signals": null,
      "warnings": [],
      "degraded": false,
      "error": null
@@ -3068,6 +3314,9 @@
      "prefiltered": 31,
      "selected": null,
      "analyzed": null,
+     "demand_signals": null,
+     "buying_signals": null,
+     "counter_signals": null,
      "warnings": [],
      "degraded": false,
      "error": null
@@ -3079,6 +3328,9 @@
      "prefiltered": 2,
      "selected": null,
      "analyzed": null,
+     "demand_signals": null,
+     "buying_signals": null,
+     "counter_signals": null,
      "warnings": [],
      "degraded": false,
      "error": null
@@ -3114,6 +3366,9 @@
      "prefiltered": 130,
      "selected": null,
      "analyzed": null,
+     "demand_signals": null,
+     "buying_signals": null,
+     "counter_signals": null,
      "warnings": [],
      "degraded": false,
      "error": null
@@ -3125,6 +3380,9 @@
      "prefiltered": 65,
      "selected": null,
      "analyzed": null,
+     "demand_signals": null,
+     "buying_signals": null,
+     "counter_signals": null,
      "warnings": [],
      "degraded": false,
      "error": null
@@ -3136,6 +3394,9 @@
      "prefiltered": 30,
      "selected": null,
      "analyzed": null,
+     "demand_signals": null,
+     "buying_signals": null,
+     "counter_signals": null,
      "warnings": [],
      "degraded": false,
      "error": null
@@ -3147,6 +3408,9 @@
      "prefiltered": 2,
      "selected": null,
      "analyzed": null,
+     "demand_signals": null,
+     "buying_signals": null,
+     "counter_signals": null,
      "warnings": [],
      "degraded": false,
      "error": null

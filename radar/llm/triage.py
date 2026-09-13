@@ -67,6 +67,7 @@ def _payload(chunk: list[RawItem]) -> str:
                 "body": redact(item.body),
                 "top_replies": [redact(reply) for reply in item.thread[:5]],
                 "resolved": item.resolved,
+                "refresh_scope": item.refresh_scope,
                 "date": item.created_at.date().isoformat(),
                 "engagement": f"{item.score} 分 / {item.comments} 评论",
                 "tags": item.tags,

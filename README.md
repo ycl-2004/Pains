@@ -28,6 +28,10 @@
 
 ## Quick start
 
+### 研究工作台
+
+网站已采用 YC 酒红 / 丹宁蓝 / 纸色视觉：机会简报、桌面双栏证据底稿、手机独立详情，以及本地验证记录。筛选可通过 URL 分享；验证记录仅保存在当前浏览器，可导出/导入 JSON 备份，不会同步或改变公共评分。设计与数据契约见 [研究工作台说明](docs/research-desk.md)，商业判断校准见 [评估样本](evals/README.md)。
+
 ### 在 GitHub 上跑（推荐）
 
 1. **加 Secrets**（Settings → Secrets and variables → Actions → Secrets）：
@@ -121,7 +125,7 @@ uv run python -m radar run --limit 30 --max-cost 1
 
 ```
 fetch        Make / n8n / WooCommerce + HN / GitHub / V2EX / Stack Exchange，有限条数采样
-  ↓          跳过已判断版本；每周最多复查 5 条旧证据，GitHub 按更新时间发现旧 issue
+  ↓          跳过已判断版本；每次最多复查 5 条旧证据，每条成功复查至少间隔 7 天；失败退避 1/2/4/7 天
 prefilter    中英文痛点关键词 + 高互动无条件保留（目的是不漏，不负责判断）
   ↓
 triage       每批 20 条；业务来源双份轮询名额；保留反证，区分付款方、预算与损失

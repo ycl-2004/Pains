@@ -8,7 +8,8 @@ const THEME_LABEL = { system: '跟随系统', light: '浅色', dark: '深色' }
 
 function readTheme() {
   try {
-    return localStorage.getItem('pain-radar-theme') || 'system'
+    const value = localStorage.getItem('pain-radar-theme')
+    return THEMES.includes(value) ? value : 'system'
   } catch {
     return 'system'
   }
@@ -44,13 +45,13 @@ export function Header({ data }) {
   const updated = data.runs.find((run) => !run.status || run.status === 'success')?.finished_at
   return (
     <header>
-      <div className="mx-auto flex max-w-5xl flex-wrap items-end justify-between gap-x-6 gap-y-3 px-4 pt-8 pb-5 sm:px-6">
+      <div className="mx-auto flex max-w-[1240px] flex-wrap items-end justify-between gap-x-6 gap-y-3 px-4 pt-8 pb-6 sm:px-8">
         <div>
           <div className="flex items-baseline gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">痛点雷达</h1>
-            <span className="font-mono text-xs text-muted">pain-radar</span>
+            <h1 className="editorial-title text-3xl">痛点雷达<span className="text-accent">.</span></h1>
+            <span className="eyebrow">YC / Research desk</span>
           </div>
-          <p className="mt-1 max-w-xl text-sm text-muted">从业务用户的手工成本、损失和购买信号里，找值得验证的产品机会。</p>
+          <p className="mt-2 max-w-xl text-xs text-muted">公开讨论里的真实阻力，产品决策前的证据底稿。</p>
         </div>
         <div className="flex items-center gap-3 text-xs text-muted">
           <span>
@@ -65,8 +66,8 @@ export function Header({ data }) {
 
 export function Tabs({ current, counts }) {
   const tabs = [
-    ['latest', '最新一期'],
-    ['ledger', '痛点台账', counts.ledger],
+    ['latest', '研究简报'],
+    ['ledger', '机会工作台', counts.ledger],
     ['signals', '新兴信号', counts.signals],
     ['demoted', '已降级', counts.demoted],
     ['method', '方法与局限'],
@@ -74,7 +75,7 @@ export function Tabs({ current, counts }) {
   const active = current === 'cluster' ? 'ledger' : current
   return (
     <nav className="sticky top-0 z-20 border-y border-line bg-bg" aria-label="主导航">
-      <div className="no-scrollbar mx-auto flex max-w-5xl gap-6 overflow-x-auto px-4 sm:px-6">
+      <div className="no-scrollbar mx-auto flex max-w-[1240px] gap-6 overflow-x-auto px-4 sm:px-8">
         {tabs.map(([id, label, count]) => (
           <a
             key={id}

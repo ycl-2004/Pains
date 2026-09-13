@@ -86,7 +86,7 @@ class SourceAdapter(ABC):
 
     def attach_thread(self, item: RawItem) -> RawItem:
         replies = self.fetch_thread(item)
-        return item.model_copy(update={"thread": [redact(r)[: self.thread_chars] for r in replies[: self.thread_limit] if r]})
+        return item.model_copy(update={"thread": [redact(r)[: self.thread_chars] for r in replies[: self.thread_limit] if r], "refresh_scope": "replies_only"})
 
     @abstractmethod
     def fetch(self, since: datetime) -> list[RawItem]:

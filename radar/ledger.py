@@ -16,7 +16,7 @@ from radar.models import (
     SolutionCheck,
 )
 from radar.scoring import REVIVE_OVERALL, clamp_scores
-from radar.evidence import canonical_url, eligible
+from radar.evidence import canonical_url, eligible, qualification
 
 NEW_CLUSTER = "NEW"
 
@@ -120,7 +120,7 @@ def apply_analysis(ledger: Ledger, result: AnalysisResult, run_id: str, today: s
     top_ids = []
     for ref in result.top_opportunity_ids:
         resolved = new_names.get(ref.removeprefix(f"{NEW_CLUSTER}:"), ref)
-        if resolved in by_id and by_id[resolved].status == "active" and eligible(by_id[resolved]) and resolved not in top_ids:
+        if resolved in by_id and qualification(by_id[resolved], datetime.fromisoformat(today).replace(tzinfo=timezone.utc))["eligible"] and resolved not in top_ids:
             top_ids.append(resolved)
 
     ledger.last_run_id = run_id
@@ -171,6 +171,7 @@ def _create_cluster(ledger: Ledger, update: ClusterUpdate, run_id: str, today: s
     cluster = Cluster(
         id=next_id([c.id for c in ledger.clusters], "OP"),
         name=update.name,
+        short_title=update.short_title,
         status="watch",
         status_reason="新候选：等待独立帖子证据和现有方案核查。",
         industry=update.industry,
@@ -203,7 +204,7 @@ def _create_cluster(ledger: Ledger, update: ClusterUpdate, run_id: str, today: s
 def _merge_update(cluster: Cluster, update: ClusterUpdate, run_id: str, today: str, *, count_detection: bool) -> bool:
     old_urls = {canonical_url(e.url) for e in cluster.evidence}
     detected = any(e.counts_as_demand and canonical_url(e.url) not in old_urls for e in update.new_evidence)
-    for field in ("name", "who", "problem", "industry", "workaround", "why_insufficient", "root_cause", "why_now",
+    for field in ("name", "short_title", "who", "problem", "industry", "workaround", "why_insufficient", "root_cause", "why_now",
                   "opportunity_hypothesis", "buyer", "payment_evidence", "current_cost"):
         value = getattr(update, field).strip()
         if value:

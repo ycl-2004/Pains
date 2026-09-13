@@ -50,6 +50,16 @@ class HackerNews(SourceAdapter):
         children = sorted(root.get("children") or [], key=lambda child: -len(child.get("children") or []))
         return [strip_html(child.get("text")) for child in children]
 
+    def attach_thread(self, item: RawItem) -> RawItem:
+        root = self.get_json(f"{API}/items/{item.external_id}")
+        children = sorted(root.get("children") or [], key=lambda child: -len(child.get("children") or []))
+        return item.model_copy(update={
+            "title": root.get("title") or item.title,
+            "body": self.clip(strip_html(root.get("text"))),
+            "thread": [self.clip(strip_html(child.get("text")))[:self.thread_chars] for child in children[:self.thread_limit]],
+            "refresh_scope": "original_and_replies",
+        })
+
     def _parse(self, hit: dict) -> RawItem:
         is_comment = "comment" in hit.get("_tags", [])
         return RawItem(

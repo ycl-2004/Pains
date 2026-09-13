@@ -3,13 +3,13 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, computed_field
+from pydantic import BaseModel, computed_field, Field
 
 from radar.scoring import Level, Scores, SolutionClass
 
 EvidenceKind = Literal[
     "buyer_request",      # someone asking for / hiring for a fix
-    "budget_or_payment",  # stated budget, paid tool, lost money with an amount
+    "budget_or_payment",  # stated budget or actual payment; loss alone is not a buying signal
     "workaround",         # spreadsheets, scripts, manual process, stitching tools together
     "complaint",          # first-hand pain without behavior evidence
     "counterevidence",    # resolved thread, "existing tool is enough", config mistake
@@ -40,6 +40,7 @@ class RawItem(BaseModel):
     comments: int = 0
     tags: list[str] = []
     thread: list[str] = []
+    refresh_scope: Literal["original_and_replies", "replies_only", "not_revisited"] = "not_revisited"
 
     @property
     def key(self) -> str:
@@ -76,6 +77,7 @@ class ScoreEvent(BaseModel):
 class Cluster(BaseModel):
     id: str
     name: str
+    short_title: str = Field(default="", max_length=32)
     status: ClusterStatus
     status_reason: str = ""
     industry: str = ""
@@ -150,6 +152,9 @@ class SourceStat(BaseModel):
     prefiltered: int = 0
     selected: int | None = None
     analyzed: int | None = None
+    demand_signals: int | None = None
+    buying_signals: int | None = None
+    counter_signals: int | None = None
     warnings: list[str] = []
     degraded: bool = False
     error: str | None = None
@@ -217,6 +222,7 @@ class ClusterUpdate(BaseModel):
 
     cluster_id: str
     name: str
+    short_title: str = Field(default="", max_length=32)
     who: str
     problem: str
     industry: str

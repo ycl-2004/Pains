@@ -5,19 +5,20 @@ import { topOpportunities, byOpportunity } from '../src/lib/data.js'
 const cluster = (overrides = {}) => ({
   id: 'OP-001', status: 'active', solution_class: 'B', scores: { overall: 7 },
   solution_checked_at: new Date().toISOString().slice(0, 10),
+  qualification: { eligible: true, expires_at: new Date(Date.now() + 86400000).toISOString() },
   evidence: [{ counts_as_demand: true, kind: 'workaround' }, { counts_as_demand: true, kind: 'complaint' }],
   ...overrides,
 })
 
 test('stale, demoted and unchecked recommendations cannot bypass eligibility with an explicit ID', () => {
-  for (const change of [{ status: 'demoted' }, { solution_class: 'A' }, { solution_checked_at: null }, { solution_checked_at: '2020-01-01' }]) {
+  for (const change of [{ qualification: { eligible: false } }, { qualification: null }, { qualification: { eligible: true, expires_at: '2020-01-01' } }]) {
     assert.deepEqual(topOpportunities({ clusters: [cluster(change)], runs: [{ top_opportunities: ['OP-001'] }] }), [])
   }
 })
 
 test('a checked candidate with behavior evidence is available, single complaints are not', () => {
   assert.equal(topOpportunities({ clusters: [cluster()], runs: [] }).length, 1)
-  assert.equal(topOpportunities({ clusters: [cluster({ evidence: [{ counts_as_demand: true, kind: 'complaint' }] })], runs: [] }).length, 0)
+  assert.equal(topOpportunities({ clusters: [cluster({ qualification: { eligible: false } })], runs: [] }).length, 0)
 })
 
 test('cited buying evidence outranks a higher speculative score', () => {

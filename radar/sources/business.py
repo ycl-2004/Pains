@@ -67,6 +67,7 @@ class BusinessFeed(SourceAdapter):
         first = next((p for p in posts if p.get("post_number") == 1), None)
         replies = [strip_html(p.get("cooked")) for p in posts if p.get("post_number") != 1]
         return item.model_copy(update={
+            "refresh_scope": "original_and_replies" if first else "replies_only",
             "body": self.clip(strip_html(first.get("cooked"))) if first else item.body,
             "thread": [redact(r)[:self.thread_chars] for r in replies[-self.thread_limit:]],
             "created_at": datetime.fromisoformat(topic["created_at"]),
