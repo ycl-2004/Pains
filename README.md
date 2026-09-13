@@ -92,13 +92,16 @@ uv run python -m radar run --limit 30 --max-cost 1
 
 | 位置 | 初筛 `RADAR_TRIAGE_MODELS` | 分析 `RADAR_ANALYZE_MODELS` | 输出方式 |
 |---|---|---|---|
-| 1 | `nvidia/nemotron-3-super-120b-a12b:free` | — | 严格 JSON Schema（免费） |
-| 2 | `nex-agi/nex-n2.5-mini:free` | — | 严格 JSON Schema（免费） |
-| 3 | `qwen/qwen3.7-flash` | `qwen/qwen3.7-flash` | JSON 模式（只有阿里云一家服务商，不支持严格 schema） |
-| 4 | `openai/gpt-5.6-luna` | `openai/gpt-5.6-luna` | 严格 JSON Schema |
-| 5 | `z-ai/glm-5.3-flash` | `z-ai/glm-5.3-flash` | 严格 JSON Schema |
+| 1 | `nvidia/nemotron-3-super-120b-a12b:free` | `openai/gpt-5.6-luna` | 严格 JSON Schema（初筛这一格免费） |
+| 2 | `qwen/qwen3.7-flash` | `z-ai/glm-5.3-flash` | 初筛：JSON 模式（Qwen 只有阿里云一家服务商，不支持严格 schema）；分析：严格 JSON Schema |
+| 3 | `openai/gpt-5.6-luna` | — | 严格 JSON Schema |
+| 4 | `z-ai/glm-5.3-flash` | — | 严格 JSON Schema |
 | 兜底 1 | `deepseek/deepseek-v4.1-flash`（经 OpenRouter） | 同左 | 严格 JSON Schema |
 | 兜底 2 | `deepseek:deepseek-flash`（DeepSeek 官方 API） | 同左 | JSON 模式 |
+
+2026-09-13 两次试跑后做了调整：
+- **初筛去掉了 `nex-agi/nex-n2.5-mini:free`**：它一直输出到 16000 token 上限被截断，最后还是要降级。
+- **分析去掉了 Qwen**：分析的结构比较复杂，Qwen 只能用 JSON 模式、靠提示词约束格式，这次输出不合格，白白多花一次调用。
 
 **免费模型只放在初筛。** 初筛只判断“是不是痛点”，调用次数最多，用免费模型最省钱。分析决定台账质量：降级只在出错或格式不对时触发，免费模型输出格式合法但判断质量差时，结果会直接写进台账，所以分析仍用付费链。
 
