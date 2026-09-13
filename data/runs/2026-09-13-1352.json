@@ -1,0 +1,107 @@
+{
+  "run_id": "2026-09-13-1352",
+  "started_at": "2026-09-13T13:52:43.156261Z",
+  "finished_at": "2026-09-13T13:59:14.246081Z",
+  "window_hours": 72,
+  "sources": [
+    {
+      "source": "hackernews",
+      "fetched": 162,
+      "new": 132,
+      "prefiltered": 101,
+      "error": null
+    },
+    {
+      "source": "github",
+      "fetched": 88,
+      "new": 88,
+      "prefiltered": 65,
+      "error": null
+    },
+    {
+      "source": "v2ex",
+      "fetched": 57,
+      "new": 57,
+      "prefiltered": 31,
+      "error": null
+    },
+    {
+      "source": "stackexchange",
+      "fetched": 3,
+      "new": 3,
+      "prefiltered": 2,
+      "error": null
+    }
+  ],
+  "triaged": 30,
+  "kept": 7,
+  "changes": [],
+  "new_signals": [],
+  "top_opportunities": [
+    "OP-001",
+    "OP-002",
+    "OP-003"
+  ],
+  "summary": "今天的新信号主要集中在 AI 模型迁移、Codex 长任务和代理工具使用体验，但大多与台账已有问题重复，或已有原生功能和临时绕行办法。Gemini 2.5 的讨论再次体现模型弃用会造成迁移压力，但对应链接已在 OP-004 中，且没有新增独立证据。Codex 远程执行和排队消息故障都有真实抱怨，不过当前证据集中在单个帖子或 GitHub issue，且切换会话、使用官方远程模式等办法已经存在，暂不升级为新机会。",
+  "usage": [
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nex-agi/nex-n2.5-mini:free",
+      "input_tokens": 3675,
+      "output_tokens": 16000,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "qwen/qwen3.7-flash",
+      "input_tokens": 4024,
+      "output_tokens": 8684,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.00125
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 4169,
+      "output_tokens": 5129,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "analyze",
+      "provider": "openrouter",
+      "model": "qwen/qwen3.7-flash",
+      "input_tokens": 12066,
+      "output_tokens": 8809,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.001507
+    },
+    {
+      "stage": "analyze",
+      "provider": "openrouter",
+      "model": "openai/gpt-5.6-luna",
+      "input_tokens": 11912,
+      "output_tokens": 882,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 11909,
+      "web_search_requests": 0,
+      "cost_usd": 0.004036
+    }
+  ],
+  "notes": [
+    "triage 降级到 qwen/qwen3.7-flash：nex-agi/nex-n2.5-mini:free 输出为空或被截断",
+    "analyze 降级到 openai/gpt-5.6-luna：qwen/qwen3.7-flash 输出不符合结构（1 处错误）"
+  ]
+}

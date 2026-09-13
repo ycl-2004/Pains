@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-09-13T13:49:19.258187+00:00",
- "last_run_id": "2026-09-13-1348",
+ "generated_at": "2026-09-13T13:59:14.251963+00:00",
+ "last_run_id": "2026-09-13-1352",
  "rubric": {
   "dimensions": {
    "frequency": "频率：多少独立的人、多少次在不同地方遇到",
@@ -2790,6 +2790,57 @@
   }
  ],
  "runs": [
+  {
+   "run_id": "2026-09-13-1352",
+   "started_at": "2026-09-13T13:52:43.156261Z",
+   "finished_at": "2026-09-13T13:59:14.246081Z",
+   "window_hours": 72,
+   "sources": [
+    {
+     "source": "hackernews",
+     "fetched": 162,
+     "new": 132,
+     "prefiltered": 101,
+     "error": null
+    },
+    {
+     "source": "github",
+     "fetched": 88,
+     "new": 88,
+     "prefiltered": 65,
+     "error": null
+    },
+    {
+     "source": "v2ex",
+     "fetched": 57,
+     "new": 57,
+     "prefiltered": 31,
+     "error": null
+    },
+    {
+     "source": "stackexchange",
+     "fetched": 3,
+     "new": 3,
+     "prefiltered": 2,
+     "error": null
+    }
+   ],
+   "triaged": 30,
+   "kept": 7,
+   "changes": [],
+   "new_signals": [],
+   "top_opportunities": [
+    "OP-001",
+    "OP-002",
+    "OP-003"
+   ],
+   "summary": "今天的新信号主要集中在 AI 模型迁移、Codex 长任务和代理工具使用体验，但大多与台账已有问题重复，或已有原生功能和临时绕行办法。Gemini 2.5 的讨论再次体现模型弃用会造成迁移压力，但对应链接已在 OP-004 中，且没有新增独立证据。Codex 远程执行和排队消息故障都有真实抱怨，不过当前证据集中在单个帖子或 GitHub issue，且切换会话、使用官方远程模式等办法已经存在，暂不升级为新机会。",
+   "notes": [
+    "triage 降级到 qwen/qwen3.7-flash：nex-agi/nex-n2.5-mini:free 输出为空或被截断",
+    "analyze 降级到 openai/gpt-5.6-luna：qwen/qwen3.7-flash 输出不符合结构（1 处错误）"
+   ],
+   "cost_usd": 0.0068
+  },
   {
    "run_id": "2026-09-13-1348",
    "started_at": "2026-09-13T13:48:11.845434Z",
