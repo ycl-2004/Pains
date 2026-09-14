@@ -1,0 +1,400 @@
+{
+  "run_id": "2026-09-14-192555-596537",
+  "started_at": "2026-09-14T19:25:55.596537Z",
+  "finished_at": "2026-09-14T20:00:25.339735Z",
+  "window_hours": 72,
+  "sources": [
+    {
+      "source": "make",
+      "fetched": 11,
+      "new": 11,
+      "prefiltered": 11,
+      "selected": 14,
+      "analyzed": 10,
+      "demand_signals": 8,
+      "buying_signals": 3,
+      "counter_signals": 2,
+      "warnings": [],
+      "degraded": false,
+      "error": null
+    },
+    {
+      "source": "n8n",
+      "fetched": 30,
+      "new": 30,
+      "prefiltered": 30,
+      "selected": 30,
+      "analyzed": 9,
+      "demand_signals": 7,
+      "buying_signals": 0,
+      "counter_signals": 2,
+      "warnings": [],
+      "degraded": false,
+      "error": null
+    },
+    {
+      "source": "wordpress",
+      "fetched": 10,
+      "new": 10,
+      "prefiltered": 10,
+      "selected": 10,
+      "analyzed": 8,
+      "demand_signals": 8,
+      "buying_signals": 0,
+      "counter_signals": 0,
+      "warnings": [],
+      "degraded": false,
+      "error": null
+    },
+    {
+      "source": "hackernews",
+      "fetched": 159,
+      "new": 139,
+      "prefiltered": 109,
+      "selected": 111,
+      "analyzed": 11,
+      "demand_signals": 2,
+      "buying_signals": 0,
+      "counter_signals": 9,
+      "warnings": [],
+      "degraded": false,
+      "error": null
+    },
+    {
+      "source": "github",
+      "fetched": 157,
+      "new": 157,
+      "prefiltered": 108,
+      "selected": 108,
+      "analyzed": 11,
+      "demand_signals": 7,
+      "buying_signals": 0,
+      "counter_signals": 3,
+      "warnings": [
+        "n8n-io/n8n 超出 30 条采样上限，未完整覆盖",
+        "anthropics/claude-code 超出 30 条采样上限，未完整覆盖",
+        "openai/codex 超出 30 条采样上限，未完整覆盖",
+        "BerriAI/litellm 超出 30 条采样上限，未完整覆盖",
+        "langfuse/langfuse 超出 30 条采样上限，未完整覆盖"
+      ],
+      "degraded": false,
+      "error": null
+    },
+    {
+      "source": "v2ex",
+      "fetched": 61,
+      "new": 61,
+      "prefiltered": 39,
+      "selected": 39,
+      "analyzed": 11,
+      "demand_signals": 3,
+      "buying_signals": 0,
+      "counter_signals": 8,
+      "warnings": [],
+      "degraded": false,
+      "error": null
+    },
+    {
+      "source": "stackexchange",
+      "fetched": 0,
+      "new": 0,
+      "prefiltered": 0,
+      "selected": 0,
+      "analyzed": 0,
+      "demand_signals": 0,
+      "buying_signals": 0,
+      "counter_signals": 0,
+      "warnings": [],
+      "degraded": false,
+      "error": null
+    }
+  ],
+  "triaged": 287,
+  "kept": 138,
+  "changes": [
+    {
+      "cluster_id": "OP-002",
+      "action": "updated",
+      "overall_before": 7.0,
+      "overall_after": 7.0,
+      "reason": "本批新增了结果确认、回放测试、幂等和历史审计等多个独立失效形态，说明问题不只是单一配置错误；但证据仍集中在 n8n / Make 社区，且没有本批直接成交证据，因此整体仅小幅上调。"
+    }
+  ],
+  "new_signals": [
+    "SIG-010"
+  ],
+  "top_opportunities": [
+    "OP-002",
+    "OP-001",
+    "OP-003"
+  ],
+  "summary": "今天最强的新变化集中在自动化工作流的“绿色但业务未完成”：n8n 用户开始自行构建结果确认、幂等守护和生产变更回放工具，说明问题已从普通报错排查扩展到业务正确性验证。Make 社区仍出现真实的自动化审计、长期维护和数据完整性需求，但新增内容尚未证明软件订阅而非工程服务更容易成交。电商侧出现一条价格更新后 Google 仍展示旧值的单条信号，暂时作为观察项，不与市场目录消失问题直接合并。今天没有足够独立证据支持新的 AI 编码代理或 WordPress 配置问题簇。",
+  "usage": [
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 9291,
+      "output_tokens": 5900,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7490,
+      "output_tokens": 7775,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7925,
+      "output_tokens": 11774,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 9271,
+      "output_tokens": 7564,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 8874,
+      "output_tokens": 8208,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7392,
+      "output_tokens": 6852,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7506,
+      "output_tokens": 16000,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "qwen/qwen3.7-flash",
+      "input_tokens": 6998,
+      "output_tokens": 9146,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.001399
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "openai/gpt-5.6-luna",
+      "input_tokens": 6725,
+      "output_tokens": 3746,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 6722,
+      "web_search_requests": 0,
+      "cost_usd": 0.006176
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7246,
+      "output_tokens": 6939,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 6509,
+      "output_tokens": 7491,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7625,
+      "output_tokens": 4451,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7903,
+      "output_tokens": 8349,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7731,
+      "output_tokens": 7338,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "qwen/qwen3.7-flash",
+      "input_tokens": 7920,
+      "output_tokens": 11059,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.001675
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 8022,
+      "output_tokens": 7995,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 7613,
+      "output_tokens": 8282,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 4739,
+      "output_tokens": 5436,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "triage",
+      "provider": "openrouter",
+      "model": "qwen/qwen3.7-flash",
+      "input_tokens": 1470,
+      "output_tokens": 2219,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "cost_usd": 0.000333
+    },
+    {
+      "stage": "analyze",
+      "provider": "openrouter",
+      "model": "openai/gpt-5.6-luna",
+      "input_tokens": 43487,
+      "output_tokens": 2681,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 43484,
+      "web_search_requests": 0,
+      "cost_usd": 0.014089
+    },
+    {
+      "stage": "solution_check",
+      "provider": "openrouter",
+      "model": "openai/gpt-5.6-luna",
+      "input_tokens": 28544,
+      "output_tokens": 2684,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 5634,
+      "web_search_requests": 1,
+      "cost_usd": 0.039211
+    }
+  ],
+  "notes": [
+    "本期含 5 条既有证据复查，不作为新的独立需求计数",
+    "triage 第 3 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "triage 第 4 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "triage 第 5 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "triage 第 11 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "triage 第 14 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "OP-014 现有方案检查失败：solution_check 的所有模型都失败：openai/gpt-5.6-luna 方案来源未匹配搜索返回的引用；deepseek:deepseek-flash 不支持联网搜索",
+    "triage 降级到 openai/gpt-5.6-luna：nvidia/nemotron-3-super-120b-a12b:free 输出为空或被截断；qwen/qwen3.7-flash 输出不符合结构（1 处错误）",
+    "triage 降级到 qwen/qwen3.7-flash：nvidia/nemotron-3-super-120b-a12b:free 输出为空或被截断",
+    "triage 降级到 qwen/qwen3.7-flash：nvidia/nemotron-3-super-120b-a12b:free 输出为空或被截断"
+  ],
+  "status": "partial"
+}

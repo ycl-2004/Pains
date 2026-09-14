@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-09-13T17:26:07.142076+00:00",
- "last_run_id": "2026-09-13-1352",
+ "generated_at": "2026-09-14T20:00:25.359011+00:00",
+ "last_run_id": "2026-09-14-192555-596537",
  "rubric": {
   "dimensions": {
    "frequency": "频率：多少独立的人、多少次在不同地方遇到",
@@ -240,14 +240,14 @@
    "problem": "最贵的故障不是红色报错，而是没执行、执行两遍、返回 200 但数据错；往往几天后才发现，换维护人时也无法确认流程是否可靠。",
    "solution_class": "B",
    "pain_confidence": "high",
-   "gap_confidence": "low",
+   "gap_confidence": "medium",
    "scores": {
     "frequency": 7,
-    "severity": 8,
-    "urgency": 7,
-    "existing_solution_gap": 5,
-    "willingness_to_pay": 7,
-    "momentum": 7,
+    "severity": 7,
+    "urgency": 6,
+    "existing_solution_gap": 7,
+    "willingness_to_pay": 5,
+    "momentum": 6,
     "ease_of_validation": 8,
     "overall": 7.0
    },
@@ -350,6 +350,61 @@
      "engagement": "",
      "source_key": "",
      "counts_as_demand": false
+    },
+    {
+     "url": "https://community.n8n.io/t/silent-success-reconciler-a-sub-workflow-that-refuses-to-mark-a-run-green-unless-the-provider-confirms-it-full-json/313710",
+     "platform": "n8n",
+     "date": "2026-09-14",
+     "date_basis": "post_date",
+     "kind": "workaround",
+     "paraphrase": "作者描述 n8n 运行显示绿色但业务未完成的情况：接口返回 200 但只接受部分收件人，或请求成功却没有在提供方生成记录；其做法是增加子工作流，只有提供方确认业务状态后才标记成功。",
+     "engagement": "0 分 / 0 评论",
+     "source_key": "n8n:https://community.n8n.io/t/silent-success-reconciler-a-sub-workflow-that-refuses-to-mark-a-run-green-unless-the-provider-confirms-it-full-json/313710",
+     "counts_as_demand": true
+    },
+    {
+     "url": "https://community.n8n.io/t/how-do-you-test-a-workflow-edit-before-it-touches-production/313427",
+     "platform": "n8n",
+     "date": "2026-09-14",
+     "date_basis": "post_date",
+     "kind": "workaround",
+     "paraphrase": "一位经营电商业务的 n8n 用户担心修改工作流后节点仍显示成功、但输出结构已悄悄变化，因此自行制作工具来保存版本、记录真实执行、在沙箱中重放并比较节点输出。",
+     "engagement": "0 分 / 5 评论",
+     "source_key": "n8n:https://community.n8n.io/t/how-do-you-test-a-workflow-edit-before-it-touches-production/313427",
+     "counts_as_demand": true
+    },
+    {
+     "url": "https://community.n8n.io/t/need-guidance-idempotency-for-mcp-server-trigger-calling-unsafe-http-tools-in-queue-mode/313705",
+     "platform": "n8n",
+     "date": "2026-09-14",
+     "date_basis": "post_date",
+     "kind": "workaround",
+     "paraphrase": "自托管 n8n 队列模式中，一次逻辑表单提交曾造成 CRM 重复写入；用户增加了局部幂等守护。讨论指出队列重试、worker 重启或连接重连可能产生新的执行 ID，调用方需要提供稳定的幂等键。",
+     "engagement": "0 分 / 4 评论",
+     "source_key": "n8n:https://community.n8n.io/t/need-guidance-idempotency-for-mcp-server-trigger-calling-unsafe-http-tools-in-queue-mode/313705",
+     "counts_as_demand": true
+    },
+    {
+     "url": "https://community.make.com/t/history-log-is-missing-even-after-upgrading/115064",
+     "platform": "make",
+     "date": "2026-09-13",
+     "date_basis": "post_date",
+     "kind": "complaint",
+     "paraphrase": "用户升级 Make 后仍无法查看部分八月执行记录，页面提示没有找到项目，因而无法查看或重跑历史执行。",
+     "engagement": "0 分 / 1 评论",
+     "source_key": "make:https://community.make.com/t/history-log-is-missing-even-after-upgrading/115064",
+     "counts_as_demand": true
+    },
+    {
+     "url": "https://community.n8n.io/t/whatsapp-api-production/313679",
+     "platform": "n8n",
+     "date": "2026-09-14",
+     "date_basis": "post_date",
+     "kind": "complaint",
+     "paraphrase": "自托管 n8n 用户称 WhatsApp 验证回调正常、号码状态正常且订阅接口返回成功，但真实用户发送消息后 POST webhook 没有触发，导致收不到消息。",
+     "engagement": "0 分 / 2 评论",
+     "source_key": "n8n:https://community.n8n.io/t/whatsapp-api-production/313679",
+     "counts_as_demand": true
     }
    ],
    "workaround": "心跳表、watermark、幂等键、手写 schema 校验、Telegram 人工审批；雇人逐条排查补文档。r/n8n 在 9 月上旬另有多人各自发布抓“200 但输出错”的免费工具。",
@@ -367,31 +422,43 @@
     "n8n / Make 官方可能直接内置",
     "自托管用户付费意愿低，已有多个免费开源同类工具",
     "买方可能只愿为工程服务付钱，每家规则不同难标准化",
-    "部分求助其实是配置或环境问题（见 n8n 已解决反例）"
+    "部分求助其实是配置或环境问题（见 n8n 已解决反例）",
+    "今天新增内容主要来自 n8n / Make 社区，仍可能集中在自动化从业者和自建流程用户，不能代表所有业务团队。",
+    "不少案例最终仍可通过加入幂等键、结果校验、测试环境或人工复核解决，未必需要独立产品。",
+    "n8n、Make 等平台可能继续补充业务结果校验、重放和审计能力；平台 bug 也可能被上游修复。",
+    "当前新增证据尚未显示终端买方直接支付软件费用，商业机会也可能主要是审计、改造和维护服务。"
    ],
    "next_validation": [
-    "找 5 家已有生产自动化的公司，各看一个最近真实故障及处理工时",
-    "争取 2 个付费审查试单再扩展工具",
-    "若问题基本都能用原生设置解决，只做配置服务，不做 SaaS"
+    "联系今天 Make 求助帖中的业务负责人，询问其是否愿意为一次生产工作流审计或固定价试点付费，并确认可接受的预算和验收指标。",
+    "找 5 个使用 n8n / Make 处理订单、付款、CRM 或通知的团队，索取脱敏执行记录，统计“绿色但业务结果错误”的实际频率和补救耗时。",
+    "用一个可回放的 n8n 工作流测试原型验证三项能力：重复提交不重复写入、提供方确认后才算成功、修改后与基线输出自动对比。"
    ],
    "watch_next": "",
    "first_detected": "2026-09-12",
-   "last_detected": "2026-09-12",
-   "detected_runs": 1,
+   "last_detected": "2026-09-14",
+   "detected_runs": 2,
    "score_history": [
     {
      "run_id": "baseline-2026-09-12",
      "date": "2026-09-12",
      "overall": 7.0,
      "reason": "历史评分记录"
+    },
+    {
+     "run_id": "2026-09-14-192555-596537",
+     "date": "2026-09-14",
+     "overall": 7.0,
+     "reason": "本批新增了结果确认、回放测试、幂等和历史审计等多个独立失效形态，说明问题不只是单一配置错误；但证据仍集中在 n8n / Make 社区，且没有本批直接成交证据，因此整体仅小幅上调。"
     }
    ],
    "origin": [],
    "solution_checked_at": "2026-09-12",
-   "buyer": "",
-   "payment_evidence": "",
-   "current_cost": "",
-   "buying_evidence_urls": [],
+   "buyer": "依赖 n8n / Make 处理订单、付款、CRM、消息或文档流程的运营团队，以及为其维护自动化的自由职业者和代理商",
+   "payment_evidence": "已有 Make 社区招聘帖出现每小时 18–25 美元的长期维护预算；本批新增内容未出现终端用户直接购买软件的证据。",
+   "current_cost": "现有用户需要自行编写幂等守护、结果校验和回放工具，并在故障后人工检查执行记录；具体金额或工时尚未核实。",
+   "buying_evidence_urls": [
+    "https://community.make.com/t/hiring-long-term-airtable-make-automation-systems-specialist-18-25-hr/113873"
+   ],
    "qualification": {
     "eligible": true,
     "reasons": [],
@@ -2845,10 +2912,181 @@
    "origin": [],
    "status": "watching",
    "promoted_to": null
+  },
+  {
+   "id": "SIG-010",
+   "title": "商品价格已更新但 Google 搜索结果仍显示旧价",
+   "why_watch": "一个 WooCommerce 商家称数千个商品价格已更新数月，Google 搜索结果仍展示旧价格，只能考虑逐页提交 Search Console；这与商品源、结构化数据和搜索抓取之间的状态可见性有关，但目前只有单条证据，且可能是平台配置或抓取延迟。",
+   "watch_next": "一周内寻找 3–5 个不同站点的独立案例，区分结构化数据、Merchant Center feed 和 Google 抓取缓存三类根因；同时询问商家是否愿意为批量诊断、变更验证或监控试点付费。",
+   "evidence": [
+    {
+     "url": "https://wordpress.org/support/topic/woocommerce-product-prices-didnt-update-on-google-search-results/",
+     "platform": "wordpress",
+     "date": "2026-09-14",
+     "date_basis": "post_date",
+     "kind": "complaint",
+     "paraphrase": "一位 WooCommerce 站点所有者说近几个月更新了数千个价格，但 Google 搜索结果仍显示旧价格，数月没有更新；其认为通过 Search Console 每天最多提交少量页面，无法有效处理。",
+     "engagement": "0 分 / 0 评论",
+     "source_key": "wordpress:https://wordpress.org/support/topic/woocommerce-product-prices-didnt-update-on-google-search-results",
+     "counts_as_demand": true
+    }
+   ],
+   "first_detected": "2026-09-14",
+   "last_detected": "2026-09-14",
+   "detected_runs": 1,
+   "origin": [],
+   "status": "watching",
+   "promoted_to": null
   }
  ],
  "merge_log": [],
  "runs": [
+  {
+   "run_id": "2026-09-14-192555-596537",
+   "started_at": "2026-09-14T19:25:55.596537Z",
+   "finished_at": "2026-09-14T20:00:25.339735Z",
+   "window_hours": 72,
+   "sources": [
+    {
+     "source": "make",
+     "fetched": 11,
+     "new": 11,
+     "prefiltered": 11,
+     "selected": 14,
+     "analyzed": 10,
+     "demand_signals": 8,
+     "buying_signals": 3,
+     "counter_signals": 2,
+     "warnings": [],
+     "degraded": false,
+     "error": null
+    },
+    {
+     "source": "n8n",
+     "fetched": 30,
+     "new": 30,
+     "prefiltered": 30,
+     "selected": 30,
+     "analyzed": 9,
+     "demand_signals": 7,
+     "buying_signals": 0,
+     "counter_signals": 2,
+     "warnings": [],
+     "degraded": false,
+     "error": null
+    },
+    {
+     "source": "wordpress",
+     "fetched": 10,
+     "new": 10,
+     "prefiltered": 10,
+     "selected": 10,
+     "analyzed": 8,
+     "demand_signals": 8,
+     "buying_signals": 0,
+     "counter_signals": 0,
+     "warnings": [],
+     "degraded": false,
+     "error": null
+    },
+    {
+     "source": "hackernews",
+     "fetched": 159,
+     "new": 139,
+     "prefiltered": 109,
+     "selected": 111,
+     "analyzed": 11,
+     "demand_signals": 2,
+     "buying_signals": 0,
+     "counter_signals": 9,
+     "warnings": [],
+     "degraded": false,
+     "error": null
+    },
+    {
+     "source": "github",
+     "fetched": 157,
+     "new": 157,
+     "prefiltered": 108,
+     "selected": 108,
+     "analyzed": 11,
+     "demand_signals": 7,
+     "buying_signals": 0,
+     "counter_signals": 3,
+     "warnings": [
+      "n8n-io/n8n 超出 30 条采样上限，未完整覆盖",
+      "anthropics/claude-code 超出 30 条采样上限，未完整覆盖",
+      "openai/codex 超出 30 条采样上限，未完整覆盖",
+      "BerriAI/litellm 超出 30 条采样上限，未完整覆盖",
+      "langfuse/langfuse 超出 30 条采样上限，未完整覆盖"
+     ],
+     "degraded": false,
+     "error": null
+    },
+    {
+     "source": "v2ex",
+     "fetched": 61,
+     "new": 61,
+     "prefiltered": 39,
+     "selected": 39,
+     "analyzed": 11,
+     "demand_signals": 3,
+     "buying_signals": 0,
+     "counter_signals": 8,
+     "warnings": [],
+     "degraded": false,
+     "error": null
+    },
+    {
+     "source": "stackexchange",
+     "fetched": 0,
+     "new": 0,
+     "prefiltered": 0,
+     "selected": 0,
+     "analyzed": 0,
+     "demand_signals": 0,
+     "buying_signals": 0,
+     "counter_signals": 0,
+     "warnings": [],
+     "degraded": false,
+     "error": null
+    }
+   ],
+   "triaged": 287,
+   "kept": 138,
+   "changes": [
+    {
+     "cluster_id": "OP-002",
+     "action": "updated",
+     "overall_before": 7.0,
+     "overall_after": 7.0,
+     "reason": "本批新增了结果确认、回放测试、幂等和历史审计等多个独立失效形态，说明问题不只是单一配置错误；但证据仍集中在 n8n / Make 社区，且没有本批直接成交证据，因此整体仅小幅上调。"
+    }
+   ],
+   "new_signals": [
+    "SIG-010"
+   ],
+   "top_opportunities": [
+    "OP-002",
+    "OP-001",
+    "OP-003"
+   ],
+   "summary": "今天最强的新变化集中在自动化工作流的“绿色但业务未完成”：n8n 用户开始自行构建结果确认、幂等守护和生产变更回放工具，说明问题已从普通报错排查扩展到业务正确性验证。Make 社区仍出现真实的自动化审计、长期维护和数据完整性需求，但新增内容尚未证明软件订阅而非工程服务更容易成交。电商侧出现一条价格更新后 Google 仍展示旧值的单条信号，暂时作为观察项，不与市场目录消失问题直接合并。今天没有足够独立证据支持新的 AI 编码代理或 WordPress 配置问题簇。",
+   "notes": [
+    "本期含 5 条既有证据复查，不作为新的独立需求计数",
+    "triage 第 3 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "triage 第 4 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "triage 第 5 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "triage 第 11 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "triage 第 14 批存在遗漏、重复或未知 key；异常条目保持未处理",
+    "OP-014 现有方案检查失败：solution_check 的所有模型都失败：openai/gpt-5.6-luna 方案来源未匹配搜索返回的引用；deepseek:deepseek-flash 不支持联网搜索",
+    "triage 降级到 openai/gpt-5.6-luna：nvidia/nemotron-3-super-120b-a12b:free 输出为空或被截断；qwen/qwen3.7-flash 输出不符合结构（1 处错误）",
+    "triage 降级到 qwen/qwen3.7-flash：nvidia/nemotron-3-super-120b-a12b:free 输出为空或被截断",
+    "triage 降级到 qwen/qwen3.7-flash：nvidia/nemotron-3-super-120b-a12b:free 输出为空或被截断"
+   ],
+   "status": "partial",
+   "cost_usd": 0.0629
+  },
   {
    "run_id": "2026-09-13-1352",
    "started_at": "2026-09-13T13:52:43.156261Z",
